@@ -1,0 +1,13 @@
+RUNES
+
+Install
+
+You need to install perl and python first. Perl does come bundled with GIT, but its an outdated version.
+For windows : 
+	http://strawberryperl.com/
+	https://www.python.org/downloads/
+	
+Install those, then launch install.bat from a command prompt. (Open a command prompt, move to the Runes/ directory, then type ./install.bat)
+
+If you get an error mentionning "getopt::long " module around line 200 of "init repository", or something that sounds like that, then you have a problem with your perl version : windows is using the outdated perl by default. Go to Program Files/Git/bin and rename "perl.exe" into something else, like "perl_.exe".
+Then close and reopen the command prompt, and launch the install again.
