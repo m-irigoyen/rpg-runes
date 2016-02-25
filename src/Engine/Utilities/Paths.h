@@ -19,6 +19,8 @@ namespace Runes
 		const string SPELLS = RESOURCES + "spells/";
 		const string IMAGES = RESOURCES + "images/";
 		const string SOUNDS = RESOURCES + "sounds/";
+		const string RUNES = RESOURCES + "runes/";
+		const string USERS = RESOURCES + "users/";
 	}
 }
 

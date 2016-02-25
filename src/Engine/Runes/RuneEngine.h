@@ -3,23 +3,42 @@
 
 #include "Spell.h"
 #include "Rune.h"
+#include "Engine/Users/User.h"
+
+#include <map>
+
+using namespace std;
 
 namespace Runes
 {
+	typedef bool Discovered;
+	typedef pair<RuneDescriptor, Discovered> UserRune;
+
 	class RuneEngine
 	{
 	public:
-		RuneEngine();
+		RuneEngine(User& user);
 
 		// Init the runes
-		void init();
+		void init(User& user);
 
-		//! @brief returns the number of existant runes
-		unsigned int getNumberOfRunes();
+		// saves given spell
+		void save(Spell& spell, string name);
+		void load(string name, Spell& spell);
+
+		const Rune getRune(int index);
+		const Rune getRuneByName(string name);
+		const Rune getRuneByNaturalName(string naturalName);
+
+		UserRune getUserRuneByIndex(int index);
+
+		vector<Spell>& getSpells();
 
 	private:
-		vector<Rune> runes;
-		vector<Spell> spells;	//!< All the spells currently loaded
+		vector<Rune> runes_;	//!< Dictionnary of the runes
+		map<int, UserRune> userRunes_;	//!< Personnal dictionnary of the User : his runes, his descriptions, his names, etc
+		vector<Spell> spells_;	//!< All the spells currently loaded in memory
+		User* user_;	//!< Current user
 	};
 }
 

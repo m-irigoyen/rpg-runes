@@ -38,7 +38,7 @@ namespace Runes
 			return false;
 		}
 
-		if (string((node->attribute("type").as_string())).compare("Spell"))
+		if (string((node->attribute("type").as_string())).compare("Spell") == 0)
 		{
 			rune_ = node->attribute("rune").as_int();
 			// Nothing more to do : the children are handled by the RuneEngine
@@ -101,6 +101,28 @@ namespace Runes
 		return children_;
 	}
 
+	void Spell::addComponent(Spell * component)
+	{
+		if (find(components_.begin(), components_.end(), component) != components_.end())
+		{
+			components_.push_back(component);
+		}
+	}
+
+	void Spell::removeComponent(Spell * component)
+	{
+		vector<Spell*>::iterator it = find(components_.begin(), components_.end(), component);
+		if (it != components_.end())
+		{
+			components_.erase(it);
+		}
+	}
+
+	vector<Spell*>& Spell::getComponents()
+	{
+		return components_;
+	}
+
 	void Runes::Spell::clear()
 	{
 		if (parent_ != NULL)
@@ -116,6 +138,5 @@ namespace Runes
 		}
 		children_.clear();
 	}
-
 }
 

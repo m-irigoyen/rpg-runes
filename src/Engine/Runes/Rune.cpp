@@ -1,20 +1,39 @@
 #include "Rune.h"
 
-Runes::Rune::Rune(int index, string name) : index_(index), name_(name)
+namespace Runes
+{
+
+Runes::Rune::Rune() : index_(-1)
+{
+
+}
+
+Runes::Rune::Rune(int index, RuneDescriptor descriptor) : index_(index), descriptor_(descriptor)
 {
 
 }
 
 bool Runes::Rune::serialize(xml_node * node)
 {
-	//TODO: implement that
+	// No need for that.
 	return false;
 }
 
 bool Runes::Rune::unserialize(xml_node * node)
 {
-	//TODO: implement that
-	return false;
+	if (!node)
+	{
+		// TODO error code
+		return false;
+	}
+
+	name_ = node->attribute("name").as_string();
+	descriptor_.unserialize(&node->child("description"));
+}
+
+void Runes::Rune::setIndex(int index)
+{
+	index_ = index;
 }
 
 const int Runes::Rune::getIndex()
@@ -26,3 +45,21 @@ const string Runes::Rune::getName()
 {
 	return name_;
 }
+
+const string Runes::Rune::getNaturalName()
+{
+	return descriptor_.getNaturalName();
+}
+
+const string Runes::Rune::getDescription()
+{
+	return descriptor_.getDescription();
+}
+
+const RuneDescriptor Runes::Rune::getDescriptor()
+{
+	return descriptor_;
+}
+
+}
+
