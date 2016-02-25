@@ -2,35 +2,37 @@
 #define _RUNES_SPELL_H_
 
 #include "Engine/Utilities/Serializable.h"
+
 #include <vector>
 
 using namespace std;
 
 namespace Runes
 {
-	class RuneEngine;
-
 	class Spell : public Serializable
 	{
 	public:
-		Spell(RuneEngine* runeEngine);
-		~Spell();
+		Spell(int rune);
 
-		//! @brief Clears the Spell : clears and deletes all children, reset rune to none
-		void clear();
+		// Hérité via Serializable
+		virtual bool serialize(xml_node * node) override;
+		virtual bool unserialize(xml_node * node) override;
 
-		//! @brief Set the index of the main rune to the given index.
-		void setRune(int rune);
+		void setRune(int newRune);
+		int getRune();
 
 		void setParent(Spell* parent);
+		Spell* getParent();
+
 		void addChild(Spell* child);
+		void removeChild(Spell* child);
+		vector<Spell*>& getChildren();
+		virtual void clear();
 
 	private:
-		RuneEngine* runeEngine;
-
-		int rune; //!< The index of the main rune of this spell
-		vector<Spell*> children; //!< The other spells that apply on this one
-		Spell* parent; //! The spell this spell applies on. If it's null, then this is the centermost spell
+		int rune_;
+		Spell* parent_;
+		vector<Spell*> children_;
 	};
 }
 

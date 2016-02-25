@@ -9,7 +9,7 @@ int main()
 	node.append_attribute("index").set_value(0);
 	node.append_attribute("name").set_value("Speed");
 
-	Serializable::writeFile(&doc, "test");
+	Serializable::writeFile(&doc, "test", Paths::SPELLS);
 	
 	return 0;
 }

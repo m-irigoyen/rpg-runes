@@ -20,14 +20,14 @@ bool Runes::Serializable::writeFile(xml_document* document, string fileName, str
 	std::string finalPath = filePath;
 	finalPath += fileName;
 	finalPath += ".xml";
-	if (document->save_file(filePath.data()))
+	if (document->save_file(finalPath.data()))
 	{
-		std::cout << "Saving file " << filePath.data() << "." << std::endl;
+		std::cout << "Saving file " << finalPath.data() << "." << std::endl;
 		return true;
 	}
 	else
 	{
-		std::cout << "ERROR : Saving file " << filePath.data() << " FAILED !" << std::endl;
+		std::cout << "ERROR : Saving file " << finalPath.data() << " FAILED !" << std::endl;
 		return false;
 	}
 }
@@ -42,12 +42,12 @@ bool Runes::Serializable::readFile(xml_document * doc, string fileName, string f
 	finalPath += ".xml";
 	if (doc->load_file(finalPath.data()))
 	{
-		std::cout << "Saving file " << filePath.data() << "." << std::endl;
+		std::cout << "Saving file " << finalPath.data() << "." << std::endl;
 		return true;
 	}
 	else
 	{
-		std::cout << "ERROR : Saving file " << filePath.data() << " FAILED !" << std::endl;
+		std::cout << "ERROR : Saving file " << finalPath.data() << " FAILED !" << std::endl;
 		return false;
 	}
 }

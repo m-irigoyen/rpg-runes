@@ -1,3 +1,4 @@
-/ThirdParties
+/ThirdParties/pugi
+/ThirdParties/SFML
 /src/pugi
 /build
