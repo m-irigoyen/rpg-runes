@@ -70,6 +70,11 @@ FILE(GLOB_RECURSE SRC_PUGI
 ADD_EXECUTABLE( ${EXE_NAME} ${SRC_MAIN} ${SRC_ENGINE} ${SRC_AUDIO} ${SRC_GRAPHICS} ${SRC_NETWORK} ${SRC_RUNES} ${SRC_UTILITIES_HANDLING} ${SRC_UTILITIES} ${SRC_PUGI})
 
 INCLUDE_DIRECTORIES("./ThirdParties/SFML/include")
+TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Debug/sfml-audio-d)
+TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Debug/sfml-graphics-d)
+TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Debug/sfml-network-d)
+TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Debug/sfml-system-d)
+TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Debug/sfml-window-d)
 TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Release/sfml-audio)
 TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Release/sfml-graphics)
 TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Release/sfml-network)

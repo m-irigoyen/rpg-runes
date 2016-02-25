@@ -11,5 +11,6 @@ cd ../
 set compiler=C:\Program Files (x86)\MSBuild\14.0\Bin
 
 "%compiler%\msbuild" "ThirdParties/SFML/build/SFML.sln" /p:Configuration=Release /p:Platform="x64"
+"%compiler%\msbuild" "ThirdParties/SFML/build/SFML.sln" /p:Configuration=Debug /p:Platform="x64"
 
 cd scripts

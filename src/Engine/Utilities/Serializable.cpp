@@ -2,30 +2,25 @@
 
 using namespace Runes::Paths;
 
-bool Runes::Serializable::writeFile(xml_node * node, string fileName)
+bool Runes::Serializable::writeFile(xml_document* document, string fileName, string filePath)
 {
-	if (!node)
+	if (!document)
 	{
-		cout << "ERROR : invalid node" << endl;
+		cout << "ERROR : invalid document" << endl;
 		return false;
 	}
 
-	// XML Document creation
-	pugi::xml_document doc;
-
 	// Set XML declaration
-	auto declarationNode = doc.append_child(pugi::node_declaration);
+	auto declarationNode = document->append_child(pugi::node_declaration);
 	declarationNode.append_attribute("version") = "1.0";
 	declarationNode.append_attribute("encoding") = "UTF-8";
 	declarationNode.append_attribute("standalone") = "yes";
 
-	// Set XML root node
-	doc.append_child(node->name());
-
 	// Writing to disk
-	std::string filePath = SPELLS;
-	filePath += fileName;
-	if (doc.save_file(filePath.data()))
+	std::string finalPath = filePath;
+	finalPath += fileName;
+	finalPath += ".xml";
+	if (document->save_file(filePath.data()))
 	{
 		std::cout << "Saving file " << filePath.data() << "." << std::endl;
 		return true;
@@ -37,7 +32,22 @@ bool Runes::Serializable::writeFile(xml_node * node, string fileName)
 	}
 }
 
-bool Runes::Serializable::readFile(xml_node * node, string fileName)
+bool Runes::Serializable::readFile(xml_document * doc, string fileName, string filePath)
 {
-	return false;
+	if (!doc)
+		return false;
+
+	std::string finalPath = filePath;
+	finalPath += fileName;
+	finalPath += ".xml";
+	if (doc->load_file(finalPath.data()))
+	{
+		std::cout << "Saving file " << filePath.data() << "." << std::endl;
+		return true;
+	}
+	else
+	{
+		std::cout << "ERROR : Saving file " << filePath.data() << " FAILED !" << std::endl;
+		return false;
+	}
 }

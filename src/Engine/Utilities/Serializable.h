@@ -21,8 +21,8 @@ namespace Runes
 		//! @brief Unserializes the content of the given node into the object. Returns true if succesful, false otherwise
 		virtual bool unserialize(xml_node* node) = 0;
 
-		static bool writeFile(xml_node* node, string fileName);
-		static bool readFile(xml_node* node, string fileName);
+		static bool writeFile(xml_document* document, string fileName, string filePath);
+		static bool readFile(xml_document * doc, string fileName, string filePath);
 	};
 }
 
