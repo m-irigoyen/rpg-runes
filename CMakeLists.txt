@@ -7,7 +7,7 @@ PROJECT(${EXE_NAME})
 SET(EXECUTABLE_OUTPUT bin / ${CMAKE_BUILD_TYPE})
 
 # Find qt
-CMAKE_PREFIX_PATH(ThirdParties//Qt/5.5/msvc2013_64/lib/cmake/Qt5)
+set(CMAKE_PREFIX_PATH ThirdParties/qt/qtbase)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -82,10 +82,6 @@ FILE(GLOB_RECURSE SRC_PUGI
  source_group(Engine/Utilities FILES ${SRC_UTILITIES})
  source_group(Engine/Utilities/Handling FILES ${SRC_UTILITIES_HANDLING})
  source_group(Pugi FILES ${SRC_PUGI})
- 
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt5Widgets)
  
