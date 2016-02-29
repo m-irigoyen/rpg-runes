@@ -12,11 +12,12 @@ namespace Runes
 	class Spell : public Serializable
 	{
 	public:
-		Spell(int rune);
+		Spell(int rune = -1);
+		~Spell();
 
-		// Hérité via Serializable
-		virtual bool serialize(xml_node * node) override;
-		virtual bool unserialize(xml_node * node) override;
+		// Serialization
+		virtual bool serialize(QXmlStreamWriter& stream) override;
+		virtual bool unserialize(QXmlStreamReader& stream) override;
 
 		void setRune(int newRune);
 		int getRune();

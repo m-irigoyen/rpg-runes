@@ -3,60 +3,62 @@
 namespace Runes
 {
 
-Runes::Rune::Rune() : index_(-1)
+Rune::Rune() : index_(-1)
 {
 
 }
 
-Runes::Rune::Rune(int index, RuneDescriptor descriptor) : index_(index), descriptor_(descriptor)
+Rune::Rune(int index, RuneDescriptor descriptor) : index_(index), descriptor_(descriptor)
 {
 
 }
 
-bool Runes::Rune::serialize(xml_node * node)
-{
-	// No need for that.
-	return false;
-}
-
-bool Runes::Rune::unserialize(xml_node * node)
-{
-	if (!node)
-	{
-		// TODO error code
-		return false;
-	}
-
-	name_ = node->attribute("name").as_string();
-	descriptor_.unserialize(&node->child("description"));
-}
-
-void Runes::Rune::setIndex(int index)
+void Rune::setIndex(int index)
 {
 	index_ = index;
 }
 
-const int Runes::Rune::getIndex()
+// Serialization
+bool Rune::serialize(QXmlStreamWriter& stream)
+{
+	stream.writeStartElement("rune");
+	stream.writeAttribute(QXmlStreamAttribute("index", QString::number(this->index_)));
+	this->descriptor_.serialize(stream);
+	stream.writeEndElement();
+}
+
+bool Rune::unserialize(QXmlStreamReader& stream)
+{
+	Q_ASSERT(stream.isStartElement() && stream.name() == "rune");
+	stream.readNextStartElement();
+	for (const QXmlStreamAttribute &attr : stream.attributes())
+	{
+		if (attr.name().toString() == QLatin1String("index"))
+		{
+			this->index_ = attr.value().toInt();
+		}
+	}
+	
+	Q_ASSERT(stream.isStartElement() && stream.name() == "runeDescriptor");
+	this->descriptor_.unserialize(stream);
+}
+
+const int Rune::getIndex()
 {
 	return index_;
 }
 
-const string Runes::Rune::getName()
-{
-	return name_;
-}
-
-const string Runes::Rune::getNaturalName()
+const QString Rune::getNaturalName()
 {
 	return descriptor_.getNaturalName();
 }
 
-const string Runes::Rune::getDescription()
+const QString Rune::getDescription()
 {
 	return descriptor_.getDescription();
 }
 
-const RuneDescriptor Runes::Rune::getDescriptor()
+const RuneDescriptor Rune::getDescriptor()
 {
 	return descriptor_;
 }

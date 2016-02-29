@@ -1,53 +1,38 @@
 #include "Serializable.h"
 
-using namespace Runes::Paths;
+#include <QFileInfo>
 
-bool Runes::Serializable::writeFile(xml_document* document, string fileName, string filePath)
+namespace Runes
 {
-	if (!document)
+	bool Serializable::openFile(QString fileName, QString filePath, QFile& file)
 	{
-		cout << "ERROR : invalid document" << endl;
-		return false;
+		QString finalPath = filePath + fileName;
+		
+		if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
+		{
+			// TODO : error code
+			return;
+		}
 	}
 
-	// Set XML declaration
-	auto declarationNode = document->append_child(pugi::node_declaration);
-	declarationNode.append_attribute("version") = "1.0";
-	declarationNode.append_attribute("encoding") = "UTF-8";
-	declarationNode.append_attribute("standalone") = "yes";
-
-	// Writing to disk
-	std::string finalPath = filePath;
-	finalPath += fileName;
-	finalPath += ".xml";
-	if (document->save_file(finalPath.data()))
+	void Serializable::initReader(QFile* file, QXmlStreamReader& reader)
 	{
-		std::cout << "Saving file " << finalPath.data() << "." << std::endl;
-		return true;
+		reader.setDevice(file);
+		// TODO : check this is a valid spell file
 	}
-	else
-	{
-		std::cout << "ERROR : Saving file " << finalPath.data() << " FAILED !" << std::endl;
-		return false;
-	}
-}
 
-bool Runes::Serializable::readFile(xml_document * doc, string fileName, string filePath)
-{
-	if (!doc)
-		return false;
+	void Serializable::initWriter(QFile* file, QXmlStreamWriter& writer)
+	{
+		writer.setAutoFormatting(true);
+		writer.setDevice(file);
 
-	std::string finalPath = filePath;
-	finalPath += fileName;
-	finalPath += ".xml";
-	if (doc->load_file(finalPath.data()))
-	{
-		std::cout << "Saving file " << finalPath.data() << "." << std::endl;
-		return true;
+		writer.writeStartDocument();
+		writer.writeDTD("<!DOCTYPE xml>");
+		writer.writeStartElement("xml");
 	}
-	else
+
+	bool Serializable::exists(QString filename, QString filePath)
 	{
-		std::cout << "ERROR : Saving file " << finalPath.data() << " FAILED !" << std::endl;
-		return false;
+		return QFileInfo(filePath + filename).exists();
 	}
 }

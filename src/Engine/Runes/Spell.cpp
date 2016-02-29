@@ -2,67 +2,86 @@
 
 namespace Runes
 {
-	Runes::Spell::Spell(int rune) : rune_(rune), parent_(NULL)
+	Spell::Spell(int rune) : rune_(rune), parent_(NULL)
 	{
 	}
 
-	bool Runes::Spell::serialize(xml_node * node)
+	Spell::~Spell()
 	{
-		if (!node)
-		{
-			// TODO error code
-			return false;
-		}
+		this->clear();
+	}
 
-		node->set_name("Spell");
-		node->append_attribute("type").set_value("Spell");
-		node->append_attribute("rune").set_value(rune_);
-
+	bool Spell::serialize(QXmlStreamWriter& stream)
+	{
+		stream.writeStartElement("spell");
+		stream.writeAttribute(QXmlStreamAttribute("rune", QString::number(this->rune_)));
+		
 		for (Spell* child : children_)
 		{
-			if (!child->serialize(&node->append_child("child")))
+			stream.writeStartElement("children");
+			child->serialize(stream);
+			stream.writeEndElement();
+		}
+
+		for (Spell* component : components_)
+		{
+			stream.writeStartElement("components");
+			component->serialize(stream);
+			stream.writeEndElement();
+		}
+
+		stream.writeEndElement();
+	}
+
+	bool Spell::unserialize(QXmlStreamReader& stream)
+	{
+		Q_ASSERT(stream.isStartElement() && stream.name() == "spell");
+		stream.readNextStartElement();
+		for (const QXmlStreamAttribute &attr : stream.attributes())
+		{
+			if (attr.name().toString() == QLatin1String("rune"))
 			{
-				// TODO error code
-				return false;
+				this->rune_ = attr.value().toInt();
 			}
 		}
 
-		return true;
+		// children
+		Q_ASSERT(stream.isStartElement() && stream.name() == "children");
+		stream.readNextStartElement();
+		while (stream.name() == "spell")
+		{
+			Spell* s = new Spell();
+			children_.push_back(s);
+			s->unserialize(stream);
+
+			stream.readNextStartElement();
+		}
+
+		// children
+		Q_ASSERT(stream.isStartElement() && stream.name() == "components");
+		stream.readNextStartElement();
+		while (stream.name() == "spell")
+		{
+			Spell* s = new Spell();
+			components_.push_back(s);
+			s->unserialize(stream);
+
+			stream.readNextStartElement();
+		}
 	}
 
-	bool Runes::Spell::unserialize(xml_node * node)
-	{
-		if (!node)
-		{
-			// TODO error code
-			return false;
-		}
-
-		if (string((node->attribute("type").as_string())).compare("Spell") == 0)
-		{
-			rune_ = node->attribute("rune").as_int();
-			// Nothing more to do : the children are handled by the RuneEngine
-			return true;
-		}
-		else
-		{
-			// TODO error code
-			return false;
-		}
-	}
-
-	void Runes::Spell::setRune(int newRune)
+	void Spell::setRune(int newRune)
 	{
 		if (newRune >= -1)
 			rune_ = newRune;
 	}
 
-	int Runes::Spell::getRune()
+	int Spell::getRune()
 	{
 		return rune_;
 	}
 
-	void Runes::Spell::setParent(Spell * parent)
+	void Spell::setParent(Spell * parent)
 	{
 		if (parent == NULL)
 		{
@@ -74,12 +93,12 @@ namespace Runes
 		parent_ = parent;
 	}
 
-	Spell* Runes::Spell::getParent()
+	Spell* Spell::getParent()
 	{
 		return parent_;
 	}
 
-	void Runes::Spell::addChild(Spell * child)
+	void Spell::addChild(Spell * child)
 	{
 		if (find(children_.begin(), children_.end(), child) != children_.end())
 		{
@@ -87,7 +106,7 @@ namespace Runes
 		}
 	}
 
-	void Runes::Spell::removeChild(Spell * child)
+	void Spell::removeChild(Spell * child)
 	{
 		vector<Spell*>::iterator it = find(children_.begin(), children_.end(), child);
 		if (it != children_.end())
@@ -96,7 +115,7 @@ namespace Runes
 		}
 	}
 
-	vector<Spell*>& Runes::Spell::getChildren()
+	vector<Spell*>& Spell::getChildren()
 	{
 		return children_;
 	}
@@ -123,7 +142,7 @@ namespace Runes
 		return components_;
 	}
 
-	void Runes::Spell::clear()
+	void Spell::clear()
 	{
 		if (parent_ != NULL)
 		{

@@ -16,21 +16,20 @@ namespace Runes
 		Rune();
 		Rune(int index, RuneDescriptor descriptor);
 
-		// Hérité via Serializable
-		virtual bool serialize(xml_node * node) override;
-		virtual bool unserialize(xml_node * node) override;
-
 		void setIndex(int index);
 
+		// Serialization
+		virtual bool serialize(QXmlStreamWriter& stream) override;
+		virtual bool unserialize(QXmlStreamReader& stream) override;
+
 		const int getIndex();
-		const string getName();
-		const string getNaturalName();
-		const string getDescription();
+		const QString getName();
+		const QString getNaturalName();
+		const QString getDescription();
 		const RuneDescriptor getDescriptor();
 
 	protected:
 		int index_;
-		string name_;
 		RuneDescriptor descriptor_;
 	};
 }

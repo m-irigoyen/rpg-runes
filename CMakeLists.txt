@@ -83,7 +83,9 @@ FILE(GLOB_RECURSE SRC_PUGI
  source_group(Pugi FILES ${SRC_PUGI})
 
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Core REQUIRED)
  
 ADD_EXECUTABLE( ${EXE_NAME} ${SRC_MAIN} ${SRC_ENGINE} ${SRC_AUDIO} ${SRC_GRAPHICS} ${SRC_NETWORK} ${SRC_RUNES} ${SRC_UTILITIES_HANDLING} ${SRC_UTILITIES} ${SRC_PUGI} ${SRC_USERPROFILES})
 
 target_link_libraries(${EXE_NAME} Qt5::Widgets)
+target_link_libraries(${EXE_NAME} Qt5::Core)
