@@ -9,5 +9,5 @@ set PATH=%PATH%;C:\Program Files (x86)\MSBuild\14.0\Bin;C:\Program Files (x86)\C
 
 mkdir build
 cd build
-cmake ../ -G "Visual Studio 14 2015 Win64"
+cmake ../ -G "Visual Studio 12 2013 Win64"
 cd ../scripts

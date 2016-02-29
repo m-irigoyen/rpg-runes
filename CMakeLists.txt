@@ -7,7 +7,7 @@ PROJECT(${EXE_NAME})
 SET(EXECUTABLE_OUTPUT bin / ${CMAKE_BUILD_TYPE})
 
 # Find qt
-CMAKE_PREFIX_PATH(ThirdParties//Qt/5.5/msvc2013_64/lib/cmake/Qt5)
+set(CMAKE_PREFIX_PATH c:/Qt/5.5/msvc2013_64/)
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -17,7 +17,6 @@ set(CMAKE_AUTOMOC ON)
 #Source grouping
 include_directories(${runes_SOURCE_DIR}/src)
 include_directories(../ThirdParties/pugi/include/pugi)
-INCLUDE_DIRECTORIES(./ThirdParties/SFML/include)
 
 FILE(GLOB_RECURSE SRC_MAIN ${runes_SOURCE_DIR}/src/main.cpp )
  FILE(GLOB_RECURSE SRC_ENGINE
@@ -82,24 +81,9 @@ FILE(GLOB_RECURSE SRC_PUGI
  source_group(Engine/Utilities FILES ${SRC_UTILITIES})
  source_group(Engine/Utilities/Handling FILES ${SRC_UTILITIES_HANDLING})
  source_group(Pugi FILES ${SRC_PUGI})
- 
 
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-find_package(Qt5Widgets)
+find_package(Qt5Widgets REQUIRED)
  
 ADD_EXECUTABLE( ${EXE_NAME} ${SRC_MAIN} ${SRC_ENGINE} ${SRC_AUDIO} ${SRC_GRAPHICS} ${SRC_NETWORK} ${SRC_RUNES} ${SRC_UTILITIES_HANDLING} ${SRC_UTILITIES} ${SRC_PUGI} ${SRC_USERPROFILES})
 
 target_link_libraries(${EXE_NAME} Qt5::Widgets)
-
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Debug/sfml-audio-d)
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Debug/sfml-graphics-d)
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Debug/sfml-network-d)
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Debug/sfml-system-d)
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Debug/sfml-window-d)
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Release/sfml-audio)
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Release/sfml-graphics)
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Release/sfml-network)
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Release/sfml-system)
-TARGET_LINK_LIBRARIES(${EXE_NAME} ../ThirdParties/SFML/build/lib/Release/sfml-window)
