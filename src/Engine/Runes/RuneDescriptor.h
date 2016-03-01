@@ -11,7 +11,7 @@ namespace Runes
 	{
 	public:
 		RuneDescriptor();
-		RuneDescriptor(string name, string naturalName, string description);
+		RuneDescriptor(QString name, QString naturalName, QString description);
 
 		// Serialization
 		virtual bool serialize(QXmlStreamWriter& stream) override;

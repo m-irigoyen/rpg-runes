@@ -7,7 +7,7 @@ namespace Runes
 	{
 	}
 
-	RuneDescriptor::RuneDescriptor(string name, string naturalName, string description) : name_(name), naturalName_(naturalName), description_(description)
+	RuneDescriptor::RuneDescriptor(QString name, QString naturalName, QString description) : name_(name), naturalName_(naturalName), description_(description)
 	{
 	}
 
@@ -19,12 +19,13 @@ namespace Runes
 		stream.writeAttribute(QXmlStreamAttribute("naturalName", this->naturalName_));
 		stream.writeAttribute(QXmlStreamAttribute("description", this->description_));
 		stream.writeEndElement();
+		return true;
 	}
 
 	bool RuneDescriptor::unserialize(QXmlStreamReader& stream)
 	{
 		Q_ASSERT(stream.isStartElement() && stream.name() == "runeDescriptor");
-		stream.readNextStartElement();
+		//stream.readNextStartElement();
 		for(const QXmlStreamAttribute &attr : stream.attributes()) 
 		{
 			if (attr.name().toString() == QLatin1String("name")) 
@@ -40,6 +41,7 @@ namespace Runes
 				this->description_ = attr.value().toString();
 			}
 		}
+		return true;
 	}
 
 	QString RuneDescriptor::getName()

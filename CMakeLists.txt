@@ -55,37 +55,30 @@ FILE(GLOB_RECURSE SRC_USERPROFILES
 	 ${runes_SOURCE_DIR}/src/Engine/Users/*.hpp
 	 )
 FILE(GLOB_RECURSE SRC_UTILITIES 
-	${runes_SOURCE_DIR}/src/Engine/Utilities/Serializable.h	
-	${runes_SOURCE_DIR}/src/Engine/Utilities/Serializable.cpp	
-	${runes_SOURCE_DIR}/src/Engine/Utilities/Paths.h	
+	${runes_SOURCE_DIR}/src/Engine/Utilities/*.h	
+	${runes_SOURCE_DIR}/src/Engine/Utilities/*.cpp	
+	${runes_SOURCE_DIR}/src/Engine/Utilities/*.hpp
 	)
-FILE(GLOB_RECURSE SRC_UTILITIES_HANDLING
-	 ${runes_SOURCE_DIR}
-	 ${runes_SOURCE_DIR}/src/Engine/Utilities/Handling/*.cpp 
-	 ${runes_SOURCE_DIR}/src/Engine/Utilities/Handling/*.h
-	 ${runes_SOURCE_DIR}/src/Engine/Utilities/Handling/*.hpp
-	 )
 FILE(GLOB_RECURSE SRC_PUGI
 	 ${runes_SOURCE_DIR}/src/pugi*.cpp 
 	 ${runes_SOURCE_DIR}/src/pugi*.hpp 
 	 )
 	 
 	
- SET(SOURCE_GROUP_DELIMITER "/")
- source_group(Engine FILES ${SRC_ENGINE})
- source_group(Engine/Audio FILES ${SRC_AUDIO})
- source_group(Engine/Graphics FILES ${SRC_GRAPHICS})
- source_group(Engine/Network FILES ${SRC_NETWORK})
- source_group(Engine/Runes FILES ${SRC_RUNES})
- source_group(Engine/Users FILES ${SRC_USERPROFILES})
- source_group(Engine/Utilities FILES ${SRC_UTILITIES})
- source_group(Engine/Utilities/Handling FILES ${SRC_UTILITIES_HANDLING})
- source_group(Pugi FILES ${SRC_PUGI})
+SET(SOURCE_GROUP_DELIMITER "/")
+source_group(Engine FILES ${SRC_ENGINE})
+source_group(Engine/Audio FILES ${SRC_AUDIO})
+source_group(Engine/Graphics FILES ${SRC_GRAPHICS})
+source_group(Engine/Network FILES ${SRC_NETWORK})
+source_group(Engine/Runes FILES ${SRC_RUNES})
+source_group(Engine/Users FILES ${SRC_USERPROFILES})
+source_group(Engine/Utilities FILES ${SRC_UTILITIES})
+source_group(Pugi FILES ${SRC_PUGI})
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core REQUIRED)
  
-ADD_EXECUTABLE( ${EXE_NAME} ${SRC_MAIN} ${SRC_ENGINE} ${SRC_AUDIO} ${SRC_GRAPHICS} ${SRC_NETWORK} ${SRC_RUNES} ${SRC_UTILITIES_HANDLING} ${SRC_UTILITIES} ${SRC_PUGI} ${SRC_USERPROFILES})
+ADD_EXECUTABLE( ${EXE_NAME} ${SRC_MAIN} ${SRC_ENGINE} ${SRC_AUDIO} ${SRC_GRAPHICS} ${SRC_NETWORK} ${SRC_RUNES} ${SRC_UTILITIES} ${SRC_PUGI} ${SRC_USERPROFILES})
 
 target_link_libraries(${EXE_NAME} Qt5::Widgets)
 target_link_libraries(${EXE_NAME} Qt5::Core)

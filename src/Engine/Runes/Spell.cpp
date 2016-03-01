@@ -31,6 +31,7 @@ namespace Runes
 		}
 
 		stream.writeEndElement();
+		return true;
 	}
 
 	bool Spell::unserialize(QXmlStreamReader& stream)
@@ -68,6 +69,7 @@ namespace Runes
 
 			stream.readNextStartElement();
 		}
+		return true;
 	}
 
 	void Spell::setRune(int newRune)

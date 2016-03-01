@@ -4,20 +4,24 @@ using namespace Qt;
 
 namespace Runes
 {
-	Engine::Engine()
+	Engine::Engine() : runeEngine_(), graphicsEngine_(runeEngine_)
 	{
+		
 	}
 
 	void Engine::init()
 	{
+		runeEngine_.init();
+		network_.init();
+
 		this->createMenus();
 		this->createToolbars();
 		this->createDockWidgets();
 
-		this->runes.init();
-		this->network.init();
-		this->audio.init();
-		this->graphics.init();
+		graphicsEngine_.init();
+		graphicsView_ = graphicsEngine_.getView();
+
+		this->setCentralWidget(graphicsView_);
 	}
 
 	void Engine::run()

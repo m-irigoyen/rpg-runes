@@ -11,8 +11,9 @@ namespace Runes
 		if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
 		{
 			// TODO : error code
-			return;
+			return false;
 		}
+		return true;
 	}
 
 	void Serializable::initReader(QFile* file, QXmlStreamReader& reader)

@@ -3,55 +3,38 @@
 namespace Runes
 {
 
-Runes::RuneEngine::RuneEngine(User& user)
+RuneEngine::RuneEngine()
 {
-	this->init(user);
+	this->init();
 }
 
-void Runes::RuneEngine::init(User& user)
+void RuneEngine::init()
 {
 	// Loading global runes from memory
 	if (runes_.empty())
 	{
-		xml_document doc;
-		if (Serializable::readFile(&doc, "runes", Paths::RUNES))
+		QXmlStreamReader stream;
+		QFile file;
+
+		if (Serializable::openFile("runes.xml", Paths::RUNES, file))
 		{
-			xml_node& runes = doc.child("runes");
-			int runeCount = 0;
-			for (xml_node& r : runes.children())
+			Serializable::initReader(&file, stream);
+			Q_ASSERT(stream.isStartElement() && stream.name() == "runes");
+			stream.readNextStartElement();
+			for (const QXmlStreamAttribute &attr : stream.attributes())
 			{
-				runes_.push_back(Rune(
-					runeCount,
-					RuneDescriptor(
-						r.attribute("name").as_string(),
-						r.attribute("naturalName").as_string(),
-						r.attribute("description").as_string()
-						)));
-				++runeCount;
+				if (attr.name().toString() == QLatin1String("runeCount"))
+				{
+					this->runes_.resize(attr.value().toInt());
+				}
 			}
-		}
-		else
-		{
-			// TODO error code
-			return;
-		}
-	}
 
-	// Loading user runes
-	{
-		xml_document doc;
-		string filepath = Paths::USERS;
-		filepath += user.getName();
-		filepath += "/";
-		if (Serializable::readFile(&doc, "runes", filepath))
-		{
-			xml_node& runes = doc.child("runes");
-			for (xml_node& r : runes.children())
+			while (stream.readNextStartElement())
 			{
-				RuneDescriptor rd;
-				rd.unserialize(&r.child("descriptor"));
+				Rune r;
+				r.unserialize(stream);
 
-				userRunes_.insert(pair<int, UserRune>(r.attribute("index").as_int(), UserRune(rd, r.attribute("discovered").as_bool())));
+				runes_.at(r.getIndex()) = r;
 			}
 		}
 		else
@@ -62,40 +45,50 @@ void Runes::RuneEngine::init(User& user)
 	}
 }
 
-void RuneEngine::save(Spell & spell, string filename)
+void RuneEngine::init(QString userName)
 {
-	xml_document doc;
-	spell.serialize(&(doc.append_child("spell")));
+	init();
 
-	// Building path
-	string filePath = Paths::SPELLS;
-	filePath += user_->getName();
-	filePath += "/";
-
-	// Serializing
-	Serializable::writeFile(&doc, filename,  filePath);
+	//TODO : load user runes
 }
 
-void RuneEngine::load(string filename, Spell& spell)
+bool RuneEngine::save(Spell& spell, QString name, QString userName)
 {
-	xml_document doc;
-
-	// Building path
-	string filePath = Paths::SPELLS;
-	filePath += user_->getName();
-	filePath += "/";
-
-	// Serializing
-	if (!Serializable::readFile(&doc, filename, filePath))
+	QXmlStreamWriter stream;
+	QFile file;
+	if (Serializable::openFile(name, Paths::SPELLS + "/" + userName, file))
 	{
-		// TODO error code
-		return;
+		Serializable::initWriter(&file, stream);
+		spell.serialize(stream);
 	}
-
-	spell.unserialize(&doc.child("spell"));
+	else
+	{
+		//TODO: error code
+		return false;
+	}
+	
+	file.close();
+	return true;
 }
 
-const Rune Runes::RuneEngine::getRune(int index)
+bool RuneEngine::load(Spell& spell, QString name, QString userName)
+{
+	QXmlStreamReader stream;
+	QFile file;
+	if (Serializable::openFile(name, Paths::USERS + userName + "/" + Paths::SPELLS, file))
+	{
+		stream.readNextStartElement();
+		while (stream.name() != "spell")
+			stream.readNextStartElement();
+
+		spell.unserialize(stream);
+		return true;
+	}
+	
+	return false;
+}
+
+const Rune RuneEngine::getRune(int index)
 {
 	if (index >= 0 && index < runes_.size())
 	{
@@ -104,7 +97,7 @@ const Rune Runes::RuneEngine::getRune(int index)
 	return Rune();
 }
 
-const Rune RuneEngine::getRuneByName(string name)
+const Rune RuneEngine::getRuneByName(QString name)
 {
 	for (Rune r : runes_)
 	{
@@ -114,7 +107,7 @@ const Rune RuneEngine::getRuneByName(string name)
 	return Rune();
 }
 
-const Rune RuneEngine::getRuneByNaturalName(string naturalName)
+const Rune RuneEngine::getRuneByNaturalName(QString naturalName)
 {
 	for (Rune r : runes_)
 	{
@@ -136,6 +129,25 @@ UserRune RuneEngine::getUserRuneByIndex(int index)
 vector<Spell>& RuneEngine::getSpells()
 {
 	return spells_;
+}
+
+RunesContainer& RuneEngine::getRunes()
+{
+	return runes_;
+}
+
+UserRunesContainer& RuneEngine::getUserRunes()
+{
+	return userRunes_;
+}
+
+bool RuneEngine::hasUserDiscoveredRune(int rune)
+{
+	map<int, UserRune>::iterator it = userRunes_.find(rune);
+	Q_ASSERT(it != userRunes_.end());
+
+	if (it->second.second)
+		return true;
 }
 
 

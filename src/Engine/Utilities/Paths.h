@@ -3,7 +3,7 @@
 
 #define DEBUG
 
-#include <string>
+#include <QString>
 
 using namespace std;
 
@@ -12,15 +12,19 @@ namespace Runes
 	namespace Paths
 	{
 #ifdef DEBUG 
-		const string RESOURCES = "../res/";
+		const QString RESOURCES = "../res";
 #elif RELEASE
 		const string RESOURCES = "res/";
 #endif
-		const string SPELLS = RESOURCES + "spells/";
-		const string IMAGES = RESOURCES + "images/";
-		const string SOUNDS = RESOURCES + "sounds/";
-		const string RUNES = RESOURCES + "runes/";
-		const string USERS = RESOURCES + "users/";
+		const QString SPELLS = "spells/";
+		const QString IMAGES(RESOURCES + "images/");
+		const QString SOUNDS(RESOURCES + "sounds/");
+		const QString RUNES(RESOURCES + "runes/");
+		const QString USERS(RESOURCES + "users/");
+
+		QString getUserPath(QString userName);
+		QString getUserSpells(QString userName);
+		
 	}
 }
 

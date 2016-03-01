@@ -13,13 +13,5 @@ namespace Runes
 		return name_;
 	}
 
-	bool User::serialize(QXmlStreamWriter& stream)
-	{
-		// TODO : implement that
-	}
 
-	bool User::unserialize(QXmlStreamWriter& stream)
-	{
-		// TODO : implement that
-	}
 }

@@ -29,10 +29,11 @@ namespace Runes
 		void run();
 
 	private:
-		AudioEngine audio;
-		GraphicsEngine graphics;
-		NetworkEngine network;
-		RuneEngine runes;
+		AudioEngine audio_;
+		NetworkEngine network_;
+		RuneEngine runeEngine_;
+		GraphicsEngine graphicsEngine_;
+		QGraphicsView* graphicsView_;
 
 		//------------------
 		// GUI members

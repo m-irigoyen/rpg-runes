@@ -13,32 +13,39 @@ namespace Runes
 {
 	typedef bool Discovered;
 	typedef pair<RuneDescriptor, Discovered> UserRune;
+	typedef map<int, UserRune> UserRunesContainer;
+	typedef vector<Rune> RunesContainer;
 
 	class RuneEngine
 	{
 	public:
-		RuneEngine(User& user);
+		RuneEngine();
 
 		// Init the runes
-		void init(User& user);
+		void init();
+		void init(QString userName);
 
 		// saves given spell
-		void save(Spell& spell, string name);
-		void load(string name, Spell& spell);
+		bool save(Spell& spell, QString name, QString userName);
+		bool load(Spell& spell, QString name, QString userName);
 
 		const Rune getRune(int index);
-		const Rune getRuneByName(string name);
-		const Rune getRuneByNaturalName(string naturalName);
+		const Rune getRuneByName(QString name);
+		const Rune getRuneByNaturalName(QString naturalName);
 
 		UserRune getUserRuneByIndex(int index);
 
 		vector<Spell>& getSpells();
+		RunesContainer& getRunes();
+		UserRunesContainer& getUserRunes();
+
+		//! @brief returns true if user has discovered that rune
+		bool hasUserDiscoveredRune(int rune);
 
 	private:
-		vector<Rune> runes_;	//!< Dictionnary of the runes
-		map<int, UserRune> userRunes_;	//!< Personnal dictionnary of the User : his runes, his descriptions, his names, etc
+		RunesContainer runes_;	//!< Dictionnary of the runes
+		UserRunesContainer userRunes_;	//!< Personnal dictionnary of the User : his runes, his descriptions, his names, etc
 		vector<Spell> spells_;	//!< All the spells currently loaded in memory
-		User* user_;	//!< Current user
 	};
 }
 
