@@ -99,6 +99,11 @@ namespace Runes
 	{
 		return parent_;
 	}
+	
+	bool Spell::isTopLevel()
+	{
+		return (!centerIsSpell_ && parent_ == NULL);
+	}
 
 	void Spell::addChild(Spell * child)
 	{

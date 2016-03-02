@@ -38,7 +38,7 @@ namespace Runes
 
 		//----------
 		//Functions
-		QGraphicsItem* 
+		QGraphicsItem* runeItem
 	};
 }
 
