@@ -2,6 +2,7 @@
 #define _GRAPHICSENGINE_H_
 
 #include "Engine/Runes/RuneEngine.h"
+#include "RuneItem.h"
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
@@ -28,17 +29,24 @@ namespace Runes
 		QGraphicsScene scene_;
 		QGraphicsView view_;
 
-		vector<QBitmap> runeSprites_; //!< The sprites of the runes, ordered by index
+		vector<QPixmap> runeSprites_; //!< The sprites of the runes, ordered by index
+		vector<RuneItem> runeItems_;
 		
 		// Rune Engine references
-		
 		RuneEngine& runeEngine_;
 		RunesContainer& globalRunes_;
 		UserRunesContainer& userRunes_;
 
 		//----------
 		//Functions
-		QGraphicsItem* runeItem
+		//! @brief draws the given spell onto the scene
+		void drawSpell(Spell* s);
+
+		//! @brief place the child correctly relative to the parent
+		void placeChild(RuneItem& child, RuneItem& parent);
+
+		//! @brief Factory function : creates a rune item based on the given spell
+		RuneItem* createItem(Spell* s);
 	};
 }
 

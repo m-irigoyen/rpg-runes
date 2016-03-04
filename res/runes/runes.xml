@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<xml>
+    <runes>
+        <rune index="0">
+            <runeDescriptor name="O" naturalName="Water" description="Wets stuff"/>
+        </rune>
+    </runes>
+</xml>

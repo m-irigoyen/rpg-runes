@@ -24,6 +24,7 @@ namespace Runes
 		// Init the runes
 		void init();
 		void init(QString userName);
+		void testInit();
 
 		// saves given spell
 		bool save(Spell& spell, QString name, QString userName);
@@ -35,6 +36,8 @@ namespace Runes
 
 		UserRune getUserRuneByIndex(int index);
 
+		
+		Spell* getCurrentSpell();
 		vector<Spell>& getSpells();
 		RunesContainer& getRunes();
 		UserRunesContainer& getUserRunes();
@@ -43,6 +46,7 @@ namespace Runes
 		bool hasUserDiscoveredRune(int rune);
 
 	private:
+		Spell* currentSpell_;	//!< The spell currently being editing (the top level spell)
 		RunesContainer runes_;	//!< Dictionnary of the runes
 		UserRunesContainer userRunes_;	//!< Personnal dictionnary of the User : his runes, his descriptions, his names, etc
 		vector<Spell> spells_;	//!< All the spells currently loaded in memory

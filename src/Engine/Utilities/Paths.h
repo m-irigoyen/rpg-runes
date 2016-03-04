@@ -12,7 +12,7 @@ namespace Runes
 	namespace Paths
 	{
 #ifdef DEBUG 
-		const QString RESOURCES = "../res";
+		const QString RESOURCES = "../res/";
 #elif RELEASE
 		const string RESOURCES = "res/";
 #endif
@@ -21,6 +21,7 @@ namespace Runes
 		const QString SOUNDS(RESOURCES + "sounds/");
 		const QString RUNES(RESOURCES + "runes/");
 		const QString USERS(RESOURCES + "users/");
+		const QString EXTENSION(".xml");
 
 		QString getUserPath(QString userName);
 		QString getUserSpells(QString userName);

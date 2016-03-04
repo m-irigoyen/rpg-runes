@@ -1,36 +1,37 @@
 #ifndef _GRAPHICS_RUNEITEM_H_
 #define _GRAPHICS_RUNEITEM_H_
 
-#include "Engine/Runes/Spell.h"
+#include "Engine/Runes/RuneEngine.h"
 
 #include <QGraphicsEllipseItem>
+#include <QGraphicsPixMapItem>
+
+#define _GRAPHICS_RUNEITEM_RUNEW 10
+#define _GRAPHICS_RUNEITEM_RUNEH 10
 
 namespace Runes
 {
-	class RuneItem : public QGraphicsItem
+	class RuneItem : public QGraphicsEllipseItem
 	{
 	public:
-		RuneItem();
+		RuneItem(Spell* s, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes);
 
-		void setCircleRadius(int circle, float radius);
-		
 		//!@ brief updates circle radiuses given the spell
 		void updateChidlren();
 
-		void addCircle();
-		void removeCircle();
+		//! @brief returns the total radius of this spell. Depending wether the spell is a top level or not, won't return the same
+		float getTotalRadius();
+
 
 	protected:
 		// Members
-		Spell* spell;	//!< The spell this rune draws
+		Spell* spell_;	//!< The spell this rune draws
 
-		vector<QGraphicsEllipseItem> circles;	//!< The circles. 0 is the center rune. Each additionnal circles corresponds to the depth of children.
-
-		//----------------
-		// Helper functions
-		//! @brief gets the item correpsonding to the given spell
-		RuneItem* getItemFromSpell(Spell*);
-
+		// The graphics
+		QGraphicsSimpleTextItem text_;	//!< If the center par of the spell is a rune, this is its natural name
+		QGraphicsPixmapItem rune_;	//!< If the center part of the spel is a rune, this is its image
+		QGraphicsEllipseItem innerCircle_;	//!< The circle around the center part of the spell.
+		QGraphicsEllipseItem outerCircle_;	//!< The circle around the components of the spell.
 	};
 }
 

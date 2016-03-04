@@ -6,7 +6,9 @@ namespace Runes
 {
 	bool Serializable::openFile(QString fileName, QString filePath, QFile& file)
 	{
-		QString finalPath = filePath + fileName;
+		QString finalPath = filePath + fileName + Paths::EXTENSION;
+		cout << "opening : " << finalPath.toStdString() << endl;
+		file.setFileName(finalPath);
 		
 		if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
 		{
@@ -19,7 +21,8 @@ namespace Runes
 	void Serializable::initReader(QFile* file, QXmlStreamReader& reader)
 	{
 		reader.setDevice(file);
-		// TODO : check this is a valid spell file
+		reader.readNextStartElement();
+		Q_ASSERT(reader.name() == "xml");
 	}
 
 	void Serializable::initWriter(QFile* file, QXmlStreamWriter& writer)

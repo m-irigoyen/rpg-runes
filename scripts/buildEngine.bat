@@ -3,6 +3,8 @@
 ::C:\Program Files\Git\bin
 ::C:\Program Files (x86)\CMake\bin
 
+::https://wiki.qt.io/Deploying_Windows_Applications
+
 call cmakeEngine.bat
 
 cd ../

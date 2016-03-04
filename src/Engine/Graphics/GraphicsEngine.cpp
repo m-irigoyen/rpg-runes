@@ -16,6 +16,7 @@ namespace Runes
 	{
 		view_.setScene(&scene_);
 
+		// Loading rune images
 		{
 			QString runeFilePath = Paths::RUNES;
 			QString extension = ".bmp";
@@ -36,6 +37,11 @@ namespace Runes
 			}
 		}
 		
+		// Setting up the scene
+		Spell* s = runeEngine_.getCurrentSpell();
+		Q_ASSERT(s);
+		
+		// Loading the current spell
 	}
 
 	QGraphicsView* GraphicsEngine::getView()
@@ -47,8 +53,23 @@ namespace Runes
 	{
 		scene_.clear();
 
-		// Recusively add elements
 	}
 
+	void GraphicsEngine::drawSpell(Spell* s)
+	{
+		
+	}
+
+	void GraphicsEngine::placeChild(RuneItem& child, RuneItem& parent)
+	{
+
+	}
+
+	RuneItem* GraphicsEngine::createItem(Spell* s)
+	{
+		/*RuneItem item(s, runeSprites_);
+		runeItems_.push_back(item);*/
+		return NULL;
+	}
 }
 

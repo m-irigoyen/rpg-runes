@@ -2,7 +2,7 @@
 
 namespace Runes
 {
-	Spell::Spell(int rune) : rune_(rune), parent_(NULL)
+	Spell::Spell(int rune) : centerRune_(rune), parent_(NULL)
 	{
 	}
 
@@ -14,19 +14,12 @@ namespace Runes
 	bool Spell::serialize(QXmlStreamWriter& stream)
 	{
 		stream.writeStartElement("spell");
-		stream.writeAttribute(QXmlStreamAttribute("rune", QString::number(this->rune_)));
+		stream.writeAttribute(QXmlStreamAttribute("rune", QString::number(this->centerRune_)));
 		
 		for (Spell* child : children_)
 		{
 			stream.writeStartElement("children");
 			child->serialize(stream);
-			stream.writeEndElement();
-		}
-
-		for (Spell* component : components_)
-		{
-			stream.writeStartElement("components");
-			component->serialize(stream);
 			stream.writeEndElement();
 		}
 
@@ -42,7 +35,7 @@ namespace Runes
 		{
 			if (attr.name().toString() == QLatin1String("rune"))
 			{
-				this->rune_ = attr.value().toInt();
+				this->centerRune_ = attr.value().toInt();
 			}
 		}
 
@@ -58,29 +51,46 @@ namespace Runes
 			stream.readNextStartElement();
 		}
 
-		// children
-		Q_ASSERT(stream.isStartElement() && stream.name() == "components");
-		stream.readNextStartElement();
-		while (stream.name() == "spell")
-		{
-			Spell* s = new Spell();
-			components_.push_back(s);
-			s->unserialize(stream);
-
-			stream.readNextStartElement();
-		}
 		return true;
+	}
+
+	bool Spell::isCenterSpell()
+	{
+		return centerIsSpell_;
+	}
+
+	Spell* Spell::getCenterSpell()
+	{
+		if (centerIsSpell_)
+			return centerSpell_;
+		else
+			return NULL;
+	}
+
+	void Spell::setCenterSpell(Spell* s)
+	{
+		if (centerIsSpell_)
+		{
+			s->clear();
+			s = NULL;
+		}
+
+		if (s)
+		{
+			centerSpell_ = s;
+			centerIsSpell_ = true;
+		}
 	}
 
 	void Spell::setRune(int newRune)
 	{
 		if (newRune >= -1)
-			rune_ = newRune;
+			centerRune_ = newRune;
 	}
 
 	int Spell::getRune()
 	{
-		return rune_;
+		return centerRune_;
 	}
 
 	void Spell::setParent(Spell * parent)
@@ -102,7 +112,7 @@ namespace Runes
 	
 	bool Spell::isTopLevel()
 	{
-		return (!centerIsSpell_ && parent_ == NULL);
+		return (parent_ == NULL);
 	}
 
 	void Spell::addChild(Spell * child)
@@ -127,7 +137,8 @@ namespace Runes
 		return children_;
 	}
 
-	void Spell::addComponent(Spell * component)
+	// Component management
+	void Spell::addComponent(Spell* component)
 	{
 		if (find(components_.begin(), components_.end(), component) != components_.end())
 		{
@@ -135,7 +146,7 @@ namespace Runes
 		}
 	}
 
-	void Spell::removeComponent(Spell * component)
+	void Spell::removeComponent(Spell* component)
 	{
 		vector<Spell*>::iterator it = find(components_.begin(), components_.end(), component);
 		if (it != components_.end())

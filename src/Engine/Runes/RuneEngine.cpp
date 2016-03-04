@@ -5,7 +5,9 @@ namespace Runes
 
 RuneEngine::RuneEngine()
 {
-	this->init();
+	//this->init();
+
+	this->testInit();
 }
 
 void RuneEngine::init()
@@ -16,18 +18,12 @@ void RuneEngine::init()
 		QXmlStreamReader stream;
 		QFile file;
 
-		if (Serializable::openFile("runes.xml", Paths::RUNES, file))
+		if (Serializable::openFile("runes", Paths::RUNES, file))
 		{
 			Serializable::initReader(&file, stream);
+			stream.readNextStartElement();
 			Q_ASSERT(stream.isStartElement() && stream.name() == "runes");
 			stream.readNextStartElement();
-			for (const QXmlStreamAttribute &attr : stream.attributes())
-			{
-				if (attr.name().toString() == QLatin1String("runeCount"))
-				{
-					this->runes_.resize(attr.value().toInt());
-				}
-			}
 
 			while (stream.readNextStartElement())
 			{
@@ -52,11 +48,18 @@ void RuneEngine::init(QString userName)
 	//TODO : load user runes
 }
 
+void RuneEngine::testInit()
+{
+	cout << "Test basic init" << endl;
+	this->init();
+	cout << "Finish" << endl;
+}
+
 bool RuneEngine::save(Spell& spell, QString name, QString userName)
 {
 	QXmlStreamWriter stream;
 	QFile file;
-	if (Serializable::openFile(name, Paths::SPELLS + "/" + userName, file))
+	if (Serializable::openFile(name, Paths::SPELLS + userName + "/", file))
 	{
 		Serializable::initWriter(&file, stream);
 		spell.serialize(stream);
@@ -67,12 +70,14 @@ bool RuneEngine::save(Spell& spell, QString name, QString userName)
 		return false;
 	}
 	
+	stream.writeEndDocument();
 	file.close();
 	return true;
 }
 
 bool RuneEngine::load(Spell& spell, QString name, QString userName)
 {
+	
 	QXmlStreamReader stream;
 	QFile file;
 	if (Serializable::openFile(name, Paths::USERS + userName + "/" + Paths::SPELLS, file))
@@ -124,6 +129,11 @@ UserRune RuneEngine::getUserRuneByIndex(int index)
 	{
 		return it->second;
 	}
+}
+
+Spell* RuneEngine::getCurrentSpell()
+{
+	return this->currentSpell_;
 }
 
 vector<Spell>& RuneEngine::getSpells()
