@@ -3,7 +3,13 @@
 <xml>
     <runes>
         <rune index="0">
-            <runeDescriptor name="O" naturalName="Water" description="Wets stuff"/>
+            <runeDescriptor name="One" naturalName="OneNatural" description="One desc"/>
+        </rune>
+		<rune index="1">
+            <runeDescriptor name="Two" naturalName="TwoNatural" description="Two desc"/>
+        </rune>
+		<rune index="2">
+            <runeDescriptor name="Three" naturalName="ThreeNatural" description="Three desc"/>
         </rune>
     </runes>
 </xml>

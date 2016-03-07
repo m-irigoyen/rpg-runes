@@ -13,6 +13,7 @@ namespace Runes
 		if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
 		{
 			// TODO : error code
+			cout << "ERROR : couldn't open file" << endl;
 			return false;
 		}
 		return true;
@@ -22,7 +23,15 @@ namespace Runes
 	{
 		reader.setDevice(file);
 		reader.readNextStartElement();
-		Q_ASSERT(reader.name() == "xml");
+		
+		if (reader.name() != "xml")
+		{
+			cout << "Error : wrong file" << endl;
+			while (reader.readNextStartElement())
+			{
+				cout << "Reading : " << reader.name().toString().toStdString() << endl;
+			}
+		}
 	}
 
 	void Serializable::initWriter(QFile* file, QXmlStreamWriter& writer)

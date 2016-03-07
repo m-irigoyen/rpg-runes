@@ -11,7 +11,8 @@ namespace Runes
 
 	void Engine::init()
 	{
-		runeEngine_.init();
+		//runeEngine_.init("Edrevan");
+		runeEngine_.testInit();
 		network_.init();
 
 		this->createMenus();
@@ -22,6 +23,10 @@ namespace Runes
 		graphicsView_ = graphicsEngine_.getView();
 
 		this->setCentralWidget(graphicsView_);
+
+		this->showMaximized();
+
+		graphicsView_->show();
 	}
 
 	void Engine::run()

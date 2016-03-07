@@ -30,7 +30,7 @@ namespace Runes
 		QGraphicsView view_;
 
 		vector<QPixmap> runeSprites_; //!< The sprites of the runes, ordered by index
-		vector<RuneItem> runeItems_;
+		RuneItem runeItem_;
 		
 		// Rune Engine references
 		RuneEngine& runeEngine_;
@@ -41,12 +41,6 @@ namespace Runes
 		//Functions
 		//! @brief draws the given spell onto the scene
 		void drawSpell(Spell* s);
-
-		//! @brief place the child correctly relative to the parent
-		void placeChild(RuneItem& child, RuneItem& parent);
-
-		//! @brief Factory function : creates a rune item based on the given spell
-		RuneItem* createItem(Spell* s);
 	};
 }
 

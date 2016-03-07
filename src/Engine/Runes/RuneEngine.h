@@ -20,6 +20,7 @@ namespace Runes
 	{
 	public:
 		RuneEngine();
+		~RuneEngine();
 
 		// Init the runes
 		void init();
@@ -38,18 +39,20 @@ namespace Runes
 
 		
 		Spell* getCurrentSpell();
-		vector<Spell>& getSpells();
+		vector<Spell*>& getSpells();
 		RunesContainer& getRunes();
 		UserRunesContainer& getUserRunes();
 
 		//! @brief returns true if user has discovered that rune
 		bool hasUserDiscoveredRune(int rune);
 
+		void clearSpells();
+
 	private:
 		Spell* currentSpell_;	//!< The spell currently being editing (the top level spell)
 		RunesContainer runes_;	//!< Dictionnary of the runes
 		UserRunesContainer userRunes_;	//!< Personnal dictionnary of the User : his runes, his descriptions, his names, etc
-		vector<Spell> spells_;	//!< All the spells currently loaded in memory
+		vector<Spell*> spells_;	//!< All the spells currently loaded in memory
 	};
 }
 

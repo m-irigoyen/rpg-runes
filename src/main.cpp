@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 	app.setOrganizationName("Runes");
 	app.setApplicationName("Runic spell editor");
 	Engine mainWindow;
+	mainWindow.init();
 	mainWindow.show();
 
 	return app.exec();

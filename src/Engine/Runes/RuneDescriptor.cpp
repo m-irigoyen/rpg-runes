@@ -25,7 +25,6 @@ namespace Runes
 	bool RuneDescriptor::unserialize(QXmlStreamReader& stream)
 	{
 		Q_ASSERT(stream.isStartElement() && stream.name() == "runeDescriptor");
-		//stream.readNextStartElement();
 		for(const QXmlStreamAttribute &attr : stream.attributes()) 
 		{
 			if (attr.name().toString() == QLatin1String("name")) 

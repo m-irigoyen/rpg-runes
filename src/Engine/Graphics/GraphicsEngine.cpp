@@ -4,7 +4,7 @@ namespace Runes
 {
 	GraphicsEngine::GraphicsEngine(RuneEngine& runeEngineRef) : runeEngine_(runeEngineRef), globalRunes_(runeEngine_.getRunes()), userRunes_(runeEngine_.getUserRunes())
 	{
-		init();
+		//init();
 	}
 
 	GraphicsEngine::~GraphicsEngine()
@@ -19,20 +19,20 @@ namespace Runes
 		// Loading rune images
 		{
 			QString runeFilePath = Paths::RUNES;
-			QString extension = ".bmp";
 			// Load all rune images
 			for (Rune r : globalRunes_)
 			{
-				QString name = r.getName();
+				QString name = r.getNaturalName();
 
 				QPixmap runeImage;
-				if (runeImage.load(runeFilePath + name.toLower() + extension))
+				if (runeImage.load(runeFilePath + name.toLower() + Paths::IMAGEEXTENSION))
 				{
 					runeSprites_.push_back(runeImage);
 				}
 				else
 				{
-					//TODO : error code
+					cout << "ERROR : couldn't load " << (runeFilePath + name.toLower() + Paths::IMAGEEXTENSION).toStdString() << endl;
+					abort();
 				}
 			}
 		}
@@ -42,6 +42,9 @@ namespace Runes
 		Q_ASSERT(s);
 		
 		// Loading the current spell
+		drawSpell(s);
+
+		cout << "The scene contains : " << scene_.items().size() << endl;
 	}
 
 	QGraphicsView* GraphicsEngine::getView()
@@ -57,19 +60,8 @@ namespace Runes
 
 	void GraphicsEngine::drawSpell(Spell* s)
 	{
-		
+		runeItem_.drawSpell(s, runeSprites_, globalRunes_, userRunes_, scene_, NULL);
 	}
 
-	void GraphicsEngine::placeChild(RuneItem& child, RuneItem& parent)
-	{
-
-	}
-
-	RuneItem* GraphicsEngine::createItem(Spell* s)
-	{
-		/*RuneItem item(s, runeSprites_);
-		runeItems_.push_back(item);*/
-		return NULL;
-	}
 }
 

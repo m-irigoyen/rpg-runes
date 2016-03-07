@@ -2,7 +2,7 @@
 
 namespace Runes
 {
-	Spell::Spell(int rune) : centerRune_(rune), parent_(NULL)
+	Spell::Spell(int rune) : centerRune_(rune), parent_(NULL), centerSpell_(NULL), centerIsSpell_(false)
 	{
 	}
 
@@ -117,7 +117,7 @@ namespace Runes
 
 	void Spell::addChild(Spell * child)
 	{
-		if (find(children_.begin(), children_.end(), child) != children_.end())
+		if (find(children_.begin(), children_.end(), child) == children_.end())
 		{
 			children_.push_back(child);
 		}
@@ -140,9 +140,15 @@ namespace Runes
 	// Component management
 	void Spell::addComponent(Spell* component)
 	{
-		if (find(components_.begin(), components_.end(), component) != components_.end())
+		vector<Spell*>::iterator it = find(components_.begin(), components_.end(), component);
+		if (it == components_.end())
 		{
 			components_.push_back(component);
+		}
+		else
+		{
+			cout << "ERROR!" << endl;
+			abort();
 		}
 	}
 

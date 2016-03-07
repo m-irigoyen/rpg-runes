@@ -3,15 +3,24 @@
 namespace Runes
 {
 
-RuneEngine::RuneEngine()
+	RuneEngine::RuneEngine() : currentSpell_(NULL)
 {
-	//this->init();
+	this->init();
 
-	this->testInit();
+	//this->testInit();
+}
+
+RuneEngine::~RuneEngine()
+{
+
 }
 
 void RuneEngine::init()
 {
+	spells_.clear();
+	userRunes_.clear();
+	currentSpell_ = NULL;
+
 	// Loading global runes from memory
 	if (runes_.empty())
 	{
@@ -23,14 +32,19 @@ void RuneEngine::init()
 			Serializable::initReader(&file, stream);
 			stream.readNextStartElement();
 			Q_ASSERT(stream.isStartElement() && stream.name() == "runes");
-			stream.readNextStartElement();
 
-			while (stream.readNextStartElement())
+			while (!stream.atEnd())
 			{
-				Rune r;
-				r.unserialize(stream);
+				stream.readNextStartElement();
 
-				runes_.at(r.getIndex()) = r;
+				if (stream.isStartElement() && stream.name() == "rune")
+				{
+					Rune r;
+					r.unserialize(stream);
+					runes_.push_back(r);
+					stream.readNextStartElement();
+					stream.readNextStartElement();
+				}
 			}
 		}
 		else
@@ -39,20 +53,77 @@ void RuneEngine::init()
 			return;
 		}
 	}
+
+	if (spells_.empty())
+	{
+		this->spells_.push_back(new Spell(0));
+		this->currentSpell_ = spells_.at(0);
+	}
 }
 
 void RuneEngine::init(QString userName)
 {
 	init();
 
-	//TODO : load user runes
+	// Loading user runes
+	{
+		QXmlStreamReader stream;
+		QFile file;
+
+		if (Serializable::openFile("profile", Paths::USERS + userName + "/", file))
+		{
+			Serializable::initReader(&file, stream);
+			stream.readNextStartElement();
+			Q_ASSERT(stream.isStartElement() && stream.name() == "user");
+
+			for (const QXmlStreamAttribute &attr : stream.attributes())
+			{
+				if (attr.name().toString() == QLatin1String("name"))
+				{
+					Q_ASSERT(attr.value().toString() == userName);
+				}
+			}
+
+			while (!stream.atEnd())
+			{
+				stream.readNextStartElement();
+
+				if (stream.isStartElement() && stream.name() == "rune")
+				{
+					bool discovered;
+
+					for (const QXmlStreamAttribute &attr : stream.attributes())
+					{
+						if (attr.name().toString() == QLatin1String("discovered"))
+						{
+							discovered = attr.value().toInt();
+						}
+					}
+
+					Rune r;
+					r.unserialize(stream);
+
+					UserRune ur(r.getDescriptor(), discovered);
+					userRunes_.insert(make_pair(r.getIndex(), ur));
+
+					stream.readNextStartElement(); // exiting rune descriptor element
+					stream.readNextStartElement(); // exiting rune element
+				}
+			}
+		}
+		else
+		{
+			cout << "RuneEngine::init : failed to load user runes!" << endl;
+			return;
+		}
+	}
+
 }
 
 void RuneEngine::testInit()
 {
-	cout << "Test basic init" << endl;
-	this->init();
-	cout << "Finish" << endl;
+	init("Edrevan");
+	currentSpell_->addComponent(new Spell(1));
 }
 
 bool RuneEngine::save(Spell& spell, QString name, QString userName)
@@ -136,7 +207,7 @@ Spell* RuneEngine::getCurrentSpell()
 	return this->currentSpell_;
 }
 
-vector<Spell>& RuneEngine::getSpells()
+vector<Spell*>& RuneEngine::getSpells()
 {
 	return spells_;
 }
@@ -158,6 +229,16 @@ bool RuneEngine::hasUserDiscoveredRune(int rune)
 
 	if (it->second.second)
 		return true;
+}
+
+void RuneEngine::clearSpells()
+{
+	for (Spell* s : spells_)
+	{
+		s->clear();
+		delete(s);
+	}
+	spells_.clear();
 }
 
 

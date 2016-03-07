@@ -30,20 +30,26 @@ bool Rune::serialize(QXmlStreamWriter& stream)
 
 bool Rune::unserialize(QXmlStreamReader& stream)
 {
-	Q_ASSERT(stream.isStartElement() && stream.name() == "rune");
-	for (const QXmlStreamAttribute &attr : stream.attributes())
+	if (stream.name() == "rune")
 	{
-		if (attr.name().toString() == QLatin1String("index"))
+		for (const QXmlStreamAttribute &attr : stream.attributes())
 		{
-			this->index_ = attr.value().toInt();
+			if (attr.name().toString() == QLatin1String("index"))
+			{
+				this->index_ = attr.value().toInt();
+			}
 		}
+		stream.readNextStartElement();
+
+
+		if (stream.name() == "runeDescriptor")
+		{
+			this->descriptor_.unserialize(stream);
+			return true;
+		}
+		return false;
 	}
-	stream.readNextStartElement();
-	
-	
-	Q_ASSERT(stream.isStartElement() && stream.name() == "runeDescriptor");
-	this->descriptor_.unserialize(stream);
-	return true;
+	return false;
 }
 
 const int Rune::getIndex()

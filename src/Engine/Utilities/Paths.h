@@ -22,6 +22,7 @@ namespace Runes
 		const QString RUNES(RESOURCES + "runes/");
 		const QString USERS(RESOURCES + "users/");
 		const QString EXTENSION(".xml");
+		const QString IMAGEEXTENSION(".png");
 
 		QString getUserPath(QString userName);
 		QString getUserSpells(QString userName);
