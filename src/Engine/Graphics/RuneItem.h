@@ -6,8 +6,9 @@
 #include <QGraphicsEllipseItem>
 #include <QGraphicsPixMapItem>
 
+#define _GRAPHICS_RUNEITEM_RUNE_IMAGERADIUS 64
 #define _GRAPHICS_RUNEITEM_RUNE_RADIUS 64
-#define _GRAPHICS_RUNEITEM_DISTANCE 30
+#define _GRAPHICS_RUNEITEM_DISTANCE 16
 
 namespace Runes
 {
@@ -32,7 +33,7 @@ namespace Runes
 		void clearItem();
 
 		//! @brief positions the children and components path to correctly point at this
-		void positionCompAndChildrenPaths(bool isComponent);
+		void positionPath(RuneItem* ri, float thisRadius);
 
 
 		//! @brief toggles between rune image or rune text
@@ -50,7 +51,7 @@ namespace Runes
 		QGraphicsSimpleTextItem text_;		//!< If the center par of the spell is a rune, this is its natural name
 		QGraphicsPixmapItem image_;			//!< If the center part of the spel is a rune, this is its image
 		QGraphicsEllipseItem innerCircle_;	//!< The circle around the center part of the spell.
-		QGraphicsPathItem path_;			//!< the curve linking this spell to its parent
+		vector<QGraphicsPathItem*> paths_;			//!< the curve linking this spell to its parent
 		// The outer circle is *this
 
 		//---------------

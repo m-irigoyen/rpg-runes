@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<xml>
+	<user name="Edrevan">
+		<runes>
+			<rune index="0" discovered="0">
+				<runeDescriptor name="Machin" naturalName="LaBite" description="Elle m'aime et je l'aime"/>
+			</rune>
+			<rune index="1" discovered="1">
+				<runeDescriptor name="Portal" naturalName="OuiOui" description="Ca fait des trous"/>
+			</rune>
+			<rune index="2" discovered="1">
+				<runeDescriptor name="EtTaSoeur" naturalName="Création" description="Carrément"/>
+			</rune>
+		</runes>
+	</user>
+</xml>

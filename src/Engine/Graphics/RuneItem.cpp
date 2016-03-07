@@ -27,10 +27,8 @@ namespace Runes
 		if (parent == NULL)
 			scene.addItem(this);
 		else
-		{
 			this->setParentItem(parent);
-			path_.setParentItem(this);
-		}
+			
 
 
 		if (s->isCenterSpell())
@@ -49,7 +47,6 @@ namespace Runes
 						// Components
 						RuneItem* ri = new RuneItem();
 						ri->drawSpell(comp, runeImages, runes, userRunes, scene, this);
-						float componentRadius = ri->getTotalRadius();
 						this->components_.push_back(ri);
 					}
 
@@ -63,8 +60,7 @@ namespace Runes
 						// Components
 						RuneItem* ri = new RuneItem();
 						ri->drawSpell(comp, runeImages, runes, userRunes, scene, this);
-						float componentRadius = ri->getTotalRadius();
-						this->components_.push_back(ri);
+						this->children_.push_back(ri);
 					}
 				}
 
@@ -87,29 +83,32 @@ namespace Runes
 
 				// Positionning components
 				{
-					
+					float innerRadius = this->getInnerRadius();
 					float componentRadius = this->getBiggestComponentRadius();
-					componentRadius += this->getInnerRadius() + _GRAPHICS_RUNEITEM_DISTANCE;
-					float nbComponents = this->components_.size();
+					componentRadius += innerRadius + _GRAPHICS_RUNEITEM_DISTANCE;
+					int nbComponents = this->components_.size();
 					int i = 0;
 					for (RuneItem* ri : components_)
 					{
-						QPointF pos = getPositionOnSpell(i + 1, components_.size(), componentRadius);
+						QPointF pos = getPositionOnSpell(i + 1, nbComponents, componentRadius);
 						ri->setPos(pos);
+						this->positionPath(ri, innerRadius);
 						++i;
 					}
 				}
 
 				// Positionning children
 				{
+					float totalRadius = this->getTotalRadius();
 					float componentRadius = this->getBiggestChildrenRadius();
-					componentRadius += this->getTotalRadius() + _GRAPHICS_RUNEITEM_DISTANCE;
+					componentRadius += totalRadius + _GRAPHICS_RUNEITEM_DISTANCE;
 					float nbComponents = this->components_.size();
 					int i = 0;
-					for (RuneItem* ri : components_)
+					for (RuneItem* ri : children_)
 					{
 						QPointF pos = getPositionOnSpell(i + 1, components_.size(), componentRadius);
 						ri->setPos(pos);
+						this->positionPath(ri, totalRadius);
 						++i;
 					}
 				}
@@ -141,7 +140,7 @@ namespace Runes
 		image_.setPos(QPointF(0, 0) + QPointF(totalRadius, totalRadius));*/
 		innerCircle_.setPos(0, 0);
 		text_.setPos(0, 0);
-		image_.setPos(-_GRAPHICS_RUNEITEM_RUNE_RADIUS, -_GRAPHICS_RUNEITEM_RUNE_RADIUS);
+		image_.setPos(-_GRAPHICS_RUNEITEM_RUNE_IMAGERADIUS, -_GRAPHICS_RUNEITEM_RUNE_IMAGERADIUS);
 	}
 
 	float RuneItem::getTotalRadius()
@@ -208,59 +207,64 @@ namespace Runes
 			this->scene()->removeItem(&this->image_);
 			this->scene()->removeItem(&this->text_);
 
-			for (RuneItem* r : children_)
+			for (QGraphicsPathItem* path : paths_)
 			{
-				r->clearItem();
-				delete(r);
-			}
-			for (RuneItem* r : components_)
-			{
-				r->clearItem();
-				delete(r);
+				this->scene()->removeItem(path);
 			}
 
 			this->scene()->removeItem(this);
 		}
+
+		for (RuneItem* r : children_)
+		{
+			r->clearItem();
+			delete(r);
+		}
+		for (RuneItem* r : components_)
+		{
+			r->clearItem();
+			delete(r);
+		}
+		for (QGraphicsPathItem* path : paths_)
+		{
+			delete(path);
+		}
+		this->children_.clear();
+		this->components_.clear();
+		this->paths_.clear();
 	}
 
-	void RuneItem::positionCompAndChildrenPaths(bool isComponent)
+	void RuneItem::positionPath(RuneItem* ri, float thisRadius)
 	{
-		if (this->parentItem() != NULL)
-		{
-			RuneItem* parent = (RuneItem*)this->parentItem();
+		// Computing point on the parent circle (this)
+		QPointF pos = ri->pos();
+		QVector2D centerToPos(pos);
+		centerToPos.normalize();
+		centerToPos *= thisRadius;
 
-			// Computing point on parent circle
-			float parentRadius;
-			if (isComponent)
-				parentRadius = parent->getInnerRadius();
-			else
-				parentRadius = parent->getTotalRadius();
-			QVector2D centerToPos(this->pos());
-			centerToPos.normalize();
-			centerToPos *= parentRadius;
+		QPointF pParentCircle(centerToPos.x(), centerToPos.y());
 
-			QPointF pParentCircle(centerToPos.x(), centerToPos.y());
+		// Computing point on the child circle
+		QVector2D posToCenter(-pos);
+		posToCenter.normalize();
+		posToCenter *= ri->getTotalRadius();
 
-			// Computing point on this circle
-			QVector2D posToCenter(this->pos());
-			posToCenter *= -1;
-			posToCenter.normalize();
-			posToCenter *= this->getTotalRadius();
+		QPointF pThisCircle = pos + QPointF(posToCenter.x(), posToCenter.y());
 
-			QPointF pThisCircle = this->pos() + QPointF(posToCenter.x(), posToCenter.y());
+		// Drawing path from one to the other
+		QPainterPath p(pThisCircle);
+		p.lineTo(pParentCircle);
+		//p.addEllipse(pParentCircle, 10, 10);
 
-			// Drawing path from one to the other
-			QPainterPath p(pThisCircle);
-			p.lineTo(pParentCircle);
-
-			// Setting the constructed path
-			path_.setPath(p);
-		}
+		// Setting the constructed path
+		QGraphicsPathItem* path = new QGraphicsPathItem(p, this);
+			
+		paths_.push_back(path);
 	}
 
 	void RuneItem::toggleText()
 	{
-		if (image_.isVisible)
+		if (image_.isVisible())
 		{
 			image_.hide();
 			text_.setVisible(true);
@@ -311,7 +315,9 @@ namespace Runes
 
 	QPointF RuneItem::getPositionOnSpell(int nb, int nbTotal, float radius)
 	{
-		return QPointF(cos(M_PI * (nb / nbTotal)), sin(M_PI * (nb / nbTotal))) * radius;
+		QPointF result(cos(((2 * nb * M_PI) / nbTotal)), sin(((2 * nb * M_PI) / nbTotal)));
+		result *= radius;
+		return result;
 	}
 
 }

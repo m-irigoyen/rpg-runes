@@ -124,6 +124,10 @@ void RuneEngine::testInit()
 {
 	init("Edrevan");
 	currentSpell_->addComponent(new Spell(1));
+	currentSpell_->addComponent(new Spell(1));
+	currentSpell_->addComponent(new Spell(1));
+	currentSpell_->addComponent(new Spell(1));
+	currentSpell_->addChild(new Spell(2));
 }
 
 bool RuneEngine::save(Spell& spell, QString name, QString userName)
