@@ -24,8 +24,9 @@ namespace Runes
 
 		this->setCentralWidget(graphicsView_);
 
-		this->showMaximized();
+		//this->showMaximized();
 
+		graphicsView_->scale(0.35, 0.35);
 		graphicsView_->show();
 	}
 

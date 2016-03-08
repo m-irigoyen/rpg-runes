@@ -69,6 +69,9 @@ namespace Runes
 
 	void Spell::setCenterSpell(Spell* s)
 	{
+		centerRune_ = -1;
+		centerIsSpell_ = false;
+
 		if (centerIsSpell_)
 		{
 			s->clear();
@@ -117,6 +120,16 @@ namespace Runes
 
 	void Spell::addChild(Spell * child)
 	{
+		if (this->parent_ == NULL)
+		{
+			cout << "ERROR ! The top level cannot have children. Convert this spell to the be the inner spell of a new spell." << endl;
+			if (child)
+			{
+				delete(child);
+				return;
+			}
+		}
+
 		if (find(children_.begin(), children_.end(), child) == children_.end())
 		{
 			children_.push_back(child);
@@ -168,6 +181,15 @@ namespace Runes
 
 	void Spell::clear()
 	{
+		centerRune_ = -1;
+
+		if (centerSpell_)
+		{
+			centerSpell_->clear();
+			delete(centerSpell_);
+			centerSpell_ = NULL;
+		}
+
 		if (parent_ != NULL)
 		{
 			parent_->removeChild(this);

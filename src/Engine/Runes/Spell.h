@@ -19,6 +19,8 @@ using namespace std;
 
 	
 	- A spell whose center part is a rune, and has no children and no components, is the equivalent of a simple rune.
+
+	The top level spell cannot have children. It just can't
 */
 
 namespace Runes

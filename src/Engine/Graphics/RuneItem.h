@@ -9,6 +9,7 @@
 #define _GRAPHICS_RUNEITEM_RUNE_IMAGERADIUS 64
 #define _GRAPHICS_RUNEITEM_RUNE_RADIUS 64
 #define _GRAPHICS_RUNEITEM_DISTANCE 16
+#define _GRAPHICS_RUNEITEM_CHILDSPACINGCOEFF 5/6
 
 namespace Runes
 {
@@ -35,9 +36,13 @@ namespace Runes
 		//! @brief positions the children and components path to correctly point at this
 		void positionPath(RuneItem* ri, float thisRadius);
 
-
 		//! @brief toggles between rune image or rune text
 		void toggleText();
+
+		
+
+	signals:
+
 
 	protected:
 		// Members
@@ -58,7 +63,15 @@ namespace Runes
 		// HELPER FUNCTIONS
 		float getBiggestComponentRadius();
 		float getBiggestChildrenRadius();
-		QPointF getPositionOnSpell(int nb, int nbTotal, float radius);
+		QPointF getPositionOnSpell(int nb, int nbTotal, float radius, QPointF parentPosition);
+		QPen getDefaultPen();
+
+		// EVENTS
+		// Overrides
+		void focusInEvent(QFocusEvent * event);
+		void focusOutEvent(QFocusEvent * event);
+		void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
+		void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
 	};
 }
 

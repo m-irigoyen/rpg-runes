@@ -123,11 +123,17 @@ void RuneEngine::init(QString userName)
 void RuneEngine::testInit()
 {
 	init("Edrevan");
-	currentSpell_->addComponent(new Spell(1));
-	currentSpell_->addComponent(new Spell(1));
-	currentSpell_->addComponent(new Spell(1));
-	currentSpell_->addComponent(new Spell(1));
-	currentSpell_->addChild(new Spell(2));
+	Spell* s = new Spell(1);
+	s->addComponent(new Spell(2));
+	s->addComponent(new Spell(2));
+	s->addComponent(new Spell(2));
+	s->addChild(new Spell(0));
+	s->addChild(new Spell(1));
+	s->addChild(new Spell(2));
+	/*s->addChild(new Spell(2));
+	s->addChild(new Spell(2));
+	s->addChild(new Spell(2));*/
+	currentSpell_->addComponent(s);
 }
 
 bool RuneEngine::save(Spell& spell, QString name, QString userName)
