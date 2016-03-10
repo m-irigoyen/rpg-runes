@@ -1,79 +1,41 @@
 #ifndef _GRAPHICS_RUNEITEM_H_
 #define _GRAPHICS_RUNEITEM_H_
 
-#include "Engine/Runes/RuneEngine.h"
+#define _GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS 64
+#define _GRAPHICS_SPELLITEM_RUNE_RADIUS 64
 
 #include <QGraphicsEllipseItem>
-#include <QGraphicsPixMapItem>
+#include <QGraphicsPixmapItem>
 
-#define _GRAPHICS_RUNEITEM_RUNE_IMAGERADIUS 64
-#define _GRAPHICS_RUNEITEM_RUNE_RADIUS 64
-#define _GRAPHICS_RUNEITEM_DISTANCE 16
-#define _GRAPHICS_RUNEITEM_CHILDSPACINGCOEFF 5/6
+#include "AbstractItem.h"
+
 
 namespace Runes
 {
-	class RuneItem : public QGraphicsEllipseItem
+	class RuneItem : public AbstractItem
 	{
 	public:
-		RuneItem();
+		RuneItem(Spell* s, AbstractItem* parent);
 		~RuneItem();
 
-		// draw spell
-		void drawSpell(Spell* s, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene, RuneItem* parent);
+		virtual float getTotalRadius() override;
 
-		//! @brief returns the total radius of this spell. Depending wether the spell is a top level or not, won't return the same
-		float getTotalRadius();
-		//! @brief returns the radius of the inner part of the spell.
-		float getInnerRadius();
+		virtual void toggleText() override;
 
-		//! @brief returns the total radius of this spell, children included.
-		//! @param isComponent : is this spell a component or a child
-		float getTotalRadiusWithChildren();
+		virtual void drawSpell(vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene) override;
 
-		void clearItem();
+		virtual void RuneItem::colorCenterPart(bool isCenterSpell = false) override;
 
-		//! @brief positions the children and components path to correctly point at this
-		void positionPath(RuneItem* ri, float thisRadius);
-
-		//! @brief toggles between rune image or rune text
-		void toggleText();
-
-		
-
-	signals:
-
+		virtual void clearItem() override;
 
 	protected:
-		// Members
-		Spell* spell_;	//!< The spell this rune draws
-
-		vector<RuneItem*> children_;
-		vector<RuneItem*> components_;
-		RuneItem* innerSpell_;	// If the center part of this spell is another spell, that's a pointer to it
-
-		// The graphics
-		QGraphicsSimpleTextItem text_;		//!< If the center par of the spell is a rune, this is its natural name
-		QGraphicsPixmapItem image_;			//!< If the center part of the spel is a rune, this is its image
-		QGraphicsEllipseItem innerCircle_;	//!< The circle around the center part of the spell.
-		vector<QGraphicsPathItem*> paths_;			//!< the curve linking this spell to its parent
-		// The outer circle is *this
-
-		//---------------
-		// HELPER FUNCTIONS
-		float getBiggestComponentRadius();
-		float getBiggestChildrenRadius();
-		QPointF getPositionOnSpell(int nb, int nbTotal, float radius, QPointF parentPosition);
-		QPen getDefaultPen();
+		QGraphicsSimpleTextItem text_;		//!< If the center part of the spell is a rune, this is its natural name
+		QGraphicsPixmapItem image_;			//!< If the center part of the spell is a rune, this is its image
 
 		// EVENTS
-		// Overrides
 		void focusInEvent(QFocusEvent * event);
 		void focusOutEvent(QFocusEvent * event);
-		void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
-		void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
 	};
 }
 
-
-#endif //_GRAPHICS_RUNEITEM_H_
+#endif

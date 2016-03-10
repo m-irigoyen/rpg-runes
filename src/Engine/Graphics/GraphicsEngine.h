@@ -2,7 +2,7 @@
 #define _GRAPHICSENGINE_H_
 
 #include "Engine/Runes/RuneEngine.h"
-#include "RuneItem.h"
+#include "SpellItem.h"
 
 #include <QGraphicsView>
 #include <QGraphicsScene>
@@ -30,7 +30,7 @@ namespace Runes
 		QGraphicsView view_;
 
 		vector<QPixmap> runeSprites_; //!< The sprites of the runes, ordered by index
-		RuneItem runeItem_;
+		SpellItem* currentSpellItem_;
 		
 		// Rune Engine references
 		RuneEngine& runeEngine_;

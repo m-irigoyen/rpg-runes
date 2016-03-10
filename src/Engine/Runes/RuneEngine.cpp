@@ -130,9 +130,6 @@ void RuneEngine::testInit()
 	s->addChild(new Spell(0));
 	s->addChild(new Spell(1));
 	s->addChild(new Spell(2));
-	/*s->addChild(new Spell(2));
-	s->addChild(new Spell(2));
-	s->addChild(new Spell(2));*/
 	currentSpell_->addComponent(s);
 }
 
