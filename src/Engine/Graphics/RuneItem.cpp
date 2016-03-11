@@ -3,7 +3,7 @@
 
 namespace Runes
 {
-	RuneItem::RuneItem(Spell* s, AbstractItem* parent) : AbstractItem(s, parent)
+	RuneItem::RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes) : AbstractItem(s, parent, runeImages, runes, userRunes)
 	{
 
 	}
@@ -32,19 +32,36 @@ namespace Runes
 		}
 	}
 
-	void RuneItem::drawSpell(vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene)
+	void RuneItem::drawSpell()
 	{
-		// Setting the text
-		text_.setParentItem(this);
-		UserRune& ur = userRunes.at(spell_->getRune());
-		if (ur.second)
-			text_.setText(ur.first.getNaturalName());
-		text_.hide();
+		if (parent_ == NULL)
+		{
+			cout << "ERROR : RuneItems must have a parent" << endl;
+			abort();
+		}
+		
+		this->setParentItem(parent_);
+		this->setPen(this->getDefaultPen());
+		this->setBrush(QBrush(colorBackground()));
 
-		// Displaying the rune
-		image_.setParentItem(this);
-		image_.setPixmap(runeImages[spell_->getRune()]);
-		image_.setPos(-_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS, -_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS);
+		// Setting the text
+		// Empty spell : only display the inner circle
+		if (spell_->getRune() != -1)
+		{
+			text_.setParentItem(this);
+			UserRune& ur = userRunes_.at(spell_->getRune());
+			if (ur.second)
+				text_.setText(ur.first.getNaturalName());
+			text_.setPos(-text_.boundingRect().width() / 2, -text_.boundingRect().height() / 2);
+			text_.hide();
+
+			// Displaying the rune
+			image_.setParentItem(this);
+			image_.setPixmap(runeImages_[spell_->getRune()]);
+			image_.setPos(-_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS, -_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS);
+		}
+
+		this->setRect(-_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS, -_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS, _GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS * 2, _GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS * 2);
 	}
 
 	void RuneItem::colorCenterPart(bool isCenterSpell)
@@ -60,19 +77,30 @@ namespace Runes
 
 	void RuneItem::clearItem()
 	{
-		this->scene()->removeItem(&this->image_);
-		this->scene()->removeItem(&this->text_);
-		this->scene()->removeItem(this);
+		if (this->scene())
+		{
+			this->scene()->removeItem(&this->image_);
+			this->scene()->removeItem(&this->text_);
+			this->scene()->removeItem(this);
+		}
 	}
 
 	void RuneItem::focusInEvent(QFocusEvent * event)
 	{
-		// TODO : focus event
+		this->setBrush(QBrush(colorSelected()));
+		this->parentItem()->grabKeyboard();
+		this->scene()->update();
 	}
 
 	void RuneItem::focusOutEvent(QFocusEvent * event)
 	{
-		// TODO : focus event
+		this->setBrush(QBrush(colorBackground()));
+		this->scene()->update();
+	}
+
+	void RuneItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
+	{
+		this->setFocus(Qt::FocusReason::MouseFocusReason);
 	}
 
 }

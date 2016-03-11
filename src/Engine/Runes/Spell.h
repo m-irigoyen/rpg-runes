@@ -47,14 +47,20 @@ namespace Runes
 		bool isTopLevel();
 
 		// Children management
+		void addEmptyChild();
 		void addChild(Spell* child);
 		void removeChild(Spell* child);
 		vector<Spell*>& getChildren();
 
 		// Component management
 		void addComponent(Spell* component);
+		void addEmptyComponent();
 		void removeComponent(Spell* component);
 		vector<Spell*>& getComponents();
+
+		// helper 
+		//! @brief Search for the spell in both components and children, and remove it if found
+		void remove(Spell* s);
 
 		// Else
 		virtual void clear();

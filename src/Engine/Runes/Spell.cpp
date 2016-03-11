@@ -118,18 +118,16 @@ namespace Runes
 		return (parent_ == NULL);
 	}
 
+	void Spell::addEmptyChild()
+	{
+		Spell* s = new Spell();
+		s->setParent(this);
+		this->children_.push_back(new Spell());
+	}
+
 	void Spell::addChild(Spell * child)
 	{
 		// TODO : add safety mechanism in the engine to prevent adding children on the top level spell
-		/*if (this->parent_ == NULL)
-		{
-			cout << "ERROR ! The top level cannot have children. Convert this spell to the be the inner spell of a new spell." << endl;
-			if (child)
-			{
-				delete(child);
-				return;
-			}
-		}*/
 
 		if (find(children_.begin(), children_.end(), child) == children_.end())
 		{
@@ -166,18 +164,43 @@ namespace Runes
 		}
 	}
 
+	void Spell::addEmptyComponent()
+	{
+		this->components_.push_back(new Spell());
+	}
+
 	void Spell::removeComponent(Spell* component)
 	{
 		vector<Spell*>::iterator it = find(components_.begin(), components_.end(), component);
 		if (it != components_.end())
-		{
 			components_.erase(it);
-		}
 	}
 
 	vector<Spell*>& Spell::getComponents()
 	{
 		return components_;
+	}
+
+	void Spell::remove(Spell* s)
+	{
+		for (Spell* child : children_)
+		{
+			if (child == s)
+			{
+				child->clear();
+				delete(child);
+				return;
+			}
+		}
+		for (Spell* comp : components_)
+		{
+			if (comp == s)
+			{
+				comp->clear();
+				delete(comp);
+				return;
+			}
+		}
 	}
 
 	void Spell::clear()

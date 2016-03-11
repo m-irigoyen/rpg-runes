@@ -66,8 +66,8 @@ namespace Runes
 		scene_.clear();
 		delete(currentSpellItem_);
 
-		currentSpellItem_ = new SpellItem(s, NULL);
-		currentSpellItem_->drawSpell(runeSprites_, globalRunes_, userRunes_, scene_);
+		currentSpellItem_ = new SpellItem(s, NULL, runeSprites_, globalRunes_, userRunes_, scene_);
+		currentSpellItem_->drawSpell();
 	}
 
 }

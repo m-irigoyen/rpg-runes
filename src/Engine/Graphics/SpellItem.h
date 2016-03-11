@@ -12,11 +12,14 @@ namespace Runes
 	class SpellItem : public AbstractItem
 	{
 	public:
-		SpellItem(Spell* s, SpellItem* parent);
+		// First constructor : only used for first item
+		SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene);
+		// All other items take the parent's scene
+		SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes);
 		~SpellItem();
 
 		// draw spell
-		void drawSpell(vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene);
+		void drawSpell();
 
 		float getTotalRadius() override;
 
@@ -38,6 +41,11 @@ namespace Runes
 		virtual void colorCenterPart(bool isCenterSpell = false) override;
 
 		static QPointF getPositionOnSpell(int nb, int nbTotal, float radius, QPointF parentPosition);
+
+		void checkColorCenter();
+		
+		//! @brief forces a redraw of the entire spell
+		void redraw();
 
 	signals:
 
@@ -62,7 +70,9 @@ namespace Runes
 		// EVENTS
 		void focusInEvent(QFocusEvent * event);
 		void focusOutEvent(QFocusEvent * event);
-		
+		void mousePressEvent(QGraphicsSceneMouseEvent* event);
+		void keyPressEvent(QKeyEvent * event);
+
 	};
 }
 

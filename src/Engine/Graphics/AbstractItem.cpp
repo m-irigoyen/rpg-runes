@@ -3,9 +3,20 @@
 
 namespace Runes
 {
-	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent) : spell_(s), parent_(parent), isHovered_(false)
+	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene) : spell_(s), parent_(parent), runeImages_(runeImages), runes_(runes), userRunes_(userRunes), isHovered_(false)
 	{
+		scene.addItem(this);
+		this->setAcceptHoverEvents(true);
+		this->setAcceptTouchEvents(true);
+		this->setFlag(ItemIsFocusable);
+	}
 
+	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes) : spell_(s), parent_(parent), runeImages_(runeImages), runes_(runes), userRunes_(userRunes), isHovered_(false)
+	{
+		this->setParentItem(parent);
+		this->setAcceptHoverEvents(true);
+		this->setAcceptTouchEvents(true);
+		this->setFlag(ItemIsFocusable);
 	}
 
 	int AbstractItem::getPenWidth()
@@ -18,31 +29,9 @@ namespace Runes
 		return QPen(QBrush(colorPen()), getPenWidth());
 	}
 
-	void AbstractItem::childHovering(bool requests)
-	{
-		// A child requests hovering focus
-		if (requests == true)
-		{
-			if (isHovered_ == true)
-			{
-				// Drop hovering focus
-				this->setPen(this->getDefaultPen());
-			}
-		}
-		else
-		{
-			// The child has released hovering focus. We need to grab it back
-			if (isHovered_ == true)
-			{
-				// Reactivate hover
-				this->setPen(QPen(QBrush(colorHover()), getPenWidth()));
-			}
-		}
-	}
-
 	QColor AbstractItem::colorCenter()
 	{
-		return QColor(94, 0, 0);
+		return QColor(134, 0, 0);
 	}
 
 	QColor AbstractItem::colorCenterSpell()
@@ -70,6 +59,28 @@ namespace Runes
 		return QColor(255, 255, 255);
 	}
 
+	void AbstractItem::childHovering(bool requests)
+	{
+		// A child requests hovering focus
+		if (requests == true)
+		{
+			if (isHovered_ == true)
+			{
+				// Drop hovering focus
+				this->setPen(this->getDefaultPen());
+			}
+		}
+		else
+		{
+			// The child has released hovering focus. We need to grab it back
+			if (isHovered_ == true)
+			{
+				// Reactivate hover
+				this->setPen(QPen(QBrush(colorHover()), getPenWidth()));
+			}
+		}
+	}
+
 	void AbstractItem::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
 	{
 		isHovered_ = true;
@@ -91,6 +102,11 @@ namespace Runes
 		isHovered_ = false;
 		this->setPen(this->getDefaultPen());
 		this->scene()->update();
+	}
+
+	void AbstractItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
+	{
+		QGraphicsEllipseItem::mousePressEvent(event);
 	}
 
 }

@@ -26,7 +26,7 @@ namespace Runes
 
 		//this->showMaximized();
 
-		graphicsView_->scale(0.35, 0.35);
+		graphicsView_->scale(0.25, 0.25);
 		graphicsView_->show();
 	}
 

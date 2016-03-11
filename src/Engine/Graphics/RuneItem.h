@@ -15,14 +15,14 @@ namespace Runes
 	class RuneItem : public AbstractItem
 	{
 	public:
-		RuneItem(Spell* s, AbstractItem* parent);
+		RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes);
 		~RuneItem();
 
 		virtual float getTotalRadius() override;
 
 		virtual void toggleText() override;
 
-		virtual void drawSpell(vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene) override;
+		virtual void drawSpell() override;
 
 		virtual void RuneItem::colorCenterPart(bool isCenterSpell = false) override;
 
@@ -35,6 +35,8 @@ namespace Runes
 		// EVENTS
 		void focusInEvent(QFocusEvent * event);
 		void focusOutEvent(QFocusEvent * event);
+		void mousePressEvent(QGraphicsSceneMouseEvent * event);
+
 	};
 }
 
