@@ -12,8 +12,7 @@ using namespace std;
 namespace Runes
 {
 	typedef bool Discovered;
-	typedef pair<RuneDescriptor, Discovered> UserRune;
-	typedef map<int, UserRune> UserRunesContainer;
+	typedef map<int, RuneDescriptor> UserRunesContainer;
 	typedef vector<Rune> RunesContainer;
 
 	class RuneEngine
@@ -27,15 +26,19 @@ namespace Runes
 		void init(QString userName);
 		void testInit();
 
-		// saves given spell
+		// save / load spell
 		bool save(Spell& spell, QString name, QString userName);
 		bool load(Spell& spell, QString name, QString userName);
+
+		// save / load user runes
+		bool saveRuneDictionnary(QString userName);
+		bool loadRuneDictionnary(QString userName);
 
 		const Rune getRune(int index);
 		const Rune getRuneByName(QString name);
 		const Rune getRuneByNaturalName(QString naturalName);
 
-		UserRune getUserRuneByIndex(int index);
+		RuneDescriptor getUserRuneByIndex(int index);
 
 		
 		Spell* getCurrentSpell();

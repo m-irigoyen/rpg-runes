@@ -103,8 +103,7 @@ void RuneEngine::init(QString userName)
 					Rune r;
 					r.unserialize(stream);
 
-					UserRune ur(r.getDescriptor(), discovered);
-					userRunes_.insert(make_pair(r.getIndex(), ur));
+					userRunes_.insert(make_pair(r.getIndex(), r.getDescriptor()));
 
 					stream.readNextStartElement(); // exiting rune descriptor element
 					stream.readNextStartElement(); // exiting rune element
@@ -147,7 +146,7 @@ bool RuneEngine::save(Spell& spell, QString name, QString userName)
 		//TODO: error code
 		return false;
 	}
-	
+
 	stream.writeEndDocument();
 	file.close();
 	return true;
@@ -169,6 +168,40 @@ bool RuneEngine::load(Spell& spell, QString name, QString userName)
 	}
 	
 	return false;
+}
+
+bool RuneEngine::saveRuneDictionnary(QString userName)
+{
+	QXmlStreamWriter stream;
+	QFile file;
+	if (Serializable::openFile("profile", Paths::USERS + userName + "/", file))
+	{
+		Serializable::initWriter(&file, stream);
+
+		// Saving user runes
+		stream.writeStartElement("user");
+		stream.writeAttribute(QXmlStreamAttribute("name", userName));
+
+		for (int i = 0; i < userRunes_.size(); ++i)
+		{
+			// TODO FINISH THIS
+		}
+
+	}
+	else
+	{
+		//TODO: error code
+		return false;
+	}
+
+	stream.writeEndDocument();
+	file.close();
+	return true;
+}
+
+bool RuneEngine::loadRuneDictionnary(QString userName)
+{
+
 }
 
 const Rune RuneEngine::getRune(int index)
@@ -200,13 +233,11 @@ const Rune RuneEngine::getRuneByNaturalName(QString naturalName)
 	return Rune();
 }
 
-UserRune RuneEngine::getUserRuneByIndex(int index)
+RuneDescriptor RuneEngine::getUserRuneByIndex(int index)
 {
-	map<int, UserRune>::iterator it = userRunes_.find(index);
+	map<int, RuneDescriptor>::iterator it = userRunes_.find(index);
 	if (it != userRunes_.end())
-	{
 		return it->second;
-	}
 }
 
 Spell* RuneEngine::getCurrentSpell()
