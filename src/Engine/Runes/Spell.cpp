@@ -104,7 +104,8 @@ namespace Runes
 			return;
 		}
 
-		parent_->removeChild(this);
+		if (parent_ != NULL)
+			parent_->removeChildWithoutClear(this);
 		parent_ = parent;
 	}
 
@@ -127,21 +128,40 @@ namespace Runes
 
 	void Spell::addChild(Spell * child)
 	{
-		// TODO : add safety mechanism in the engine to prevent adding children on the top level spell
+		if (child == NULL)
+			return;
 
+		// Clearing previous parent
+		if (child->getParent() != NULL)
+			child->getParent()->removeWithoutClear(child);
+
+		child->setParent(this);
 		if (find(children_.begin(), children_.end(), child) == children_.end())
-		{
 			children_.push_back(child);
-		}
+		else
+			abort();
 	}
 
 	void Spell::removeChild(Spell * child)
 	{
+		if (child == NULL)
+			return;
 		vector<Spell*>::iterator it = find(children_.begin(), children_.end(), child);
 		if (it != children_.end())
 		{
 			children_.erase(it);
+			child->clear();
+			delete(child);
 		}
+	}
+
+	void Spell::removeChildWithoutClear(Spell* child)
+	{
+		if (child == NULL)
+			return;
+		vector<Spell*>::iterator it = find(children_.begin(), children_.end(), child);
+		if (it != children_.end())
+			children_.erase(it);
 	}
 
 	vector<Spell*>& Spell::getChildren()
@@ -152,25 +172,43 @@ namespace Runes
 	// Component management
 	void Spell::addComponent(Spell* component)
 	{
-		vector<Spell*>::iterator it = find(components_.begin(), components_.end(), component);
-		if (it == components_.end())
-		{
+		if (component == NULL)
+			return;
+		// Clearing previous parent
+		if (component->getParent() != NULL)
+			component->getParent()->removeWithoutClear(component);
+
+		component->setParent(this);
+		if (find(components_.begin(), components_.end(), component) == components_.end())
 			components_.push_back(component);
-		}
 		else
-		{
-			cout << "ERROR!" << endl;
 			abort();
-		}
 	}
 
 	void Spell::addEmptyComponent()
 	{
-		this->components_.push_back(new Spell());
+		Spell* s = new Spell();
+		s->setParent(this);
+		this->components_.push_back(s);
 	}
 
 	void Spell::removeComponent(Spell* component)
 	{
+		if (component == NULL)
+			return;
+		vector<Spell*>::iterator it = find(components_.begin(), components_.end(), component);
+		if (it != components_.end())
+		{
+			components_.erase(it);
+			component->clear();
+			delete(component);
+		}
+	}
+
+	void Spell::removeComponentWithoutClear(Spell* component)
+	{
+		if (component == NULL)
+			return;
 		vector<Spell*>::iterator it = find(components_.begin(), components_.end(), component);
 		if (it != components_.end())
 			components_.erase(it);
@@ -181,43 +219,36 @@ namespace Runes
 		return components_;
 	}
 
-	void Spell::remove(Spell* s)
+	void Spell::remove(Spell* s, bool destroy)
 	{
-		for (Spell* child : children_)
-		{
-			if (child == s)
-			{
-				child->clear();
-				delete(child);
-				return;
-			}
-		}
-		for (Spell* comp : components_)
-		{
-			if (comp == s)
-			{
-				comp->clear();
-				delete(comp);
-				return;
-			}
-		}
+		if (find(children_.begin(), children_.end(), s) != children_.end())
+			removeChild(s);
+		else if (find(components_.begin(), components_.end(), s) != components_.end())
+			removeComponent(s);
+		else
+			return;
+		
+		if (destroy)
+			delete(s);
+	}
+
+	void Spell::removeWithoutClear(Spell* s)
+	{
+		if (find(children_.begin(), children_.end(), s) != children_.end())
+			removeChildWithoutClear(s);
+		else if (find(components_.begin(), components_.end(), s) != components_.end())
+			removeComponentWithoutClear(s);
 	}
 
 	void Spell::clear()
 	{
 		centerRune_ = -1;
 
-		if (centerSpell_)
+		if (centerSpell_ != NULL)
 		{
 			centerSpell_->clear();
 			delete(centerSpell_);
 			centerSpell_ = NULL;
-		}
-
-		if (parent_ != NULL)
-		{
-			parent_->removeChild(this);
-			parent_ = NULL;
 		}
 
 		for (Spell* child : children_)
@@ -226,6 +257,48 @@ namespace Runes
 			delete(child);
 		}
 		children_.clear();
+		for (Spell* comp : components_)
+		{
+			comp->clear();
+			delete(comp);
+		}
+		components_.clear();
+
+		if (parent_ != NULL)
+		{
+			parent_->removeWithoutClear(this);
+		}
 	}
+
+	void Spell::destroy()
+	{
+		centerRune_ = -1;
+
+		if (centerSpell_ != NULL)
+		{
+			centerSpell_->clear();
+			delete(centerSpell_);
+			centerSpell_ = NULL;
+		}
+
+		for (Spell* child : children_)
+		{
+			child->clear();
+			delete(child);
+		}
+		children_.clear();
+		for (Spell* comp : components_)
+		{
+			comp->clear();
+			delete(comp);
+		}
+		components_.clear();
+
+		if (parent_ != NULL)
+		{
+			parent_->remove(this, true);
+		}
+	}
+
 }
 

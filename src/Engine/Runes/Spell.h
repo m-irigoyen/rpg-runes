@@ -50,20 +50,26 @@ namespace Runes
 		void addEmptyChild();
 		void addChild(Spell* child);
 		void removeChild(Spell* child);
+		void removeChildWithoutClear(Spell* child);
 		vector<Spell*>& getChildren();
 
 		// Component management
 		void addComponent(Spell* component);
 		void addEmptyComponent();
 		void removeComponent(Spell* component);
+		void removeComponentWithoutClear(Spell* component);
 		vector<Spell*>& getComponents();
 
 		// helper 
 		//! @brief Search for the spell in both components and children, and remove it if found
-		void remove(Spell* s);
+		void remove(Spell* s, bool destroy = false);
+
+		//! @brief same as above, but without clearing/deleting the item
+		void removeWithoutClear(Spell* s);
 
 		// Else
 		virtual void clear();
+		virtual void destroy();
 
 	private:
 		// The center component is either a spell, or a rune.

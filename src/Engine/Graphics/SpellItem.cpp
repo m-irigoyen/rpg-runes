@@ -1,7 +1,6 @@
 #include "SpellItem.h"
 
-#define _USE_MATH_DEFINES
-#include <math.h>
+#include <Engine/Utilities/MathStuff.h>
 #include <QGraphicsScene>
 #include <QVector2D>
 #include <QKeyEvent>
@@ -203,31 +202,103 @@ void SpellItem::clearItem()
 
 void SpellItem::positionPath(SpellItem* ri, float thisRadius)
 {
-	// Computing point on the parent circle (this)
-	QPointF pos = ri->pos();
-	QVector2D centerToPos(pos);
-	centerToPos.normalize();
-	centerToPos *= thisRadius;
+	QPointF pos = ri->pos();	// child position
+	float childRadius = ri->getTotalRadius();
+	QPointF thisStraight, childStraight;
+	{
+		// Computing point on the parent circle (this)
+		QVector2D centerToPos(pos);
+		centerToPos.normalize();
+		centerToPos *= thisRadius;
+		thisStraight.setX(centerToPos.x());
+		thisStraight.setY(centerToPos.y());
+	}
+	{
+		// Computing point on the child circle (this)
+		QVector2D posToC(-pos);
+		posToC.normalize();
+		posToC *= childRadius;
+		childStraight.setX(posToC.x() + pos.x());
+		childStraight.setY(posToC.y() + pos.y());
+	}
 
-	QPointF pParentCircle(centerToPos.x(), centerToPos.y());
+	QPointF thisRotated, childRotated;
+	{
+		// Start point of the curve
+		QVector2D centerToPos(pos);
+		centerToPos.normalize();
+		centerToPos = Mathstuff::rotate(centerToPos, _GRAPHICS_SPELLITEM_CURVEDISPLACEMENT); // rotating the vector (for the curve start)
+		centerToPos.normalize();
+		centerToPos *= thisRadius;
+		thisRotated.setX(centerToPos.x());	// Point rotated
+		thisRotated.setY(centerToPos.y());	// Point rotated
+	}
+	{
+		// Start point of the curve
+		QVector2D posToCenter(-pos);
+		posToCenter.normalize();
+		posToCenter = Mathstuff::rotate(posToCenter, _GRAPHICS_SPELLITEM_CURVEDISPLACEMENT); // rotating the vector (for the curve start)
+		posToCenter.normalize();
+		posToCenter *= childRadius;
+		childRotated.setX(posToCenter.x() + pos.x());	// Point rotated
+		childRotated.setY(posToCenter.y() + pos.y());	// Point rotated
+	}
 
-	// Computing point on the child circle
-	QVector2D posToCenter(-pos);
-	posToCenter.normalize();
-	posToCenter *= ri->getTotalRadius();
+	QPointF centerPath;
+	{
+		QVector2D v(childStraight - thisStraight);
+		v *= 0.5f;
 
-	QPointF pThisCircle = pos + QPointF(posToCenter.x(), posToCenter.y());
+		centerPath.setX(thisStraight.x() + v.x());
+		centerPath.setY(thisStraight.y() + v.y());
+	}
 
-	// Drawing path from one to the other
-	QPainterPath p(pThisCircle);
-	p.lineTo(pParentCircle);
-	//p.addEllipse(pParentCircle, 10, 10);
+	// This position is 0,0
 
-	// Setting the constructed path
-	QGraphicsPathItem* path = new QGraphicsPathItem(p, this);
-	path->setPen(this->getDefaultPen());
+	//FIXME : this doesn't work u_u
+	// First curve : from parent circle to halfway
+	{
+		// Control point1 
+		QVector2D centerToPos(pos);
+		centerToPos.normalize();
+		centerToPos *= _GRAPHICS_SPELLITEM_DISTANCE / 4.0f;
+		QPointF pC1;
+		pC1.setX(centerToPos.x() + thisStraight.x());
+		pC1.setY(centerToPos.y() + thisStraight.y());
+		
+		// Creating the path
+		QPainterPath p(thisRotated);
+		p.quadTo(pC1, centerPath);
+		//p.lineTo(centerPath);
+		// Setting the constructed path
+		QGraphicsPathItem* path = new QGraphicsPathItem(p, this);
+		path->setPen(this->getDefaultPen());
 
-	paths_.push_back(path);
+		paths_.push_back(path);
+	}
+	
+
+
+	// Secdond curve : from child circle to halfway
+	{
+		// Control point1 
+		QVector2D posToCenter(-pos);
+		posToCenter.normalize();
+		posToCenter *= _GRAPHICS_SPELLITEM_DISTANCE / 4.0f;
+		QPointF pC1;
+		pC1.setX(posToCenter.x() + childStraight.x());
+		pC1.setY(posToCenter.y() + childStraight.y());
+
+		// Creating the path
+		QPainterPath p(childRotated);
+		p.quadTo(pC1, centerPath);
+		//p.lineTo(centerPath);
+		// Setting the constructed path
+		QGraphicsPathItem* path = new QGraphicsPathItem(p, this);
+		path->setPen(this->getDefaultPen());
+
+		paths_.push_back(path);
+	}
 }
 
 void SpellItem::toggleText()
