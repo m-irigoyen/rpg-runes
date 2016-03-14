@@ -53,6 +53,8 @@ namespace Runes
 		RunesContainer runes_;	//!< Dictionnary of the runes
 		UserRunesContainer userRunes_;	//!< Personnal dictionnary of the User : his runes, his descriptions, his names, etc
 		vector<Spell*> spells_;	//!< All the spells currently loaded in memory
+
+		bool profileLoaded_;
 	};
 }
 

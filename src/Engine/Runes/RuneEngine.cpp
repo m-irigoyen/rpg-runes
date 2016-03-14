@@ -3,11 +3,9 @@
 namespace Runes
 {
 
-	RuneEngine::RuneEngine() : currentSpell_(NULL)
+RuneEngine::RuneEngine() : currentSpell_(NULL), profileLoaded_(false)
 {
 	this->init();
-
-	//this->testInit();
 }
 
 RuneEngine::~RuneEngine()
@@ -114,10 +112,12 @@ void RuneEngine::init(QString userName)
 		else
 		{
 			cout << "RuneEngine::init : failed to load user runes!" << endl;
+			userRunes_.clear();
+			profileLoaded_ = false;
 			return;
 		}
+		profileLoaded_ = true;
 	}
-
 }
 
 void RuneEngine::testInit()
