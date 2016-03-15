@@ -7,11 +7,14 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QBitmap>
+#include <QObject>
 
 namespace Runes
 {
-	class GraphicsEngine
+	class GraphicsEngine : public QObject
 	{
+		Q_OBJECT
+
 	public:
 		GraphicsEngine(RuneEngine& runeEngineRef);
 		~GraphicsEngine();
@@ -23,6 +26,11 @@ namespace Runes
 
 		//! @brief Updates the scene to correspond to draw the current spell
 		void updateScene();
+
+		vector<QPixmap>& getSprites();
+
+	public slots:
+		void toggleText();
 
 	private:
 		// Members
@@ -36,6 +44,9 @@ namespace Runes
 		RuneEngine& runeEngine_;
 		RunesContainer& globalRunes_;
 		UserRunesContainer& userRunes_;
+
+		// Funny stuff
+		bool isText_;
 
 		//----------
 		//Functions

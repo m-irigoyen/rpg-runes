@@ -22,6 +22,8 @@ namespace Runes
 
 		virtual void toggleText() override;
 
+		virtual void setIsText(bool isText) override;
+
 		virtual void drawSpell() override;
 
 		virtual void RuneItem::colorCenterPart(bool isCenterSpell = false) override;
@@ -36,7 +38,6 @@ namespace Runes
 		void focusInEvent(QFocusEvent * event);
 		void focusOutEvent(QFocusEvent * event);
 		void mousePressEvent(QGraphicsSceneMouseEvent * event);
-
 	};
 }
 

@@ -446,4 +446,13 @@ void SpellItem::keyPressEvent(QKeyEvent * event)
 	}
 }
 
+void SpellItem::setIsText(bool isText)
+{
+	for (SpellItem* ri : children_)
+		ri->setIsText(isText);
+
+	for (SpellItem* ri : components_)
+		ri->setIsText(isText);
+}
+
 }

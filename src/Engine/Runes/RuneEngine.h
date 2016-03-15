@@ -39,15 +39,14 @@ namespace Runes
 		const Rune getRuneByNaturalName(QString naturalName);
 
 		RuneDescriptor getUserRuneByIndex(int index);
+		RuneDescriptor getUserRuneByNaturalName(QString name);
+		static RuneDescriptor& getUserRuneByNaturalName(QString name, UserRunesContainer& container, int* index = NULL);
 
 		
 		Spell* getCurrentSpell();
 		vector<Spell*>& getSpells();
 		RunesContainer& getRunes();
 		UserRunesContainer& getUserRunes();
-
-		//! @brief returns true if user has discovered that rune
-		bool hasUserDiscoveredRune(int rune);
 
 		void clearSpells();
 

@@ -21,6 +21,10 @@ namespace Runes
 		QString getNaturalName();
 		QString getDescription();
 
+		void setName(QString& name);
+		void setNaturalName(QString& naturalName);
+		void setDescription(QString& description);
+
 	private:
 		QString name_;
 		QString naturalName_;

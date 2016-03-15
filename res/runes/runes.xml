@@ -3,13 +3,13 @@
 <xml>
     <runes>
         <rune index="0">
-            <runeDescriptor name="One" naturalName="OneNatural" description="One desc"/>
+            <runeDescriptor name="Ir" naturalName="Continuity" description="Makes things continue"/>
         </rune>
 		<rune index="1">
-            <runeDescriptor name="Two" naturalName="TwoNatural" description="Two desc"/>
+            <runeDescriptor name="Fal" naturalName="Light" description="Acts on light, in all its forms"/>
         </rune>
 		<rune index="2">
-            <runeDescriptor name="Three" naturalName="ThreeNatural" description="Three desc"/>
+            <runeDescriptor name="Ush'Fal" naturalName="Shadow" description="Acts on shadow, in all its forms"/>
         </rune>
     </runes>
 </xml>

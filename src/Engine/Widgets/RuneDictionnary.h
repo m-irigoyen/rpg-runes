@@ -2,9 +2,15 @@
 #define _ENGINE_WIDGETS_RUNEDICTIONNARY_H_
 
 #include <vector>
-#include <QtWidgets>
+
 #include <QVBoxLayout>
 #include <QHBoxLayout>
+
+#include <QListView>
+#include <QLabel>
+#include <QTextEdit>
+#include <QLineEdit>
+#include <QStringListModel>
 
 #include "Engine/Runes/RuneEngine.h"
 
@@ -12,12 +18,22 @@ namespace Runes
 {
 	class RuneDictionnary : public QWidget
 	{
+		Q_OBJECT
 	public:
 		RuneDictionnary(RuneEngine& engine, std::vector<QPixmap>& runeSprites);
 
 		// Model management
 		//! @brief inits model from the list of userRunes
 		void init();
+
+	public slots:
+
+		void clicked(QModelIndex index);
+		void editedName(QString& text);
+		void editedDescription(QString& text);
+
+	signals:
+		void userRunesUpdated();
 
 	protected:
 		// References
@@ -38,8 +54,13 @@ namespace Runes
 		QTextEdit description_;
 
 		// Rune list
-		QStandardItemModel model_;
-		vector<QStandardItem*> items_;
+		QStringListModel model_;
+
+		// Modification
+		RuneDescriptor* currentDescriptor;
+
+		// helper functions
+		void fillData(QString name);
 	};
 }
 

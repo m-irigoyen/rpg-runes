@@ -21,6 +21,8 @@ namespace Runes
 		//! @brief toggles between displaying text and image (only for RuneItems, but is propagated through all abstract items recursively)
 		virtual void toggleText() = 0;
 
+		virtual void setIsText(bool isText) = 0;
+
 		//! @brief Draws the spell
 		virtual void drawSpell() = 0;
 

@@ -42,8 +42,6 @@ void RuneEngine::init()
 					Rune r;
 					r.unserialize(stream);
 					runes_.push_back(r);
-					stream.readNextStartElement();
-					stream.readNextStartElement();
 				}
 			}
 		}
@@ -64,58 +62,7 @@ void RuneEngine::init()
 void RuneEngine::init(QString userName)
 {
 	init();
-
-	// Loading user runes
-	{
-		QXmlStreamReader stream;
-		QFile file;
-
-		if (Serializable::openFile("profile", Paths::USERS + userName + "/", file))
-		{
-			Serializable::initReader(&file, stream);
-			stream.readNextStartElement();
-			Q_ASSERT(stream.isStartElement() && stream.name() == "user");
-
-			for (const QXmlStreamAttribute &attr : stream.attributes())
-			{
-				if (attr.name().toString() == QLatin1String("name"))
-				{
-					Q_ASSERT(attr.value().toString() == userName);
-				}
-			}
-
-			while (!stream.atEnd())
-			{
-				stream.readNextStartElement();
-
-				if (stream.isStartElement() && stream.name() == "rune")
-				{
-					bool discovered;
-
-					for (const QXmlStreamAttribute &attr : stream.attributes())
-					{
-						if (attr.name().toString() == QLatin1String("discovered"))
-						{
-							discovered = attr.value().toInt();
-						}
-					}
-
-					Rune r;
-					r.unserialize(stream);
-
-					userRunes_.insert(make_pair(r.getIndex(), r.getDescriptor()));
-
-					stream.readNextStartElement(); // exiting rune descriptor element
-					stream.readNextStartElement(); // exiting rune element
-				}
-			}
-		}
-		else
-		{
-			cout << "RuneEngine::init : failed to load user runes!" << endl;
-			return;
-		}
-	}
+	loadRuneDictionnary(userName);
 
 }
 
@@ -182,11 +129,13 @@ bool RuneEngine::saveRuneDictionnary(QString userName)
 		stream.writeStartElement("user");
 		stream.writeAttribute(QXmlStreamAttribute("name", userName));
 
-		for (int i = 0; i < userRunes_.size(); ++i)
+		for (UserRunesContainer::iterator it = userRunes_.begin(); it != userRunes_.end(); ++it)
 		{
-			// TODO FINISH THIS
+			int i = it->first;
+			RuneDescriptor rd = it->second;
+			Rune r(i, rd);
+			r.serialize(stream);
 		}
-
 	}
 	else
 	{
@@ -201,7 +150,42 @@ bool RuneEngine::saveRuneDictionnary(QString userName)
 
 bool RuneEngine::loadRuneDictionnary(QString userName)
 {
+	QXmlStreamReader stream;
+	QFile file;
 
+	if (Serializable::openFile("profile", Paths::USERS + userName + "/", file))
+	{
+		Serializable::initReader(&file, stream);
+		stream.readNextStartElement();
+		Q_ASSERT(stream.isStartElement() && stream.name() == "user");
+
+		for (const QXmlStreamAttribute &attr : stream.attributes())
+		{
+			if (attr.name().toString() == QLatin1String("name"))
+			{
+				Q_ASSERT(attr.value().toString() == userName);
+			}
+		}
+
+		while (!stream.atEnd())
+		{
+			stream.readNextStartElement();
+
+			if (stream.isStartElement() && stream.name() == "rune")
+			{
+				Rune r;
+				r.unserialize(stream);
+
+				userRunes_.insert(make_pair(r.getIndex(), r.getDescriptor()));
+			}
+		}
+	}
+	else
+	{
+		cout << "RuneEngine::init : failed to load user runes!" << endl;
+		return false;
+	}
+	return true;
 }
 
 const Rune RuneEngine::getRune(int index)
@@ -240,6 +224,29 @@ RuneDescriptor RuneEngine::getUserRuneByIndex(int index)
 		return it->second;
 }
 
+Runes::RuneDescriptor RuneEngine::getUserRuneByNaturalName(QString name)
+{
+	for (UserRunesContainer::iterator it = userRunes_.begin(); it != userRunes_.end(); ++it)
+	{
+		if (it->second.getNaturalName().compare(name) == 0)
+			return it->second;
+	}
+}
+
+Runes::RuneDescriptor& RuneEngine::getUserRuneByNaturalName(QString name, UserRunesContainer& container, int* index)
+{
+	for (UserRunesContainer::iterator it = container.begin(); it != container.end(); ++it)
+	{
+		if (it->second.getNaturalName().compare(name) == 0)
+		{
+			if (index != NULL)
+				*index = it->first;
+			return it->second;
+		}
+			
+	}
+}
+
 Spell* RuneEngine::getCurrentSpell()
 {
 	return this->currentSpell_;
@@ -258,15 +265,6 @@ RunesContainer& RuneEngine::getRunes()
 UserRunesContainer& RuneEngine::getUserRunes()
 {
 	return userRunes_;
-}
-
-bool RuneEngine::hasUserDiscoveredRune(int rune)
-{
-	map<int, UserRune>::iterator it = userRunes_.find(rune);
-	Q_ASSERT(it != userRunes_.end());
-
-	if (it->second.second)
-		return true;
 }
 
 void RuneEngine::clearSpells()

@@ -44,14 +44,15 @@ namespace Runes
 		this->setPen(this->getDefaultPen());
 		this->setBrush(QBrush(colorBackground()));
 
-		// Setting the text
 		// Empty spell : only display the inner circle
+		
+		// If the spell isn't empty
 		if (spell_->getRune() != -1)
 		{
+			// Setting the text
 			text_.setParentItem(this);
-			UserRune& ur = userRunes_.at(spell_->getRune());
-			if (ur.second)
-				text_.setText(ur.first.getNaturalName());
+			RuneDescriptor& rd = userRunes_.at(spell_->getRune());
+			text_.setText(rd.getNaturalName());
 			text_.setPos(-text_.boundingRect().width() / 2, -text_.boundingRect().height() / 2);
 			text_.hide();
 
@@ -101,6 +102,12 @@ namespace Runes
 	void RuneItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	{
 		this->setFocus(Qt::FocusReason::MouseFocusReason);
+	}
+
+	void RuneItem::setIsText(bool isText)
+	{
+		text_.setVisible(isText);
+		image_.setVisible(!isText);
 	}
 
 }

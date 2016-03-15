@@ -40,6 +40,7 @@ namespace Runes
 				this->description_ = attr.value().toString();
 			}
 		}
+		stream.readNextStartElement();
 		return true;
 	}
 
@@ -56,6 +57,21 @@ namespace Runes
 	QString RuneDescriptor::getDescription()
 	{
 		return description_;
+	}
+
+	void RuneDescriptor::setName(QString& name)
+	{
+		name_ = name;
+	}
+
+	void RuneDescriptor::setNaturalName(QString& naturalName)
+	{
+		naturalName_ = naturalName;
+	}
+
+	void RuneDescriptor::setDescription(QString& description)
+	{
+		description_ = description;
 	}
 
 }

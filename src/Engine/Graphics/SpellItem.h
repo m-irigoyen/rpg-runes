@@ -40,6 +40,8 @@ namespace Runes
 		//! @brief toggles between rune image or rune text
 		void toggleText();
 
+		virtual void setIsText(bool isText) override;
+
 		virtual void colorCenterPart(bool isCenterSpell = false) override;
 
 		static QPointF getPositionOnSpell(int nb, int nbTotal, float radius, QPointF parentPosition);
@@ -74,6 +76,8 @@ namespace Runes
 		void focusOutEvent(QFocusEvent * event);
 		void mousePressEvent(QGraphicsSceneMouseEvent* event);
 		void keyPressEvent(QKeyEvent * event);
+
+		
 
 	};
 }
