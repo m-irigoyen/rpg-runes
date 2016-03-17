@@ -3,14 +3,14 @@
 <xml>
 	<user name="Edrevan">
 		<runes>
-			<rune index="0" discovered="0">
-				<runeDescriptor name="Machin" naturalName="LaBite" description="Elle m'aime et je l'aime"/>
+			<rune index="0">
+				<runeDescriptor name="" naturalName="Continuité" description="ca fait continuer les trucs"/>
 			</rune>
-			<rune index="1" discovered="1">
-				<runeDescriptor name="Portal" naturalName="OuiOui" description="Ca fait des trous"/>
+			<rune index="1">
+				<runeDescriptor name="" naturalName="Lumière" description="AGit sur la lumière"/>
 			</rune>
-			<rune index="2" discovered="1">
-				<runeDescriptor name="EtTaSoeur" naturalName="Création" description="Carrément"/>
+			<rune index="2">
+				<runeDescriptor name="" naturalName="Ombre" description="Devine?"/>
 			</rune>
 		</runes>
 	</user>

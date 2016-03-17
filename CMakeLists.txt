@@ -54,20 +54,16 @@ FILE(GLOB_RECURSE SRC_USERPROFILES
 	 ${runes_SOURCE_DIR}/src/Engine/Users/*.h
 	 ${runes_SOURCE_DIR}/src/Engine/Users/*.hpp
 	 )
-FILE(GLOB_RECURSE SRC_WIDGETS
-	${runes_SOURCE_DIR}/src/Engine/Widgets/*.h	
-	${runes_SOURCE_DIR}/src/Engine/Widgets/*.cpp	
-	${runes_SOURCE_DIR}/src/Engine/Widgets/*.hpp
-	)
 FILE(GLOB_RECURSE SRC_UTILITIES 
 	${runes_SOURCE_DIR}/src/Engine/Utilities/*.h	
 	${runes_SOURCE_DIR}/src/Engine/Utilities/*.cpp	
 	${runes_SOURCE_DIR}/src/Engine/Utilities/*.hpp
 	)
-FILE(GLOB_RECURSE SRC_PUGI
-	 ${runes_SOURCE_DIR}/src/pugi*.cpp 
-	 ${runes_SOURCE_DIR}/src/pugi*.hpp 
-	 )
+FILE(GLOB_RECURSE SRC_WIDGETS
+	${runes_SOURCE_DIR}/src/Engine/Widgets/*.h	
+	${runes_SOURCE_DIR}/src/Engine/Widgets/*.cpp	
+	${runes_SOURCE_DIR}/src/Engine/Widgets/*.hpp
+	)
 	 
 	
 SET(SOURCE_GROUP_DELIMITER "/")
@@ -77,14 +73,13 @@ source_group(Engine/Graphics FILES ${SRC_GRAPHICS})
 source_group(Engine/Network FILES ${SRC_NETWORK})
 source_group(Engine/Runes FILES ${SRC_RUNES})
 source_group(Engine/Users FILES ${SRC_USERPROFILES})
-source_group(Engine/Widgets FILES ${SRC_WIDGETS})
 source_group(Engine/Utilities FILES ${SRC_UTILITIES})
-source_group(Pugi FILES ${SRC_PUGI})
+source_group(Engine/Widgets FILES ${SRC_WIDGETS})
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core REQUIRED)
  
-ADD_EXECUTABLE( ${EXE_NAME} ${SRC_MAIN} ${SRC_ENGINE} ${SRC_AUDIO} ${SRC_GRAPHICS} ${SRC_NETWORK} ${SRC_RUNES} ${SRC_UTILITIES} ${SRC_WIDGETS} ${SRC_PUGI} ${SRC_USERPROFILES})
+ADD_EXECUTABLE( ${EXE_NAME} ${SRC_MAIN} ${SRC_ENGINE} ${SRC_AUDIO} ${SRC_GRAPHICS} ${SRC_NETWORK} ${SRC_RUNES} ${SRC_UTILITIES} ${SRC_PUGI} ${SRC_USERPROFILES} ${SRC_WIDGETS})
 
 target_link_libraries(${EXE_NAME} Qt5::Widgets)
 target_link_libraries(${EXE_NAME} Qt5::Core)

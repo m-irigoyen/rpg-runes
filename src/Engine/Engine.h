@@ -5,6 +5,7 @@
 #include "Graphics/GraphicsEngine.h"
 #include "Network/NetworkEngine.h"
 #include "Runes/RuneEngine.h"
+#include "Widgets/RuneDictionnary.h"
 
 #include <QMainWindow>
 #include <QMenuBar>
@@ -38,6 +39,8 @@ namespace Runes
 		//------------------
 		// GUI members
 		QMenu* menus_file_;
+		RuneDictionnary* runeDictionnary_;
+		QDockWidget* dictionnaryWidget_;
 
 		//------------------
 		// Private functions

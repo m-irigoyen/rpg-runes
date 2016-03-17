@@ -15,18 +15,19 @@ namespace Runes
 		runeEngine_.testInit();
 		network_.init();
 
+		graphicsEngine_.init();
+		graphicsView_ = graphicsEngine_.getView();
+
+		graphicsView_->scale(0.25, 0.25);
+		graphicsView_->show();
+
+		this->setCentralWidget(graphicsView_);
+
 		this->createMenus();
 		this->createToolbars();
 		this->createDockWidgets();
 
-		graphicsEngine_.init();
-		graphicsView_ = graphicsEngine_.getView();
-
-		this->setCentralWidget(graphicsView_);
-
-		this->showMaximized();
-
-		graphicsView_->show();
+		// this->showMaximized();
 	}
 
 	void Engine::run()
@@ -55,11 +56,13 @@ namespace Runes
 
 	void Engine::createDockWidgets()
 	{
-		/*QDockWidget *dockWidget = new QDockWidget(tr("Dock Widget"), this);
-		dockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
-			Qt::RightDockWidgetArea);
-		dockWidget->setWidget(dockWidgetContents);
-		addDockWidget(Qt::LeftDockWidgetArea, dockWidget);*/
+		// Dictionnary widget
+		runeDictionnary_ = new RuneDictionnary(runeEngine_, graphicsEngine_.getSprites());
+
+		dictionnaryWidget_ = new QDockWidget("Rune dictionnary", this);
+		dictionnaryWidget_->setAllowedAreas(Qt::DockWidgetAreas(Qt::DockWidgetArea::TopDockWidgetArea || Qt::DockWidgetArea::BottomDockWidgetArea));
+		dictionnaryWidget_->setWidget(runeDictionnary_);
+		addDockWidget(Qt::TopDockWidgetArea, dictionnaryWidget_);
 	}
 }
 

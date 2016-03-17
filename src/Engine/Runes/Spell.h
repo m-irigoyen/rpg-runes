@@ -19,6 +19,8 @@ using namespace std;
 
 	
 	- A spell whose center part is a rune, and has no children and no components, is the equivalent of a simple rune.
+
+	The top level spell cannot have children. It just can't
 */
 
 namespace Runes
@@ -45,17 +47,29 @@ namespace Runes
 		bool isTopLevel();
 
 		// Children management
+		void addEmptyChild();
 		void addChild(Spell* child);
 		void removeChild(Spell* child);
+		void removeChildWithoutClear(Spell* child);
 		vector<Spell*>& getChildren();
 
 		// Component management
 		void addComponent(Spell* component);
+		void addEmptyComponent();
 		void removeComponent(Spell* component);
+		void removeComponentWithoutClear(Spell* component);
 		vector<Spell*>& getComponents();
+
+		// helper 
+		//! @brief Search for the spell in both components and children, and remove it if found
+		void remove(Spell* s, bool destroy = false);
+
+		//! @brief same as above, but without clearing/deleting the item
+		void removeWithoutClear(Spell* s);
 
 		// Else
 		virtual void clear();
+		virtual void destroy();
 
 	private:
 		// The center component is either a spell, or a rune.

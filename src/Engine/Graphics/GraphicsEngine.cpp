@@ -2,7 +2,7 @@
 
 namespace Runes
 {
-	GraphicsEngine::GraphicsEngine(RuneEngine& runeEngineRef) : runeEngine_(runeEngineRef), globalRunes_(runeEngine_.getRunes()), userRunes_(runeEngine_.getUserRunes())
+	GraphicsEngine::GraphicsEngine(RuneEngine& runeEngineRef) : runeEngine_(runeEngineRef), globalRunes_(runeEngine_.getRunes()), userRunes_(runeEngine_.getUserRunes()), currentSpellItem_(NULL), isText_(false)
 	{
 		//init();
 	}
@@ -14,6 +14,7 @@ namespace Runes
 
 	void GraphicsEngine::init()
 	{
+		scene_.setBackgroundBrush(RuneItem::colorBackground());
 		view_.setScene(&scene_);
 
 		// Loading rune images
@@ -58,9 +59,26 @@ namespace Runes
 
 	}
 
+	vector<QPixmap>& GraphicsEngine::getSprites()
+	{
+		return runeSprites_;
+	}
+
+	void GraphicsEngine::toggleText()
+	{
+		isText_ = !isText_;
+		currentSpellItem_->setIsText(isText_);
+	}
+
 	void GraphicsEngine::drawSpell(Spell* s)
 	{
-		runeItem_.drawSpell(s, runeSprites_, globalRunes_, userRunes_, scene_, NULL);
+		if (currentSpellItem_ != NULL)
+			currentSpellItem_->clearItem();
+		scene_.clear();
+		delete(currentSpellItem_);
+
+		currentSpellItem_ = new SpellItem(s, NULL, runeSprites_, globalRunes_, userRunes_, scene_);
+		currentSpellItem_->drawSpell();
 	}
 
 }

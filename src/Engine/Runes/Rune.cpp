@@ -45,11 +45,14 @@ bool Rune::unserialize(QXmlStreamReader& stream)
 		if (stream.name() == "runeDescriptor")
 		{
 			this->descriptor_.unserialize(stream);
+			stream.readNextStartElement();
 			return true;
 		}
 		return false;
 	}
 	return false;
+
+	
 }
 
 const int Rune::getIndex()
