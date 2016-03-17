@@ -28,6 +28,9 @@ namespace Runes
 		const QString getDescription();
 		const RuneDescriptor getDescriptor();
 
+		//! @brief Used for modification by the rune manager only
+		RuneDescriptor& getDescriptorReference();
+
 	protected:
 		int index_;
 		RuneDescriptor descriptor_;

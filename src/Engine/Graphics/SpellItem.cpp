@@ -8,12 +8,12 @@
 namespace Runes
 {
 
-	SpellItem::SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene) : AbstractItem(s, parent, runeImages, runes, userRunes, scene), innerSpell_(NULL)
+	SpellItem::SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine, QGraphicsScene& scene) : AbstractItem(s, parent, runeImages, runes, userRunes, runeEngine, scene), innerSpell_(NULL)
 	{
 
 	}
 
-	SpellItem::SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes) : AbstractItem(s, parent, runeImages, runes, userRunes), innerSpell_(NULL)
+	SpellItem::SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine) : AbstractItem(s, parent, runeImages, runes, userRunes, runeEngine), innerSpell_(NULL)
 	{
 
 	}
@@ -37,7 +37,7 @@ void SpellItem::drawSpell()
 	// Center part
 	if (spell_->isCenterSpell())
 	{
-		innerSpell_ = new SpellItem(spell_->getCenterSpell(), this, runeImages_, runes_, userRunes_);
+		innerSpell_ = new SpellItem(spell_->getCenterSpell(), this, runeImages_, runes_, userRunes_, runeEngine_);
 		innerSpell_->drawSpell();
 
 		innerRadius = innerSpell_->getTotalRadius();
@@ -47,8 +47,10 @@ void SpellItem::drawSpell()
 	}
 	else
 	{
-		innerRune_ = new RuneItem(spell_, this, runeImages_, runes_, userRunes_);
+		innerRune_ = new RuneItem(spell_, this, runeImages_, runes_, userRunes_, runeEngine_);
 		innerRune_->drawSpell();
+		connect(innerRune_, SIGNAL(requestRedraw()),
+			this, SLOT(redraw()));
 
 		innerRadius = this->getInnerRadius();
 	}
@@ -60,7 +62,7 @@ void SpellItem::drawSpell()
 		for (Spell* comp : spellComponents)
 		{
 			// Components
-			SpellItem* ri = new SpellItem(comp, this, runeImages_, runes_, userRunes_);
+			SpellItem* ri = new SpellItem(comp, this, runeImages_, runes_, userRunes_, runeEngine_);
 			ri->drawSpell();
 			this->components_.push_back(ri);
 		}
@@ -91,7 +93,7 @@ void SpellItem::drawSpell()
 		for (Spell* child : spellChildren)
 		{
 			// Components
-			SpellItem* ri = new SpellItem(child, this, runeImages_, runes_, userRunes_);
+			SpellItem* ri = new SpellItem(child, this, runeImages_, runes_, userRunes_, runeEngine_);
 			ri->drawSpell();
 			this->children_.push_back(ri);
 		}
@@ -277,9 +279,7 @@ void SpellItem::positionPath(SpellItem* ri, float thisRadius)
 		paths_.push_back(path);
 	}
 	
-
-
-	// Secdond curve : from child circle to halfway
+	// Second curve : from child circle to halfway
 	{
 		// Control point1 
 		QVector2D posToCenter(-pos);
@@ -341,6 +341,26 @@ float SpellItem::getBiggestChildrenRadius()
 	return biggest;
 }
 
+void SpellItem::updatePathsColor(QBrush brush)
+{
+	for (QGraphicsPathItem* p : paths_)
+	{
+		p->setBrush(brush);
+	}
+}
+
+void SpellItem::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
+{
+	updatePathsColor(colorPathHover());
+	AbstractItem::hoverEnterEvent(event);
+}
+
+void SpellItem::hoverLeaveEvent(QGraphicsSceneHoverEvent * event)
+{
+	updatePathsColor(getDefaultPathPen().brush());
+	AbstractItem::hoverLeaveEvent(event);
+}
+
 QPointF SpellItem::getPositionOnSpell(int nb, int nbTotal, float radius, QPointF parentPosition)
 {
 	++nb;
@@ -378,6 +398,30 @@ void SpellItem::redraw()
 	// redraw everything
 	drawSpell();
 	scene()->update();
+}
+
+void SpellItem::childHovering(bool requests)
+{
+	// A child requests hovering focus
+	if (requests == true)
+	{
+		if (isHovered_ == true)
+		{
+			// Drop hovering focus
+			this->setPen(this->getDefaultPen());
+			updatePathsColor(getDefaultPathPen().brush());
+		}
+	}
+	else
+	{
+		// The child has released hovering focus. We need to grab it back
+		if (isHovered_ == true)
+		{
+			// Reactivate hover
+			this->setPen(QPen(QBrush(colorHover()), getPenWidth()));
+			updatePathsColor(colorPathHover());
+		}
+	}
 }
 
 void SpellItem::colorCenterPart(bool isCenterSpell)
@@ -432,15 +476,15 @@ void SpellItem::keyPressEvent(QKeyEvent * event)
 			cout << "Removing spell" << endl;
 			spellParent->remove(spell_);
 		}
+		emit(changedSpell());
 		redraw();
 		break;
 	case Qt::Key::Key_Plus:
 	case Qt::Key::Key_A:
 		// alternative add : add a child
 		if (event->modifiers() & Qt::ShiftModifier)
-			spell_->addEmptyChild();
-		else
-			spell_->addEmptyComponent();
+		spell_->addEmptyChild();
+		emit(changedSpell());
 		redraw();
 		break;
 	}

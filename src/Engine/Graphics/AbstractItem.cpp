@@ -3,20 +3,26 @@
 
 namespace Runes
 {
-	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene) : spell_(s), parent_(parent), runeImages_(runeImages), runes_(runes), userRunes_(userRunes), isHovered_(false)
+	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine, QGraphicsScene& scene) : spell_(s), parent_(parent), runeImages_(runeImages), runes_(runes), userRunes_(userRunes), isHovered_(false), runeEngine_(runeEngine)
 	{
 		scene.addItem(this);
 		this->setAcceptHoverEvents(true);
 		this->setAcceptTouchEvents(true);
 		this->setFlag(ItemIsFocusable);
+
+		connect(this, SIGNAL(changedSpell()),
+			&runeEngine_, SLOT(changedSpell()));
 	}
 
-	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes) : spell_(s), parent_(parent), runeImages_(runeImages), runes_(runes), userRunes_(userRunes), isHovered_(false)
+	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine) : spell_(s), parent_(parent), runeImages_(runeImages), runes_(runes), userRunes_(userRunes), isHovered_(false), runeEngine_(runeEngine)
 	{
 		this->setParentItem(parent);
 		this->setAcceptHoverEvents(true);
 		this->setAcceptTouchEvents(true);
 		this->setFlag(ItemIsFocusable);
+
+		connect(this, SIGNAL(changedSpell()),
+			&runeEngine_, SLOT(changedSpell()));
 	}
 
 	int AbstractItem::getPenWidth()
@@ -24,9 +30,19 @@ namespace Runes
 		return 2;
 	}
 
+	int AbstractItem::getPathPenWidth()
+	{
+		return 1;
+	}
+
 	QPen AbstractItem::getDefaultPen()
 	{
 		return QPen(QBrush(colorPen()), getPenWidth());
+	}
+
+	QPen AbstractItem::getDefaultPathPen()
+	{
+		return QPen(QBrush(colorPen()), getPathPenWidth());
 	}
 
 	QColor AbstractItem::colorCenter()
@@ -55,6 +71,11 @@ namespace Runes
 	}
 
 	QColor AbstractItem::colorHover()
+	{
+		return QColor(255, 255, 255);
+	}
+
+	QColor AbstractItem::colorPathHover()
 	{
 		return QColor(255, 255, 255);
 	}
@@ -108,7 +129,6 @@ namespace Runes
 	{
 		QGraphicsEllipseItem::mousePressEvent(event);
 	}
-
 }
 
 

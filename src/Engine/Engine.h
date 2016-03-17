@@ -6,11 +6,15 @@
 #include "Network/NetworkEngine.h"
 #include "Runes/RuneEngine.h"
 #include "Widgets/RuneDictionnary.h"
+#include "Widgets/RuneManager.h"
 
 #include <QMainWindow>
 #include <QMenuBar>
 #include <QToolBar>
 #include <QDockWidget>
+#include <QInputDialog>
+
+#define MASTER_NAME "M4st3R"
 
 using namespace Qt;
 
@@ -26,8 +30,9 @@ namespace Runes
 		// Init all modules, and make everything run
 		void init();
 
-		// Runs the games
 		void run();
+
+		void closeEvent(QCloseEvent *event) override;
 
 	private:
 		AudioEngine audio_;
@@ -40,7 +45,11 @@ namespace Runes
 		// GUI members
 		QMenu* menus_file_;
 		RuneDictionnary* runeDictionnary_;
+		RuneManager* runeManager_;
 		QDockWidget* dictionnaryWidget_;
+
+		// Mode
+		bool masterMode_;
 
 		//------------------
 		// Private functions
@@ -57,6 +66,9 @@ namespace Runes
 
 		//! @brief Creates dock widgets
 		void createDockWidgets();
+
+		// User init
+		bool isUserValid(QString name);
 	};
 }
 

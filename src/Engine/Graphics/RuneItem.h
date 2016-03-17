@@ -14,8 +14,9 @@ namespace Runes
 {
 	class RuneItem : public AbstractItem
 	{
+		Q_OBJECT
 	public:
-		RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes);
+		RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine);
 		~RuneItem();
 
 		virtual float getTotalRadius() override;
@@ -30,6 +31,9 @@ namespace Runes
 
 		virtual void clearItem() override;
 
+	signals:
+		void requestRedraw();
+
 	protected:
 		QGraphicsSimpleTextItem text_;		//!< If the center part of the spell is a rune, this is its natural name
 		QGraphicsPixmapItem image_;			//!< If the center part of the spell is a rune, this is its image
@@ -38,6 +42,7 @@ namespace Runes
 		void focusInEvent(QFocusEvent * event);
 		void focusOutEvent(QFocusEvent * event);
 		void mousePressEvent(QGraphicsSceneMouseEvent * event);
+		void keyPressEvent(QKeyEvent * event);
 	};
 }
 

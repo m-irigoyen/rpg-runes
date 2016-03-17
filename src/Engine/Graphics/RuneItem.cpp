@@ -1,9 +1,10 @@
 #include "RuneItem.h"
 #include <QGraphicsScene>
+#include <QKeyEvent>
 
 namespace Runes
 {
-	RuneItem::RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes) : AbstractItem(s, parent, runeImages, runes, userRunes)
+	RuneItem::RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine) : AbstractItem(s, parent, runeImages, runes, userRunes, runeEngine)
 	{
 
 	}
@@ -89,7 +90,7 @@ namespace Runes
 	void RuneItem::focusInEvent(QFocusEvent * event)
 	{
 		this->setBrush(QBrush(colorSelected()));
-		this->parentItem()->grabKeyboard();
+		//this->parentItem()->grabKeyboard();
 		this->scene()->update();
 	}
 
@@ -102,6 +103,45 @@ namespace Runes
 	void RuneItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	{
 		this->setFocus(Qt::FocusReason::MouseFocusReason);
+	}
+
+	void RuneItem::keyPressEvent(QKeyEvent * event)
+	{
+		Spell * spellParent = NULL;
+		switch (event->key())
+		{
+			// Delete : remove that spell
+		case Qt::Key::Key_Delete:
+			spellParent = spell_->getParent();
+			if (spellParent == NULL)
+			{
+				// Can't remove the top level spell, so just clear it
+				cout << "Clearing top level spell" << endl;
+				spell_->clear();
+				emit(changedSpell());
+				emit(requestRedraw());
+			}
+			else
+			{
+				cout << "Removing spell" << endl;
+				spellParent->remove(spell_);
+				emit(changedSpell());
+				emit(requestRedraw());
+			}
+			break;
+		case Qt::Key::Key_Plus:
+		case Qt::Key::Key_Insert:
+			// alternative add : add a child
+			spell_->addEmptyComponent();
+			emit(changedSpell());
+			emit(requestRedraw());
+			break;
+		case Qt::Key::Key_Back:
+			spell_->setRune(-1);
+			image_.setPixmap(QPixmap());
+			emit(changedSpell());
+			break;
+		}
 	}
 
 	void RuneItem::setIsText(bool isText)

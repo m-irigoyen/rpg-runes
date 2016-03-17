@@ -15,9 +15,9 @@ namespace Runes
 	{
 	public:
 		// First constructor : only used for first item
-		SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene);
+		SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine, QGraphicsScene& scene);
 		// All other items take the parent's scene
-		SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes);
+		SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine);
 		~SpellItem();
 
 		// draw spell
@@ -48,11 +48,13 @@ namespace Runes
 
 		void checkColorCenter();
 		
+		
+
+		virtual void childHovering(bool requests) override;
+
+	public slots:
 		//! @brief forces a redraw of the entire spell
 		void redraw();
-
-	signals:
-
 
 	protected:
 		// Members
@@ -70,15 +72,15 @@ namespace Runes
 		// HELPER FUNCTIONS
 		float getBiggestComponentRadius();
 		float getBiggestChildrenRadius();
+		void updatePathsColor(QBrush brush);
 		
 		// EVENTS
+		virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event) override;
+		virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event) override;
 		void focusInEvent(QFocusEvent * event);
 		void focusOutEvent(QFocusEvent * event);
 		void mousePressEvent(QGraphicsSceneMouseEvent* event);
 		void keyPressEvent(QKeyEvent * event);
-
-		
-
 	};
 }
 

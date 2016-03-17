@@ -1,13 +1,13 @@
 #include "RuneEngine.h"
 
+#include <QInputDialog>
+
 namespace Runes
 {
 
-	RuneEngine::RuneEngine() : currentSpell_(NULL)
+	RuneEngine::RuneEngine() : currentSpell_(NULL), modifiedSpell_(false), modifiedProfile_(false), modifiedRunes_(false)
 {
 	this->init();
-
-	//this->testInit();
 }
 
 RuneEngine::~RuneEngine()
@@ -56,6 +56,7 @@ void RuneEngine::init()
 	{
 		this->spells_.push_back(new Spell(0));
 		this->currentSpell_ = spells_.at(0);
+		this->currentSpellName_ = "";
 	}
 }
 
@@ -79,6 +80,17 @@ void RuneEngine::testInit()
 	currentSpell_->addComponent(s);
 }
 
+void RuneEngine::clear()
+{
+	for (Spell* s : spells_)
+	{
+		if (s != NULL)
+			s->clear();
+		delete(s);
+	}
+	spells_.clear();
+}
+
 bool RuneEngine::save(Spell& spell, QString name, QString userName)
 {
 	QXmlStreamWriter stream;
@@ -96,12 +108,12 @@ bool RuneEngine::save(Spell& spell, QString name, QString userName)
 
 	stream.writeEndDocument();
 	file.close();
+	modifiedSpell_ = false;
 	return true;
 }
 
 bool RuneEngine::load(Spell& spell, QString name, QString userName)
 {
-	
 	QXmlStreamReader stream;
 	QFile file;
 	if (Serializable::openFile(name, Paths::USERS + userName + "/" + Paths::SPELLS, file))
@@ -111,6 +123,7 @@ bool RuneEngine::load(Spell& spell, QString name, QString userName)
 			stream.readNextStartElement();
 
 		spell.unserialize(stream);
+		currentSpellName_ = name;
 		return true;
 	}
 	
@@ -145,6 +158,7 @@ bool RuneEngine::saveRuneDictionnary(QString userName)
 
 	stream.writeEndDocument();
 	file.close();
+	modifiedProfile_ = false;
 	return true;
 }
 
@@ -188,6 +202,35 @@ bool RuneEngine::loadRuneDictionnary(QString userName)
 	return true;
 }
 
+bool RuneEngine::saveMasterRuneDictionnary()
+{
+	QXmlStreamWriter stream;
+	QFile file;
+	if (Serializable::openFile("runes", Paths::RUNES, file))
+	{
+		Serializable::initWriter(&file, stream);
+		file.resize(0);
+
+		// Saving user runes
+		stream.writeStartElement("runes");
+
+		for (RunesContainer::iterator it = runes_.begin(); it != runes_.end(); ++it)
+		{
+			it->serialize(stream);
+		}
+	}
+	else
+	{
+		//TODO: error code
+		return false;
+	}
+
+	stream.writeEndDocument();
+	file.close();
+	modifiedRunes_ = false;
+	return true;
+}
+
 const Rune RuneEngine::getRune(int index)
 {
 	if (index >= 0 && index < runes_.size())
@@ -215,6 +258,16 @@ const Rune RuneEngine::getRuneByNaturalName(QString naturalName)
 			return r;
 	}
 	return Rune();
+}
+
+Runes::RuneDescriptor& RuneEngine::getRuneDescriptorByNaturalName(QString naturalName)
+{
+	for (Rune r : runes_)
+	{
+		if (r.getNaturalName().compare(naturalName) == 0)
+			return r.getDescriptorReference();
+	}
+	abort();
 }
 
 RuneDescriptor RuneEngine::getUserRuneByIndex(int index)
@@ -277,6 +330,105 @@ void RuneEngine::clearSpells()
 	spells_.clear();
 }
 
+void RuneEngine::addNewRune()
+{
+	Rune r(runes_.size(), RuneDescriptor("newRune", "newRune", "newRune"));
+	runes_.push_back(r);
+	changedRunes();
+}
+
+void RuneEngine::changedSpell()
+{
+	modifiedSpell_ = true;
+}
+
+void RuneEngine::changedProfile()
+{
+	modifiedProfile_ = true;
+}
+
+void RuneEngine::changedRunes()
+{
+	modifiedRunes_ = true;
+}
+
+void RuneEngine::saveChanges()
+{
+	if (modifiedRunes_)
+		saveMasterRuneDictionnary();
+	if (modifiedSpell_)
+		save(*currentSpell_, currentSpellName_, currentUserName_);
+	if (modifiedProfile_)
+		saveRuneDictionnary(currentUserName_);
+}
+
+void RuneEngine::checkModifiedMaster()
+{
+	if (modifiedRunes_)
+	{
+		QMessageBox runesModifiedDialog;
+		runesModifiedDialog.setText("The master rune dictionnary has been modified.");
+		runesModifiedDialog.setInformativeText("Do you want to save changes?");
+		runesModifiedDialog.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+		runesModifiedDialog.setDefaultButton(QMessageBox::Save);
+		int ret = runesModifiedDialog.exec();
+		switch (ret)
+		{
+		case QMessageBox::Save:
+			saveMasterRuneDictionnary();
+			break;
+		}
+	}
+}
+
+void RuneEngine::checkModifiedSpell()
+{
+	if (modifiedSpell_)
+	{
+		QMessageBox spellModifiedDialog;
+		spellModifiedDialog.setText("The current spell has been modified.");
+		spellModifiedDialog.setInformativeText("Do you want to save changes?");
+		spellModifiedDialog.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+		spellModifiedDialog.setDefaultButton(QMessageBox::Save);
+		int ret = spellModifiedDialog.exec();
+		switch (ret)
+		{
+		case QMessageBox::Save:
+			if (currentSpellName_.isEmpty())
+			{
+				// Ask the file name
+				bool ok;
+				QString text = QInputDialog::getText(NULL, tr("Spell name"),
+					tr("Spell name:"), QLineEdit::Normal,
+					"name", &ok);
+				if (ok && !text.isEmpty())
+					currentSpellName_ = text;
+			}
+
+			save(*currentSpell_, currentSpellName_, currentUserName_);
+			break;
+		}
+	}
+}
+
+void RuneEngine::checkModifiedProfile()
+{
+	if (modifiedProfile_)
+	{
+		QMessageBox profileModifiedDialog;
+		profileModifiedDialog.setText("The rune dictionnary has been modified.");
+		profileModifiedDialog.setInformativeText("Do you want to save changes?");
+		profileModifiedDialog.setStandardButtons(QMessageBox::Save | QMessageBox::Discard);
+		profileModifiedDialog.setDefaultButton(QMessageBox::Save);
+		int ret = profileModifiedDialog.exec();
+		switch (ret)
+		{
+		case QMessageBox::Save:
+			saveRuneDictionnary(currentUserName_);
+			break;
+		}
+	}
+}
 
 }
 

@@ -37,9 +37,15 @@ namespace Runes
 		// Connecting slots
 		connect(&view_, SIGNAL(clicked(QModelIndex)), 
 			this, SLOT(clicked(QModelIndex)));
+		connect(&name_, SIGNAL(textChanged(QString&)),
+			this, SLOT(editedName(QString&)));
+		connect(&description_, SIGNAL(textChanged(QString&)),
+			this, SLOT(editedDescription(QString&)));
+
+		connect(this, SIGNAL(userRunesUpdated()),
+			&runeEngine_, SLOT(changedProfile()));
 
 		this->setLayout(&mainLayout_);
-
 
 		// Setting the first rune
 		clicked(model_.index(0, 0));
@@ -60,6 +66,7 @@ namespace Runes
 	void RuneDictionnary::editedDescription(QString& text)
 	{
 		currentDescriptor->setDescription(text);
+		emit userRunesUpdated();
 	}
 
 	void RuneDictionnary::fillData(QString name)

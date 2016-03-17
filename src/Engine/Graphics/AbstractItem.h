@@ -7,13 +7,15 @@
 
 namespace Runes
 {
-	class AbstractItem : public QGraphicsEllipseItem
+	class AbstractItem : public QObject, public QGraphicsEllipseItem
 	{
+		Q_OBJECT
+
 	public:
 		// First constructor : only used for first item
-		AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, QGraphicsScene& scene);
+		AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine, QGraphicsScene& scene);
 		// All other items take the parent's scene
-		AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes);
+		AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine);
 
 		//! @brief returns the total radius of this spell. Depending whether the spell is a top level or not, won't return the same
 		virtual float getTotalRadius() = 0;
@@ -27,7 +29,7 @@ namespace Runes
 		virtual void drawSpell() = 0;
 
 		//! @brief used to maintain hovering logic
-		void childHovering(bool requests);
+		virtual void childHovering(bool requests);
 
 		virtual void colorCenterPart(bool isCenterSpell = false) = 0;
 
@@ -41,14 +43,20 @@ namespace Runes
 		static QColor colorSelected();
 		static QColor colorBackground();
 		static QColor colorHover();
+		static QColor colorPathHover();
 		static QPen getDefaultPen();
+		static QPen getDefaultPathPen();
 		static int getPenWidth();
+		static int getPathPenWidth();
 
 		//-------
 		// EVENTS
-		void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
-		void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
+		virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
+		virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
 		void mousePressEvent(QGraphicsSceneMouseEvent * event);
+
+	signals:
+		void changedSpell();
 
 	protected:
 		Spell* spell_;	//!< The spell this rune draws
@@ -61,6 +69,7 @@ namespace Runes
 		vector<QPixmap>& runeImages_;
 		RunesContainer& runes_;
 		UserRunesContainer& userRunes_;
+		RuneEngine& runeEngine_;
 	};
 }
 

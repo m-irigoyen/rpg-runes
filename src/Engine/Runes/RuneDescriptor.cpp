@@ -44,17 +44,17 @@ namespace Runes
 		return true;
 	}
 
-	QString RuneDescriptor::getName()
+	QString RuneDescriptor::getName() const
 	{
 		return name_;
 	}
 
-	QString RuneDescriptor::getNaturalName()
+	QString RuneDescriptor::getNaturalName() const
 	{
 		return naturalName_;
 	}
 
-	QString RuneDescriptor::getDescription()
+	QString RuneDescriptor::getDescription() const
 	{
 		return description_;
 	}
@@ -73,5 +73,4 @@ namespace Runes
 	{
 		description_ = description;
 	}
-
 }

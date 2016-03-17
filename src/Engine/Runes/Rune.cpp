@@ -80,5 +80,10 @@ const RuneDescriptor Rune::getDescriptor()
 	return descriptor_;
 }
 
+Runes::RuneDescriptor& Rune::getDescriptorReference()
+{
+	return descriptor_;
+}
+
 }
 
