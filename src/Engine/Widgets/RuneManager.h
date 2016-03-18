@@ -30,9 +30,9 @@ namespace Runes
 		public slots:
 
 		void clicked(QModelIndex index);
-		void editedName(QString& text);
-		void editedAncientName(QString& text);
-		void editedDescription(QString& text);
+		void editedName(const QString& text);
+		void editedAncientName(const QString& text);
+		void editedDescription(const QString& text);
 
 		void addNewRune();
 		void initList();
@@ -57,14 +57,14 @@ namespace Runes
 		QLabel image_;
 		QLineEdit name_;
 		QLineEdit ancientName_;
-		QTextEdit description_;
+		QLineEdit description_;
 		QPushButton newRuneButton_;
 
 		// Rune list
 		QStringListModel model_;
 
 		// Modification
-		RuneDescriptor* currentDescriptor;
+		Rune* currentRune_;
 
 		// helper functions
 		void fillData(QString name);

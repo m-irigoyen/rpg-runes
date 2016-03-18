@@ -23,13 +23,17 @@ namespace Runes
 		virtual bool unserialize(QXmlStreamReader& stream) override;
 
 		const int getIndex();
-		const QString getName();
-		const QString getNaturalName();
-		const QString getDescription();
-		const RuneDescriptor getDescriptor();
+		QString getName() const;
+		QString getNaturalName() const;
+		QString getDescription() const;
+		RuneDescriptor getDescriptor() const;
+
+		void setName(QString name);
+		void setNaturalName(QString name);
+		void setDescription(QString name);
 
 		//! @brief Used for modification by the rune manager only
-		RuneDescriptor& getDescriptorReference();
+		RuneDescriptor* getDescriptorReference();
 
 	protected:
 		int index_;

@@ -3,7 +3,7 @@
 namespace Runes
 {
 
-	RuneManager::RuneManager(RuneEngine& engine, std::vector<QPixmap>& runeSprites) : runeEngine_(engine), globalRunes_(runeEngine_.getRunes()), runeSprites_(runeSprites), currentDescriptor(NULL)
+	RuneManager::RuneManager(RuneEngine& engine, std::vector<QPixmap>& runeSprites) : runeEngine_(engine), globalRunes_(runeEngine_.getRunes()), runeSprites_(runeSprites), currentRune_(NULL)
 	{
 		init();
 	}
@@ -32,12 +32,14 @@ namespace Runes
 		// Connecting slots
 		connect(&view_, SIGNAL(clicked(QModelIndex)),
 			this, SLOT(clicked(QModelIndex)));
-		connect(&name_, SIGNAL(textChanged(QString&)),
-			this, SLOT(editedName(QString&)));
-		connect(&description_, SIGNAL(textChanged(QString&)),
-			this, SLOT(editedDescription(QString&)));
+		connect(&name_, SIGNAL(textEdited(const QString&)),
+			this, SLOT(editedName(const QString&)));
+		connect(&ancientName_, SIGNAL(textEdited(const QString&)),
+			this, SLOT(editedAncientName(const QString&)));
+		connect(&description_, SIGNAL(textEdited(const QString&)),
+			this, SLOT(editedDescription(const QString&)));
 
-		connect(this, SIGNAL(userRunesUpdated()),
+		connect(this, SIGNAL(runesUpdated()),
 			&runeEngine_, SLOT(changedProfile()));
 
 		this->setLayout(&mainLayout_);
@@ -52,21 +54,21 @@ namespace Runes
 		fillData(data);
 	}
 
-	void RuneManager::editedName(QString& text)
+	void RuneManager::editedName(const QString& text)
 	{
-		currentDescriptor->setNaturalName(text);
+		currentRune_->setNaturalName(text);
 		emit runesUpdated();
 	}
 
-	void RuneManager::editedAncientName(QString& text)
+	void RuneManager::editedAncientName(const QString& text)
 	{
-		currentDescriptor->setName(text);
+		currentRune_->setName(text);
 		emit runesUpdated();
 	}
 
-	void RuneManager::editedDescription(QString& text)
+	void RuneManager::editedDescription(const QString& text)
 	{
-		currentDescriptor->setDescription(text);
+		currentRune_->setDescription(text);
 		emit runesUpdated();
 	}
 
@@ -92,14 +94,17 @@ namespace Runes
 	void RuneManager::fillData(QString name)
 	{
 		int i = 0;
-		currentDescriptor = &(runeEngine_.getRuneDescriptorByNaturalName(name));
+		currentRune_ = runeEngine_.getRuneRefByNaturalName(name);
+		currentRune_->getNaturalName();
+
+		Rune r = runeEngine_.getRuneByNaturalName(name);
 
 		// Fill the display with corresponding values
 		if (i <  runeSprites_.size())
 			image_.setPixmap(runeSprites_.at(i));
-		name_.setText(currentDescriptor->getNaturalName());
-		ancientName_.setText(currentDescriptor->getName());
-		description_.setText(currentDescriptor->getDescription());
+		name_.setText(r.getName());
+		ancientName_.setText(r.getNaturalName());
+		description_.setText(r.getDescription());
 	}
 
 }

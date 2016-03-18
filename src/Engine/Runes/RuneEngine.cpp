@@ -247,7 +247,7 @@ const Rune RuneEngine::getRuneByName(QString name)
 		if (r.getName().compare(name) == 0)
 			return r;
 	}
-	return Rune();
+	abort();
 }
 
 const Rune RuneEngine::getRuneByNaturalName(QString naturalName)
@@ -257,10 +257,20 @@ const Rune RuneEngine::getRuneByNaturalName(QString naturalName)
 		if (r.getNaturalName().compare(naturalName) == 0)
 			return r;
 	}
-	return Rune();
+	abort();
 }
 
-Runes::RuneDescriptor& RuneEngine::getRuneDescriptorByNaturalName(QString naturalName)
+Runes::Rune* RuneEngine::getRuneRefByNaturalName(QString naturalName)
+{
+	for (Rune r : runes_)
+	{
+		if (r.getNaturalName().compare(naturalName) == 0)
+			return &r;
+	}
+	abort();
+}
+
+Runes::RuneDescriptor* RuneEngine::getRuneDescriptorByNaturalName(QString naturalName)
 {
 	for (Rune r : runes_)
 	{

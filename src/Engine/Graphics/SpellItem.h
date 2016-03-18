@@ -13,6 +13,7 @@ namespace Runes
 {
 	class SpellItem : public AbstractItem
 	{
+		Q_OBJECT
 	public:
 		// First constructor : only used for first item
 		SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine, QGraphicsScene& scene);
@@ -47,8 +48,6 @@ namespace Runes
 		static QPointF getPositionOnSpell(int nb, int nbTotal, float radius, QPointF parentPosition);
 
 		void checkColorCenter();
-		
-		
 
 		virtual void childHovering(bool requests) override;
 

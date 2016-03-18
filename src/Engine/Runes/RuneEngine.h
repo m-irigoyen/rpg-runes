@@ -45,8 +45,9 @@ namespace Runes
 		const Rune getRune(int index);
 		const Rune getRuneByName(QString name);
 		const Rune getRuneByNaturalName(QString naturalName);
+		Rune* getRuneRefByNaturalName(QString naturalName);
 		//! @brief only used by the rune manager to modify the master dictionnary
-		RuneDescriptor& getRuneDescriptorByNaturalName(QString naturalName);
+		RuneDescriptor* getRuneDescriptorByNaturalName(QString naturalName);
 
 		RuneDescriptor getUserRuneByIndex(int index);
 		RuneDescriptor getUserRuneByNaturalName(QString name);
