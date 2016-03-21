@@ -190,7 +190,7 @@ bool RuneEngine::loadRuneDictionnary(QString userName)
 				Rune r;
 				r.unserialize(stream);
 
-				userRunes_.insert(make_pair(r.getIndex(), r.getDescriptor()));
+				userRunes_.insert(make_pair(r.getIndex(), r.descriptor_));
 			}
 		}
 	}
@@ -231,83 +231,51 @@ bool RuneEngine::saveMasterRuneDictionnary()
 	return true;
 }
 
-const Rune RuneEngine::getRune(int index)
+Rune* RuneEngine::getRune(int index)
 {
 	if (index >= 0 && index < runes_.size())
 	{
-		return runes_[index];
+		return &runes_[index];
 	}
-	return Rune();
+	return NULL;
 }
 
-const Rune RuneEngine::getRuneByName(QString name)
+Rune* RuneEngine::getRuneByName(QString name)
 {
 	for (Rune r : runes_)
 	{
-		if (r.getName().compare(name) == 0)
-			return r;
-	}
-	abort();
-}
-
-const Rune RuneEngine::getRuneByNaturalName(QString naturalName)
-{
-	for (Rune r : runes_)
-	{
-		if (r.getNaturalName().compare(naturalName) == 0)
-			return r;
-	}
-	abort();
-}
-
-Runes::Rune* RuneEngine::getRuneRefByNaturalName(QString naturalName)
-{
-	for (Rune r : runes_)
-	{
-		if (r.getNaturalName().compare(naturalName) == 0)
+		if (r.descriptor_.name_.compare(name) == 0)
 			return &r;
 	}
-	abort();
+	return NULL;
 }
 
-Runes::RuneDescriptor* RuneEngine::getRuneDescriptorByNaturalName(QString naturalName)
+Rune* RuneEngine::getRuneByNaturalName(QString naturalName)
 {
 	for (Rune r : runes_)
 	{
-		if (r.getNaturalName().compare(naturalName) == 0)
-			return r.getDescriptorReference();
+		if (r.descriptor_.naturalName_.compare(naturalName) == 0)
+			return &r;
 	}
-	abort();
+	return NULL;
 }
 
-RuneDescriptor RuneEngine::getUserRuneByIndex(int index)
+RuneDescriptor* RuneEngine::getUserRuneByIndex(int index)
 {
 	map<int, RuneDescriptor>::iterator it = userRunes_.find(index);
 	if (it != userRunes_.end())
-		return it->second;
+		return &it->second;
+	return NULL;
 }
 
-Runes::RuneDescriptor RuneEngine::getUserRuneByNaturalName(QString name)
+RuneDescriptor* RuneEngine::getUserRuneByNaturalName(QString naturalName)
 {
 	for (UserRunesContainer::iterator it = userRunes_.begin(); it != userRunes_.end(); ++it)
 	{
-		if (it->second.getNaturalName().compare(name) == 0)
-			return it->second;
+		if (it->second.naturalName_.compare(naturalName) == 0)
+			return &it->second;
 	}
-}
-
-Runes::RuneDescriptor& RuneEngine::getUserRuneByNaturalName(QString name, UserRunesContainer& container, int* index)
-{
-	for (UserRunesContainer::iterator it = container.begin(); it != container.end(); ++it)
-	{
-		if (it->second.getNaturalName().compare(name) == 0)
-		{
-			if (index != NULL)
-				*index = it->first;
-			return it->second;
-		}
-			
-	}
+	return NULL;
 }
 
 Spell* RuneEngine::getCurrentSpell()

@@ -16,7 +16,7 @@ namespace Runes
 	{
 		Q_OBJECT
 	public:
-		RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine);
+		RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine);
 		~RuneItem();
 
 		virtual float getTotalRadius() override;

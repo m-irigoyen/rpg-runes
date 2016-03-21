@@ -23,7 +23,7 @@ namespace Runes
 			// Load all rune images
 			for (Rune r : globalRunes_)
 			{
-				QString name = r.getNaturalName();
+				QString name = r.descriptor_.naturalName_;
 
 				QPixmap runeImage;
 				if (runeImage.load(runeFilePath + name.toLower() + Paths::IMAGEEXTENSION))
@@ -77,7 +77,7 @@ namespace Runes
 		scene_.clear();
 		delete(currentSpellItem_);
 
-		currentSpellItem_ = new SpellItem(s, NULL, runeSprites_, globalRunes_, userRunes_, runeEngine_, scene_);
+		currentSpellItem_ = new SpellItem(s, NULL, runeSprites_, runeEngine_, scene_);
 		currentSpellItem_->drawSpell();
 	}
 

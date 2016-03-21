@@ -26,7 +26,7 @@ namespace Runes
 		QStringList list;
 		for (UserRunesContainer::iterator it = userRunes_.begin(); it != userRunes_.end(); ++it)
 		{
-			list << it->second.getNaturalName();
+			list << it->second.naturalName_;
 		}
 		model_.setStringList(list);
 
@@ -37,9 +37,9 @@ namespace Runes
 		// Connecting slots
 		connect(&view_, SIGNAL(clicked(QModelIndex)), 
 			this, SLOT(clicked(QModelIndex)));
-		connect(&name_, SIGNAL(textChanged(QString&)),
+		connect(&name_, SIGNAL(textEdited(const QString&)),
 			this, SLOT(editedName(QString&)));
-		connect(&description_, SIGNAL(textChanged(QString&)),
+		connect(&description_, SIGNAL(textEdited(const QString&)),
 			this, SLOT(editedDescription(QString&)));
 
 		connect(this, SIGNAL(userRunesUpdated()),
@@ -59,25 +59,25 @@ namespace Runes
 
 	void RuneDictionnary::editedName(QString& text)
 	{
-		currentDescriptor->setNaturalName(text);
+		currentDescriptor->naturalName_ = text;
 		emit userRunesUpdated();
 	}
 
 	void RuneDictionnary::editedDescription(QString& text)
 	{
-		currentDescriptor->setDescription(text);
+		currentDescriptor->description_ = text;
 		emit userRunesUpdated();
 	}
 
 	void RuneDictionnary::fillData(QString name)
 	{
 		int i = 0;
-		currentDescriptor = &(RuneEngine::getUserRuneByNaturalName(name, userRunes_, &i));
+		currentDescriptor = runeEngine_.getUserRuneByNaturalName(name);
 
 		// Fill the display with corresponding values
 		image_.setPixmap(runeSprites_.at(i));
-		name_.setText(currentDescriptor->getNaturalName());
-		description_.setText(currentDescriptor->getDescription());
+		name_.setText(currentDescriptor->naturalName_);
+		description_.setText(currentDescriptor->description_);
 	}
 
 }

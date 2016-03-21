@@ -3,8 +3,11 @@
 
 namespace Runes
 {
-	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine, QGraphicsScene& scene) : spell_(s), parent_(parent), runeImages_(runeImages), runes_(runes), userRunes_(userRunes), isHovered_(false), runeEngine_(runeEngine)
+	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine, QGraphicsScene& scene) : spell_(s), parent_(parent), runeImages_(runeImages),  runeEngine_(runeEngine), isHovered_(false)
 	{
+		runes_ = &runeEngine_.getRunes();
+		userRunes_ = &runeEngine_.getUserRunes();
+
 		scene.addItem(this);
 		this->setAcceptHoverEvents(true);
 		this->setAcceptTouchEvents(true);
@@ -14,8 +17,11 @@ namespace Runes
 			&runeEngine_, SLOT(changedSpell()));
 	}
 
-	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine) : spell_(s), parent_(parent), runeImages_(runeImages), runes_(runes), userRunes_(userRunes), isHovered_(false), runeEngine_(runeEngine)
+	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine) : spell_(s), parent_(parent), runeImages_(runeImages), runeEngine_(runeEngine), isHovered_(false)
 	{
+		runes_ = &runeEngine_.getRunes();
+		userRunes_ = &runeEngine_.getUserRunes();
+
 		this->setParentItem(parent);
 		this->setAcceptHoverEvents(true);
 		this->setAcceptTouchEvents(true);

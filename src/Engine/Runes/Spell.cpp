@@ -238,6 +238,8 @@ namespace Runes
 			removeChildWithoutClear(s);
 		else if (find(components_.begin(), components_.end(), s) != components_.end())
 			removeComponentWithoutClear(s);
+		else
+			abort();
 	}
 
 	void Spell::clear()
@@ -263,11 +265,6 @@ namespace Runes
 			delete(comp);
 		}
 		components_.clear();
-
-		if (parent_ != NULL)
-		{
-			parent_->removeWithoutClear(this);
-		}
 	}
 
 	void Spell::destroy()

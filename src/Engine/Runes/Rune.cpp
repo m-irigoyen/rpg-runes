@@ -60,45 +60,5 @@ const int Rune::getIndex()
 	return index_;
 }
 
-QString Rune::getName() const
-{
-	return descriptor_.getName();
-}
-
-QString Rune::getNaturalName() const
-{
-	return descriptor_.getNaturalName();
-}
-
-QString Rune::getDescription() const
-{
-	return descriptor_.getDescription();
-}
-
-RuneDescriptor Rune::getDescriptor() const
-{
-	return descriptor_;
-}
-
-void Rune::setName(QString name)
-{
-	descriptor_.setName(name);
-}
-
-void Rune::setNaturalName(QString naturalName)
-{
-	descriptor_.setNaturalName(naturalName);
-}
-
-void Rune::setDescription(QString description)
-{
-	descriptor_.setNaturalName(description);
-}
-
-Runes::RuneDescriptor* Rune::getDescriptorReference()
-{
-	return &descriptor_;
-}
-
 }
 

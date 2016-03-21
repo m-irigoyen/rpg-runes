@@ -17,15 +17,6 @@ namespace Runes
 		virtual bool serialize(QXmlStreamWriter& stream) override;
 		virtual bool unserialize(QXmlStreamReader& stream) override;
 
-		QString getName() const;
-		QString getNaturalName() const;
-		QString getDescription() const;
-
-		void setName(const QString& name);
-		void setNaturalName(const QString& naturalName);
-		void setDescription(const QString& description);
-
-	private:
 		QString name_;
 		QString naturalName_;
 		QString description_;

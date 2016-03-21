@@ -13,9 +13,9 @@ namespace Runes
 
 	public:
 		// First constructor : only used for first item
-		AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine, QGraphicsScene& scene);
+		AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine, QGraphicsScene& scene);
 		// All other items take the parent's scene
-		AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine);
+		AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine);
 
 		//! @brief returns the total radius of this spell. Depending whether the spell is a top level or not, won't return the same
 		virtual float getTotalRadius() = 0;
@@ -67,8 +67,8 @@ namespace Runes
 
 		// references
 		vector<QPixmap>& runeImages_;
-		RunesContainer& runes_;
-		UserRunesContainer& userRunes_;
+		RunesContainer* runes_;
+		UserRunesContainer* userRunes_;
 		RuneEngine& runeEngine_;
 	};
 }

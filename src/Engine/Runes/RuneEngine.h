@@ -42,16 +42,11 @@ namespace Runes
 		bool loadRuneDictionnary(QString userName);
 		bool saveMasterRuneDictionnary();
 
-		const Rune getRune(int index);
-		const Rune getRuneByName(QString name);
-		const Rune getRuneByNaturalName(QString naturalName);
-		Rune* getRuneRefByNaturalName(QString naturalName);
-		//! @brief only used by the rune manager to modify the master dictionnary
-		RuneDescriptor* getRuneDescriptorByNaturalName(QString naturalName);
-
-		RuneDescriptor getUserRuneByIndex(int index);
-		RuneDescriptor getUserRuneByNaturalName(QString name);
-		static RuneDescriptor& getUserRuneByNaturalName(QString name, UserRunesContainer& container, int* index = NULL);
+		Rune* getRune(int index);
+		Rune* getRuneByName(QString name);
+		Rune* getRuneByNaturalName(QString naturalName);
+		RuneDescriptor* getUserRuneByIndex(int index);
+		RuneDescriptor* getUserRuneByNaturalName(QString name);
 
 		Spell* getCurrentSpell();
 		vector<Spell*>& getSpells();
@@ -61,7 +56,7 @@ namespace Runes
 		void clearSpells();
 
 		// Rune Manager related stuff
-		void addNewRune();
+		
 
 	public slots:
 	void changedSpell();
@@ -69,6 +64,8 @@ namespace Runes
 	void changedRunes();
 
 	void saveChanges();
+
+	void addNewRune();
 
 	private:
 		Spell* currentSpell_;	//!< The spell currently being editing (the top level spell)

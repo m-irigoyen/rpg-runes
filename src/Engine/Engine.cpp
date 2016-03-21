@@ -100,7 +100,7 @@ namespace Runes
 
 	bool Engine::isUserValid(QString name)
 	{
-		if (name.compare(MASTER_NAME))
+		if (name.compare(MASTER_NAME) == 0)
 		{
 			masterMode_ = true;
 			return true;

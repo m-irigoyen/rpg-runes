@@ -43,34 +43,4 @@ namespace Runes
 		stream.readNextStartElement();
 		return true;
 	}
-
-	QString RuneDescriptor::getName() const
-	{
-		return name_;
-	}
-
-	QString RuneDescriptor::getNaturalName() const
-	{
-		return naturalName_;
-	}
-
-	QString RuneDescriptor::getDescription() const
-	{
-		return description_;
-	}
-
-	void RuneDescriptor::setName(const QString& name)
-	{
-		name_ = name;
-	}
-
-	void RuneDescriptor::setNaturalName(const QString& naturalName)
-	{
-		naturalName_ = naturalName;
-	}
-
-	void RuneDescriptor::setDescription(const QString& description)
-	{
-		description_ = description;
-	}
 }

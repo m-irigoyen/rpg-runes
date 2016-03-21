@@ -8,12 +8,12 @@
 namespace Runes
 {
 
-	SpellItem::SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine, QGraphicsScene& scene) : AbstractItem(s, parent, runeImages, runes, userRunes, runeEngine, scene), innerSpell_(NULL)
+	SpellItem::SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine, QGraphicsScene& scene) : AbstractItem(s, parent, runeImages, runeEngine, scene), innerSpell_(NULL)
 	{
 
 	}
 
-	SpellItem::SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine) : AbstractItem(s, parent, runeImages, runes, userRunes, runeEngine), innerSpell_(NULL)
+	SpellItem::SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine) : AbstractItem(s, parent, runeImages, runeEngine), innerSpell_(NULL)
 	{
 
 	}
@@ -37,7 +37,7 @@ void SpellItem::drawSpell()
 	// Center part
 	if (spell_->isCenterSpell())
 	{
-		innerSpell_ = new SpellItem(spell_->getCenterSpell(), this, runeImages_, runes_, userRunes_, runeEngine_);
+		innerSpell_ = new SpellItem(spell_->getCenterSpell(), this, runeImages_, runeEngine_);
 		innerSpell_->drawSpell();
 
 		innerRadius = innerSpell_->getTotalRadius();
@@ -47,7 +47,7 @@ void SpellItem::drawSpell()
 	}
 	else
 	{
-		innerRune_ = new RuneItem(spell_, this, runeImages_, runes_, userRunes_, runeEngine_);
+		innerRune_ = new RuneItem(spell_, this, runeImages_, runeEngine_);
 		innerRune_->drawSpell();
 		connect(innerRune_, SIGNAL(requestRedraw()),
 			this, SLOT(redraw()));
@@ -62,7 +62,7 @@ void SpellItem::drawSpell()
 		for (Spell* comp : spellComponents)
 		{
 			// Components
-			SpellItem* ri = new SpellItem(comp, this, runeImages_, runes_, userRunes_, runeEngine_);
+			SpellItem* ri = new SpellItem(comp, this, runeImages_, runeEngine_);
 			ri->drawSpell();
 			this->components_.push_back(ri);
 		}
@@ -93,7 +93,7 @@ void SpellItem::drawSpell()
 		for (Spell* child : spellChildren)
 		{
 			// Components
-			SpellItem* ri = new SpellItem(child, this, runeImages_, runes_, userRunes_, runeEngine_);
+			SpellItem* ri = new SpellItem(child, this, runeImages_, runeEngine_);
 			ri->drawSpell();
 			this->children_.push_back(ri);
 		}

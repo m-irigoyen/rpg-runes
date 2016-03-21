@@ -56,19 +56,19 @@ namespace Runes
 
 	void RuneManager::editedName(const QString& text)
 	{
-		currentRune_->setNaturalName(text);
+		currentRune_->descriptor_.naturalName_ = text;
 		emit runesUpdated();
 	}
 
 	void RuneManager::editedAncientName(const QString& text)
 	{
-		currentRune_->setName(text);
+		currentRune_->descriptor_.name_ = text;
 		emit runesUpdated();
 	}
 
 	void RuneManager::editedDescription(const QString& text)
 	{
-		currentRune_->setDescription(text);
+		currentRune_->descriptor_.description_ = text;
 		emit runesUpdated();
 	}
 
@@ -82,7 +82,7 @@ namespace Runes
 		QStringList list;
 		for (RunesContainer::iterator it = globalRunes_.begin(); it != globalRunes_.end(); ++it)
 		{
-			list << it->getDescriptor().getNaturalName();
+			list << it->descriptor_.naturalName_;
 		}
 		model_.setStringList(list);
 
@@ -94,17 +94,21 @@ namespace Runes
 	void RuneManager::fillData(QString name)
 	{
 		int i = 0;
-		currentRune_ = runeEngine_.getRuneRefByNaturalName(name);
-		currentRune_->getNaturalName();
-
-		Rune r = runeEngine_.getRuneByNaturalName(name);
+		currentRune_ = runeEngine_.getRuneByNaturalName(name);
+		i = currentRune_->getIndex();
+		QString test = currentRune_->descriptor_.name_;
 
 		// Fill the display with corresponding values
-		if (i <  runeSprites_.size())
+
+		name_.setText(currentRune_->descriptor_.naturalName_);
+		currentRune_ = runeEngine_.getRuneByNaturalName(name);
+		ancientName_.setText(currentRune_->descriptor_.name_);
+		currentRune_ = runeEngine_.getRuneByNaturalName(name);
+		description_.setText(currentRune_->descriptor_.description_);
+		currentRune_ = runeEngine_.getRuneByNaturalName(name);
+
+		if (i < runeSprites_.size())
 			image_.setPixmap(runeSprites_.at(i));
-		name_.setText(r.getName());
-		ancientName_.setText(r.getNaturalName());
-		description_.setText(r.getDescription());
 	}
 
 }

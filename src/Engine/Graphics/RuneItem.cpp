@@ -4,7 +4,7 @@
 
 namespace Runes
 {
-	RuneItem::RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RunesContainer& runes, UserRunesContainer& userRunes, RuneEngine& runeEngine) : AbstractItem(s, parent, runeImages, runes, userRunes, runeEngine)
+	RuneItem::RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine) : AbstractItem(s, parent, runeImages, runeEngine)
 	{
 
 	}
@@ -52,8 +52,8 @@ namespace Runes
 		{
 			// Setting the text
 			text_.setParentItem(this);
-			RuneDescriptor& rd = userRunes_.at(spell_->getRune());
-			text_.setText(rd.getNaturalName());
+			RuneDescriptor& rd = userRunes_->at(spell_->getRune()); 
+			text_.setText(rd.naturalName_);
 			text_.setPos(-text_.boundingRect().width() / 2, -text_.boundingRect().height() / 2);
 			text_.hide();
 
