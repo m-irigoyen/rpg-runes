@@ -37,8 +37,11 @@ namespace Runes
 		void addNewRune();
 		void initList();
 
+		QPushButton* getReloadImagesButton();
+
 	signals:
 		void runesUpdated();
+		void runeImagesUpdated();
 
 	protected:
 		// References
@@ -50,15 +53,16 @@ namespace Runes
 		QHBoxLayout mainLayout_;		//!< Main : two parts. Left is the list of runes, right is the display / edit
 		QHBoxLayout rightLayout_;		//!< Right : two parts. Left is the image, right the name/desc
 		QVBoxLayout rightRightLayout_;	//!< Right right : two parts. Top is the name, bottom the description
+		QHBoxLayout rightRightBottomLayout_;	//!< The two buttons
 
 		// Widgets
-		
 		QListView view_;
 		QLabel image_;
 		QLineEdit name_;
 		QLineEdit ancientName_;
 		QLineEdit description_;
 		QPushButton newRuneButton_;
+		QPushButton reloadImagesButton_;
 
 		// Rune list
 		QStringListModel model_;

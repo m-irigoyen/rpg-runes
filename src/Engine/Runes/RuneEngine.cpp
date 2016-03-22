@@ -91,6 +91,13 @@ void RuneEngine::clear()
 	spells_.clear();
 }
 
+void RuneEngine::checkSave()
+{
+	checkModifiedMaster();
+	checkModifiedProfile();
+	checkModifiedSpell();
+}
+
 bool RuneEngine::save(Spell& spell, QString name, QString userName)
 {
 	QXmlStreamWriter stream;
@@ -278,6 +285,16 @@ RuneDescriptor* RuneEngine::getUserRuneByNaturalName(QString naturalName)
 	return NULL;
 }
 
+int RuneEngine::getUserRuneIndexByNaturalName(QString naturalName)
+{
+	for (UserRunesContainer::iterator it = userRunes_.begin(); it != userRunes_.end(); ++it)
+	{
+		if (it->second.naturalName_.compare(naturalName) == 0)
+			return it->first;
+	}
+	return -1;
+}
+
 Spell* RuneEngine::getCurrentSpell()
 {
 	return this->currentSpell_;
@@ -298,6 +315,24 @@ UserRunesContainer& RuneEngine::getUserRunes()
 	return userRunes_;
 }
 
+QStringList RuneEngine::getRuneList()
+{
+	QStringList list;
+	for (Rune r : runes_)
+		list << r.descriptor_.naturalName_;
+
+	return list;
+}
+
+QStringList RuneEngine::getUserRuneList()
+{
+	QStringList list;
+	for (UserRune ur : userRunes_)
+		list << ur.second.naturalName_;
+
+	return list;
+}
+
 void RuneEngine::clearSpells()
 {
 	for (Spell* s : spells_)
@@ -306,6 +341,18 @@ void RuneEngine::clearSpells()
 		delete(s);
 	}
 	spells_.clear();
+}
+
+void RuneEngine::createNewSpell()
+{
+	checkModifiedSpell();
+	clearSpells();
+	spells_.push_back(new Spell(0));
+}
+
+void RuneEngine::loadSpellFromFile()
+{
+	// TODO : get a file dialog to choose a file, then forward that file to open
 }
 
 void RuneEngine::addNewRune()

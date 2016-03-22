@@ -23,12 +23,7 @@ namespace Runes
 		rightRightLayout_.addWidget(&description_,10);
 
 		// Filling the list
-		QStringList list;
-		for (UserRunesContainer::iterator it = userRunes_.begin(); it != userRunes_.end(); ++it)
-		{
-			list << it->second.naturalName_;
-		}
-		model_.setStringList(list);
+		model_.setStringList(runeEngine_.getUserRuneList());
 
 		view_.setModel(&model_);
 		view_.setDragEnabled(false);

@@ -1,6 +1,7 @@
 #include "RuneItem.h"
 #include <QGraphicsScene>
 #include <QKeyEvent>
+#include <QInputDialog>
 
 namespace Runes
 {
@@ -87,6 +88,20 @@ namespace Runes
 		}
 	}
 
+	void RuneItem::chooseRune()
+	{
+		bool ok;
+		QString item = QInputDialog::getItem(NULL, tr("QInputDialog::getItem()"),
+			tr("Season:"), runeEngine_.getUserRuneList(), 0, false, &ok);
+		if (ok && !item.isEmpty())
+		{
+			int ind = runeEngine_.getUserRuneIndexByNaturalName(item);
+			if (ind != -1)
+				spell_->setRune(ind);
+		}
+		// else, do nothing
+	}
+
 	void RuneItem::focusInEvent(QFocusEvent * event)
 	{
 		this->setBrush(QBrush(colorSelected()));
@@ -140,6 +155,9 @@ namespace Runes
 			spell_->setRune(-1);
 			image_.setPixmap(QPixmap());
 			emit(changedSpell());
+			break;
+		case Qt::Key::Key_Enter:
+			chooseRune();
 			break;
 		}
 	}

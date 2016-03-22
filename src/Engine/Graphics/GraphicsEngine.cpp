@@ -18,25 +18,7 @@ namespace Runes
 		view_.setScene(&scene_);
 
 		// Loading rune images
-		{
-			QString runeFilePath = Paths::RUNES;
-			// Load all rune images
-			for (Rune r : globalRunes_)
-			{
-				QString name = r.descriptor_.naturalName_;
-
-				QPixmap runeImage;
-				if (runeImage.load(runeFilePath + name.toLower() + Paths::IMAGEEXTENSION))
-				{
-					runeSprites_.push_back(runeImage);
-				}
-				else
-				{
-					cout << "ERROR : couldn't load " << (runeFilePath + name.toLower() + Paths::IMAGEEXTENSION).toStdString() << endl;
-					abort();
-				}
-			}
-		}
+		reloadSprites();
 		
 		// Setting up the scene
 		Spell* s = runeEngine_.getCurrentSpell();
@@ -68,6 +50,28 @@ namespace Runes
 	{
 		isText_ = !isText_;
 		currentSpellItem_->setIsText(isText_);
+	}
+
+	void GraphicsEngine::reloadSprites()
+	{
+		runeSprites_.clear();
+		QString runeFilePath = Paths::RUNES;
+		// Load all rune images
+		for (Rune r : globalRunes_)
+		{
+			QString name = r.descriptor_.naturalName_;
+
+			QPixmap runeImage;
+			if (runeImage.load(runeFilePath + name.toLower() + Paths::IMAGEEXTENSION))
+			{
+				runeSprites_.push_back(runeImage);
+			}
+			else
+			{
+				cout << "ERROR : couldn't load " << (runeFilePath + name.toLower() + Paths::IMAGEEXTENSION).toStdString() << endl;
+				abort();
+			}
+		}
 	}
 
 	void GraphicsEngine::drawSpell(Spell* s)

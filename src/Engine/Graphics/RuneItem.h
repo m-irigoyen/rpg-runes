@@ -31,6 +31,8 @@ namespace Runes
 
 		virtual void clearItem() override;
 
+		virtual void chooseRune();
+
 	signals:
 		void requestRedraw();
 

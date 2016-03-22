@@ -22,14 +22,19 @@ namespace Runes
 		rightRightLayout_.addWidget(&ancientName_);
 		rightRightLayout_.addWidget(&name_);
 		rightRightLayout_.addWidget(&description_, 10);
-		rightRightLayout_.addWidget(&newRuneButton_);
+		rightRightLayout_.addLayout(&rightRightBottomLayout_);
+
+		rightRightBottomLayout_.addWidget(&newRuneButton_);
+		rightRightBottomLayout_.addWidget(&reloadImagesButton_);
 
 		newRuneButton_.setText("Add a new rune");
 
 		// Filling the list
 		initList();
 
-		// Connecting slots
+		// Connecting button slots
+
+		// Connecting view slots
 		connect(&view_, SIGNAL(clicked(QModelIndex)),
 			this, SLOT(clicked(QModelIndex)));
 		connect(&name_, SIGNAL(textEdited(const QString&)),
@@ -79,16 +84,16 @@ namespace Runes
 
 	void RuneManager::initList()
 	{
-		QStringList list;
-		for (RunesContainer::iterator it = globalRunes_.begin(); it != globalRunes_.end(); ++it)
-		{
-			list << it->descriptor_.naturalName_;
-		}
-		model_.setStringList(list);
+		model_.setStringList(runeEngine_.getRuneList());
 
 		view_.setModel(&model_);
 		view_.setDragEnabled(false);
 		view_.show();
+	}
+
+	QPushButton* RuneManager::getReloadImagesButton()
+	{
+		return &reloadImagesButton_;
 	}
 
 	void RuneManager::fillData(QString name)

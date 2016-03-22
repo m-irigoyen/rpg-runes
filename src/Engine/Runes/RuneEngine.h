@@ -14,6 +14,7 @@ using namespace std;
 namespace Runes
 {
 	typedef bool Discovered;
+	typedef pair<int, RuneDescriptor> UserRune;
 	typedef map<int, RuneDescriptor> UserRunesContainer;
 	typedef vector<Rune> RunesContainer;
 
@@ -33,6 +34,8 @@ namespace Runes
 		// clear is called at the end of the application, or before changing profiles
 		void clear();
 
+		void checkSave();
+
 		// save / load spell
 		bool save(Spell& spell, QString name, QString userName);
 		bool load(Spell& spell, QString name, QString userName);
@@ -46,14 +49,20 @@ namespace Runes
 		Rune* getRuneByName(QString name);
 		Rune* getRuneByNaturalName(QString naturalName);
 		RuneDescriptor* getUserRuneByIndex(int index);
-		RuneDescriptor* getUserRuneByNaturalName(QString name);
+		RuneDescriptor* getUserRuneByNaturalName(QString naturalNme);
+		int getUserRuneIndexByNaturalName(QString naturalName);
 
 		Spell* getCurrentSpell();
 		vector<Spell*>& getSpells();
 		RunesContainer& getRunes();
 		UserRunesContainer& getUserRunes();
+		QStringList getRuneList();
+		QStringList getUserRuneList();
 
+		// Spells management
 		void clearSpells();
+		void createNewSpell();
+		void loadSpellFromFile();
 
 		// Rune Manager related stuff
 		

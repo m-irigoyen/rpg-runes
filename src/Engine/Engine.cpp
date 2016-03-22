@@ -51,7 +51,7 @@ namespace Runes
 
 	void Engine::closeEvent(QCloseEvent *event)
 	{
-		runeEngine_.clear(); // saving everything if there were changes
+		runeEngine_.checkSave(); // saving everything if there were changes
 		QMainWindow::closeEvent(event);
 	}
 
@@ -85,6 +85,9 @@ namespace Runes
 			dictionnaryWidget_->setAllowedAreas(Qt::DockWidgetAreas(Qt::DockWidgetArea::TopDockWidgetArea || Qt::DockWidgetArea::BottomDockWidgetArea));
 			dictionnaryWidget_->setWidget(runeManager_);
 			addDockWidget(Qt::TopDockWidgetArea, dictionnaryWidget_);
+
+			QObject::connect(runeManager_->getReloadImagesButton(), SIGNAL(clicked()),
+				&graphicsEngine_, SLOT(reloadSprites()));
 		}
 		else
 		{
