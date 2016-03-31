@@ -343,10 +343,10 @@ float SpellItem::getBiggestChildrenRadius()
 
 void SpellItem::updatePathsColor(QBrush brush)
 {
-	for (QGraphicsPathItem* p : paths_)
+	/*for (QGraphicsPathItem* p : paths_)
 	{
 		p->setBrush(brush);
-	}
+	}*/
 }
 
 void SpellItem::hoverEnterEvent(QGraphicsSceneHoverEvent * event)
@@ -486,6 +486,9 @@ void SpellItem::keyPressEvent(QKeyEvent * event)
 		spell_->addEmptyChild();
 		emit(changedSpell());
 		redraw();
+		break;
+	case Qt::Key::Key_Escape:
+		clearFocus();
 		break;
 	}
 }

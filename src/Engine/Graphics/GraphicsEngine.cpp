@@ -57,9 +57,9 @@ namespace Runes
 		runeSprites_.clear();
 		QString runeFilePath = Paths::RUNES;
 		// Load all rune images
-		for (Rune r : globalRunes_)
+		for (Rune* r : globalRunes_)
 		{
-			QString name = r.descriptor_.naturalName_;
+			QString name = r->descriptor_.naturalName_;
 
 			QPixmap runeImage;
 			if (runeImage.load(runeFilePath + name.toLower() + Paths::IMAGEEXTENSION))
@@ -69,7 +69,7 @@ namespace Runes
 			else
 			{
 				cout << "ERROR : couldn't load " << (runeFilePath + name.toLower() + Paths::IMAGEEXTENSION).toStdString() << endl;
-				abort();
+				runeSprites_.push_back(runeImage);
 			}
 		}
 	}

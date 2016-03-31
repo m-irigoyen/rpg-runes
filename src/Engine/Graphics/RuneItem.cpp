@@ -53,8 +53,12 @@ namespace Runes
 		{
 			// Setting the text
 			text_.setParentItem(this);
-			RuneDescriptor& rd = userRunes_->at(spell_->getRune()); 
-			text_.setText(rd.naturalName_);
+			RuneDescriptor* rd = NULL;
+			if (runeEngine_.isMasterMode())
+				rd = &runes_->at(spell_->getRune())->descriptor_;
+			else
+				rd = &userRunes_->at(spell_->getRune());
+			text_.setText(rd->naturalName_);
 			text_.setPos(-text_.boundingRect().width() / 2, -text_.boundingRect().height() / 2);
 			text_.hide();
 
@@ -91,15 +95,17 @@ namespace Runes
 	void RuneItem::chooseRune()
 	{
 		bool ok;
-		QString item = QInputDialog::getItem(NULL, tr("QInputDialog::getItem()"),
-			tr("Season:"), runeEngine_.getUserRuneList(), 0, false, &ok);
+		QWidget* w = new QWidget();
+		QString item = QInputDialog::getItem(w, tr("Choose a rune"),	tr("TASOEUR:"), runeEngine_.getUserRuneList(), 0, false, &ok);
+		delete(w);
 		if (ok && !item.isEmpty())
 		{
 			int ind = runeEngine_.getUserRuneIndexByNaturalName(item);
 			if (ind != -1)
 				spell_->setRune(ind);
+			emit(changedSpell());
+			emit(requestRedraw());
 		}
-		// else, do nothing
 	}
 
 	void RuneItem::focusInEvent(QFocusEvent * event)
@@ -157,7 +163,11 @@ namespace Runes
 			emit(changedSpell());
 			break;
 		case Qt::Key::Key_Enter:
-			chooseRune();
+		case Qt::Key::Key_Return:
+			chooseRune();			
+			break;
+		case Qt::Key::Key_Escape:
+			clearFocus();
 			break;
 		}
 	}

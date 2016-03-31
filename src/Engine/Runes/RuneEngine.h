@@ -1,6 +1,8 @@
 #ifndef _RUNES_RUNEENGINE_H_
 #define _RUNES_RUNEENGINE_H_
 
+#define MASTER_NAME "M4st3R"
+
 #include "Spell.h"
 #include "Rune.h"
 #include "Engine/Users/User.h"
@@ -16,7 +18,7 @@ namespace Runes
 	typedef bool Discovered;
 	typedef pair<int, RuneDescriptor> UserRune;
 	typedef map<int, RuneDescriptor> UserRunesContainer;
-	typedef vector<Rune> RunesContainer;
+	typedef vector<Rune*> RunesContainer;
 
 	class RuneEngine : public QObject
 	{
@@ -29,7 +31,8 @@ namespace Runes
 		// Init the runes
 		void init();
 		void init(QString userName);
-		void testInit();
+		bool isUserValid(QString name);	// User init
+		bool isMasterMode();
 
 		// clear is called at the end of the application, or before changing profiles
 		void clear();
@@ -81,6 +84,7 @@ namespace Runes
 		RunesContainer runes_;	//!< Dictionnary of the runes
 		UserRunesContainer userRunes_;	//!< Personnal dictionnary of the User : his runes, his descriptions, his names, etc
 		vector<Spell*> spells_;	//!< All the spells currently loaded in memory
+		bool masterMode_;
 
 		// modified stuff
 		QString currentSpellName_;
@@ -91,6 +95,7 @@ namespace Runes
 		void checkModifiedMaster();
 		void checkModifiedSpell();
 		void checkModifiedProfile();
+		void clearRunes();
 	};
 }
 

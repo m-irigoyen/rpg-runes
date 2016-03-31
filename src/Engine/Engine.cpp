@@ -4,7 +4,7 @@ using namespace Qt;
 
 namespace Runes
 {
-	Engine::Engine() : runeEngine_(), graphicsEngine_(runeEngine_), masterMode_(false)
+	Engine::Engine() : runeEngine_(), graphicsEngine_(runeEngine_)
 	{
 		
 	}
@@ -23,16 +23,16 @@ namespace Runes
 
 			if (!ok)
 				this->close();
-		} while (!isUserValid(name));
+		} while (!runeEngine_.isUserValid(name));
 
-		//runeEngine_.init(name);
-		runeEngine_.testInit();
+		runeEngine_.init(name);
 		network_.init();
 
 		graphicsEngine_.init();
 		graphicsView_ = graphicsEngine_.getView();
 
-		graphicsView_->scale(0.25, 0.25);
+		graphicsView_->scale(0.5, 0.5);
+		//graphicsView_->scale(0.25, 0.25);
 		graphicsView_->show();
 
 		this->setCentralWidget(graphicsView_);
@@ -41,7 +41,7 @@ namespace Runes
 		this->createToolbars();
 		this->createDockWidgets();
 
-		// this->showMaximized();
+		this->showMaximized();
 	}
 
 	void Engine::run()
@@ -77,7 +77,7 @@ namespace Runes
 	void Engine::createDockWidgets()
 	{
 		// Dictionnary / master widget
-		if (masterMode_)
+		if (runeEngine_.isMasterMode())
 		{
 			runeManager_ = new RuneManager(runeEngine_, graphicsEngine_.getSprites());
 
@@ -86,7 +86,7 @@ namespace Runes
 			dictionnaryWidget_->setWidget(runeManager_);
 			addDockWidget(Qt::TopDockWidgetArea, dictionnaryWidget_);
 
-			QObject::connect(runeManager_->getReloadImagesButton(), SIGNAL(clicked()),
+			QObject::connect(runeManager_->getReloadButton(), SIGNAL(clicked()),
 				&graphicsEngine_, SLOT(reloadSprites()));
 		}
 		else
@@ -101,30 +101,7 @@ namespace Runes
 		}
 	}
 
-	bool Engine::isUserValid(QString name)
-	{
-		if (name.compare(MASTER_NAME) == 0)
-		{
-			masterMode_ = true;
-			return true;
-		}
 
-		bool result = false;
-		QXmlStreamReader stream;
-		QFile file;
-
-		if (Serializable::openFile("runes", Paths::RUNES, file))
-		{
-			Serializable::initReader(&file, stream);
-			stream.readNextStartElement();
-			if (stream.isStartElement() && stream.name() == "runes")
-			{
-				result = true;
-				file.close();
-			}
-		}
-		return result;
-	}
 
 }
 

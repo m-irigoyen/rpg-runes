@@ -38,7 +38,6 @@ namespace Runes
 	{
 		writer.setAutoFormatting(true);
 		writer.setDevice(file);
-
 		writer.writeStartDocument();
 		writer.writeDTD("<!DOCTYPE xml>");
 		writer.writeStartElement("xml");

@@ -68,7 +68,7 @@ namespace Runes
 
 	QColor AbstractItem::colorSelected()
 	{
-		return QColor(0, 155, 178);
+		return QColor(4, 76, 87);
 	}
 
 	QColor AbstractItem::colorBackground()

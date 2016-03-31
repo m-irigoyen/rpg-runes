@@ -39,8 +39,8 @@ void RuneEngine::init()
 
 				if (stream.isStartElement() && stream.name() == "rune")
 				{
-					Rune r;
-					r.unserialize(stream);
+					Rune* r = new Rune;
+					r->unserialize(stream);
 					runes_.push_back(r);
 				}
 			}
@@ -54,7 +54,7 @@ void RuneEngine::init()
 
 	if (spells_.empty())
 	{
-		this->spells_.push_back(new Spell(0));
+		this->spells_.push_back(new Spell(-1));
 		this->currentSpell_ = spells_.at(0);
 		this->currentSpellName_ = "";
 	}
@@ -67,17 +67,34 @@ void RuneEngine::init(QString userName)
 
 }
 
-void RuneEngine::testInit()
+bool RuneEngine::isUserValid(QString name)
 {
-	init("Edrevan");
-	Spell* s = new Spell(1);
-	s->addComponent(new Spell(2));
-	s->addComponent(new Spell(2));
-	s->addComponent(new Spell(2));
-	s->addChild(new Spell(0));
-	s->addChild(new Spell(1));
-	s->addChild(new Spell(2));
-	currentSpell_->addComponent(s);
+	if (name.compare(MASTER_NAME) == 0)
+	{
+		masterMode_ = true;
+		return true;
+	}
+
+	bool result = false;
+	QXmlStreamReader stream;
+	QFile file;
+
+	if (Serializable::openFile("runes", Paths::RUNES, file))
+	{
+		Serializable::initReader(&file, stream);
+		stream.readNextStartElement();
+		if (stream.isStartElement() && stream.name() == "runes")
+		{
+			result = true;
+			file.close();
+		}
+	}
+	return result;
+}
+
+bool RuneEngine::isMasterMode()
+{
+	return masterMode_;
 }
 
 void RuneEngine::clear()
@@ -100,6 +117,9 @@ void RuneEngine::checkSave()
 
 bool RuneEngine::save(Spell& spell, QString name, QString userName)
 {
+	if (userName.compare(MASTER_NAME) == 0)
+		userName = "Global";
+
 	QXmlStreamWriter stream;
 	QFile file;
 	if (Serializable::openFile(name, Paths::SPELLS + userName + "/", file))
@@ -174,6 +194,13 @@ bool RuneEngine::loadRuneDictionnary(QString userName)
 	QXmlStreamReader stream;
 	QFile file;
 
+	if (userName.compare(MASTER_NAME) == 0)
+	{
+		currentUserName_ = userName;
+		return true;
+	}
+		
+
 	if (Serializable::openFile("profile", Paths::USERS + userName + "/", file))
 	{
 		Serializable::initReader(&file, stream);
@@ -206,6 +233,7 @@ bool RuneEngine::loadRuneDictionnary(QString userName)
 		cout << "RuneEngine::init : failed to load user runes!" << endl;
 		return false;
 	}
+	currentUserName_ = userName;
 	return true;
 }
 
@@ -215,16 +243,15 @@ bool RuneEngine::saveMasterRuneDictionnary()
 	QFile file;
 	if (Serializable::openFile("runes", Paths::RUNES, file))
 	{
-		Serializable::initWriter(&file, stream);
 		file.resize(0);
+		Serializable::initWriter(&file, stream);
+		
 
 		// Saving user runes
 		stream.writeStartElement("runes");
 
 		for (RunesContainer::iterator it = runes_.begin(); it != runes_.end(); ++it)
-		{
-			it->serialize(stream);
-		}
+			(*it)->serialize(stream);
 	}
 	else
 	{
@@ -242,27 +269,27 @@ Rune* RuneEngine::getRune(int index)
 {
 	if (index >= 0 && index < runes_.size())
 	{
-		return &runes_[index];
+		return runes_[index];
 	}
 	return NULL;
 }
 
 Rune* RuneEngine::getRuneByName(QString name)
 {
-	for (Rune r : runes_)
+	for (Rune* r : runes_)
 	{
-		if (r.descriptor_.name_.compare(name) == 0)
-			return &r;
+		if (r->descriptor_.name_.compare(name) == 0)
+			return r;
 	}
 	return NULL;
 }
 
 Rune* RuneEngine::getRuneByNaturalName(QString naturalName)
 {
-	for (Rune r : runes_)
+	for (Rune *r : runes_)
 	{
-		if (r.descriptor_.naturalName_.compare(naturalName) == 0)
-			return &r;
+		if (r->descriptor_.naturalName_.compare(naturalName) == 0)
+			return r;
 	}
 	return NULL;
 }
@@ -287,10 +314,21 @@ RuneDescriptor* RuneEngine::getUserRuneByNaturalName(QString naturalName)
 
 int RuneEngine::getUserRuneIndexByNaturalName(QString naturalName)
 {
-	for (UserRunesContainer::iterator it = userRunes_.begin(); it != userRunes_.end(); ++it)
+	if (currentUserName_.compare(MASTER_NAME) == 0)
 	{
-		if (it->second.naturalName_.compare(naturalName) == 0)
-			return it->first;
+		for (int i = 0; i < runes_.size(); ++i)
+		{
+			if (runes_[i]->descriptor_.naturalName_.compare(naturalName) == 0)
+				return i;
+		}
+	}
+	else
+	{
+		for (UserRunesContainer::iterator it = userRunes_.begin(); it != userRunes_.end(); ++it)
+		{
+			if (it->second.naturalName_.compare(naturalName) == 0)
+				return it->first;
+		}
 	}
 	return -1;
 }
@@ -318,14 +356,17 @@ UserRunesContainer& RuneEngine::getUserRunes()
 QStringList RuneEngine::getRuneList()
 {
 	QStringList list;
-	for (Rune r : runes_)
-		list << r.descriptor_.naturalName_;
+	for (Rune* r : runes_)
+		list << r->descriptor_.naturalName_;
 
 	return list;
 }
 
 QStringList RuneEngine::getUserRuneList()
 {
+	if (currentUserName_.compare(MASTER_NAME) == 0)
+		return this->getRuneList();
+
 	QStringList list;
 	for (UserRune ur : userRunes_)
 		list << ur.second.naturalName_;
@@ -357,7 +398,7 @@ void RuneEngine::loadSpellFromFile()
 
 void RuneEngine::addNewRune()
 {
-	Rune r(runes_.size(), RuneDescriptor("newRune", "newRune", "newRune"));
+	Rune* r = new Rune(runes_.size(), RuneDescriptor("newRune", "newRune", "newRune"));
 	runes_.push_back(r);
 	changedRunes();
 }
@@ -453,6 +494,15 @@ void RuneEngine::checkModifiedProfile()
 			break;
 		}
 	}
+}
+
+void RuneEngine::clearRunes()
+{
+	for (Rune* r : runes_)
+	{
+		delete(r);
+	}
+	runes_.clear();
 }
 
 }

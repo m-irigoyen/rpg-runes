@@ -53,7 +53,7 @@ namespace Runes
 		// EVENTS
 		virtual void hoverEnterEvent(QGraphicsSceneHoverEvent * event);
 		virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent * event);
-		void mousePressEvent(QGraphicsSceneMouseEvent * event);
+		virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
 
 	signals:
 		void changedSpell();

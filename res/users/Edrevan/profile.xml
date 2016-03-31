@@ -6,12 +6,6 @@
 			<rune index="0">
 				<runeDescriptor name="" naturalName="Continuité" description="ca fait continuer les trucs"/>
 			</rune>
-			<rune index="1">
-				<runeDescriptor name="" naturalName="Lumière" description="AGit sur la lumière"/>
-			</rune>
-			<rune index="2">
-				<runeDescriptor name="" naturalName="Ombre" description="Devine?"/>
-			</rune>
 		</runes>
 	</user>
 </xml>

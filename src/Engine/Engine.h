@@ -14,7 +14,7 @@
 #include <QDockWidget>
 #include <QInputDialog>
 
-#define MASTER_NAME "M4st3R"
+
 
 using namespace Qt;
 
@@ -48,9 +48,6 @@ namespace Runes
 		RuneManager* runeManager_;
 		QDockWidget* dictionnaryWidget_;
 
-		// Mode
-		bool masterMode_;
-
 		//------------------
 		// Private functions
 
@@ -67,8 +64,7 @@ namespace Runes
 		//! @brief Creates dock widgets
 		void createDockWidgets();
 
-		// User init
-		bool isUserValid(QString name);
+		
 	};
 }
 

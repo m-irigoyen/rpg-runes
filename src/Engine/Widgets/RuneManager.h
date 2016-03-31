@@ -30,18 +30,21 @@ namespace Runes
 		public slots:
 
 		void clicked(QModelIndex index);
+		void currentChanged(QModelIndex current, QModelIndex previous);
 		void editedName(const QString& text);
 		void editedAncientName(const QString& text);
 		void editedDescription(const QString& text);
 
-		void addNewRune();
 		void initList();
 
-		QPushButton* getReloadImagesButton();
+		QPushButton* getReloadButton();
 
 	signals:
 		void runesUpdated();
 		void runeImagesUpdated();
+
+	public slots :
+		void reload();
 
 	protected:
 		// References
@@ -55,23 +58,31 @@ namespace Runes
 		QVBoxLayout rightRightLayout_;	//!< Right right : two parts. Top is the name, bottom the description
 		QHBoxLayout rightRightBottomLayout_;	//!< The two buttons
 
+		QHBoxLayout nameLayout_;
+		QHBoxLayout ancientNameLayout_;
+		QHBoxLayout descriptionLayout_;
+
 		// Widgets
 		QListView view_;
 		QLabel image_;
 		QLineEdit name_;
 		QLineEdit ancientName_;
 		QLineEdit description_;
+		QLabel nameLabel_;
+		QLabel ancientNameLabel_;
+		QLabel descriptionLabel_;
 		QPushButton newRuneButton_;
-		QPushButton reloadImagesButton_;
+		QPushButton reloadButton_;
 
 		// Rune list
 		QStringListModel model_;
 
 		// Modification
-		Rune* currentRune_;
+		RuneDescriptor* currentDescriptor_;
 
 		// helper functions
 		void fillData(QString name);
+		QModelIndex currentlyClicked;
 	};
 }
 

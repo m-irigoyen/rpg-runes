@@ -16,9 +16,7 @@ namespace Runes
 #elif RELEASE
 		const string RESOURCES = "res/";
 #endif
-		const QString SPELLS = "spells/";
-		const QString IMAGES(RESOURCES + "images/");
-		const QString SOUNDS(RESOURCES + "sounds/");
+		const QString SPELLS(RESOURCES + "spells/");
 		const QString RUNES(RESOURCES + "runes/");
 		const QString USERS(RESOURCES + "users/");
 		const QString EXTENSION(".xml");
