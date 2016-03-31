@@ -16,6 +16,13 @@ namespace Runes
 		stream.writeStartElement("spell");
 		stream.writeAttribute(QXmlStreamAttribute("rune", QString::number(this->centerRune_)));
 		
+		for (Spell* component : components_)
+		{
+			stream.writeStartElement("components");
+			component->serialize(stream);
+			stream.writeEndElement();
+		}
+
 		for (Spell* child : children_)
 		{
 			stream.writeStartElement("children");
@@ -37,6 +44,18 @@ namespace Runes
 			{
 				this->centerRune_ = attr.value().toInt();
 			}
+		}
+
+		// components
+		Q_ASSERT(stream.isStartElement() && stream.name() == "components");
+		stream.readNextStartElement();
+		while (stream.name() == "spell")
+		{
+			Spell* s = new Spell();
+			components_.push_back(s);
+			s->unserialize(stream);
+
+			stream.readNextStartElement();
 		}
 
 		// children
