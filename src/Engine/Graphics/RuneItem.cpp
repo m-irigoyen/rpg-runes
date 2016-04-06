@@ -2,6 +2,7 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QInputDialog>
+#include <QApplication>
 
 namespace Runes
 {
@@ -95,9 +96,7 @@ namespace Runes
 	void RuneItem::chooseRune()
 	{
 		bool ok;
-		QWidget* w = new QWidget();
-		QString item = QInputDialog::getItem(w, tr("Choose a rune"),	tr("TASOEUR:"), runeEngine_.getUserRuneList(), 0, false, &ok);
-		delete(w);
+		QString item = QInputDialog::getItem(NULL, tr("Choose a rune"),	tr("Rune:"), runeEngine_.getUserRuneList(), 0, false, &ok);
 		if (ok && !item.isEmpty())
 		{
 			int ind = runeEngine_.getUserRuneIndexByNaturalName(item);
@@ -153,7 +152,10 @@ namespace Runes
 		case Qt::Key::Key_Plus:
 		case Qt::Key::Key_Insert:
 			// alternative add : add a child
-			spell_->addEmptyComponent();
+			if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
+				spell_->addEmptyChild();
+			else
+				spell_->addEmptyComponent();
 			emit(changedSpell());
 			emit(requestRedraw());
 			break;

@@ -48,6 +48,11 @@ namespace Runes
 		RuneManager* runeManager_;
 		QDockWidget* dictionnaryWidget_;
 
+		// Actions
+		QAction* openSpellAction_;
+		QAction* saveSpellAction_;
+		QAction* newSpellAction_;
+
 		//------------------
 		// Private functions
 

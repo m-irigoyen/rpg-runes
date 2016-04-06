@@ -24,6 +24,7 @@ namespace Runes
 		// Static stuff
 		//! @brief Opens the file, and creates a read only file
 		static bool openFile(QString fileName, QString filePath, QFile& file);
+		static bool openFile(QString filepath, QFile& file);
 
 		static void initReader(QFile* file, QXmlStreamReader& reader);
 		static void initWriter(QFile* file, QXmlStreamWriter& writer);

@@ -16,17 +16,19 @@ namespace Runes
 		stream.writeStartElement("spell");
 		stream.writeAttribute(QXmlStreamAttribute("rune", QString::number(this->centerRune_)));
 		
-		for (Spell* component : components_)
+		if (!components_.empty())
 		{
 			stream.writeStartElement("components");
-			component->serialize(stream);
+			for (Spell* component : components_)
+				component->serialize(stream);
 			stream.writeEndElement();
 		}
-
-		for (Spell* child : children_)
+		
+		if (!children_.empty())
 		{
 			stream.writeStartElement("children");
-			child->serialize(stream);
+			for (Spell* child : children_)
+				child->serialize(stream);
 			stream.writeEndElement();
 		}
 
@@ -36,40 +38,39 @@ namespace Runes
 
 	bool Spell::unserialize(QXmlStreamReader& stream)
 	{
-		Q_ASSERT(stream.isStartElement() && stream.name() == "spell");
-		stream.readNextStartElement();
-		for (const QXmlStreamAttribute &attr : stream.attributes())
+		if (stream.name() == "spell")
 		{
-			if (attr.name().toString() == QLatin1String("rune"))
+			for (const QXmlStreamAttribute &attr : stream.attributes())
 			{
-				this->centerRune_ = attr.value().toInt();
+				if (attr.name().toString() == QLatin1String("rune"))
+				{
+					this->centerRune_ = attr.value().toInt();
+				}
+			}
+			stream.readNextStartElement();
+
+			if (stream.name() == "components")
+			{
+				while (stream.readNextStartElement())
+				{
+					Spell* s = new Spell();
+					s->unserialize(stream);
+					components_.push_back(s);
+				}
+				stream.readNextStartElement();
+			}
+
+			if (stream.name() == "children")
+			{
+				while (stream.readNextStartElement())
+				{
+					Spell* s = new Spell();
+					s->unserialize(stream);
+					children_.push_back(s);
+				}
+				stream.readNextStartElement();
 			}
 		}
-
-		// components
-		Q_ASSERT(stream.isStartElement() && stream.name() == "components");
-		stream.readNextStartElement();
-		while (stream.name() == "spell")
-		{
-			Spell* s = new Spell();
-			components_.push_back(s);
-			s->unserialize(stream);
-
-			stream.readNextStartElement();
-		}
-
-		// children
-		Q_ASSERT(stream.isStartElement() && stream.name() == "children");
-		stream.readNextStartElement();
-		while (stream.name() == "spell")
-		{
-			Spell* s = new Spell();
-			children_.push_back(s);
-			s->unserialize(stream);
-
-			stream.readNextStartElement();
-		}
-
 		return true;
 	}
 
@@ -271,6 +272,7 @@ namespace Runes
 			delete(centerSpell_);
 			centerSpell_ = NULL;
 		}
+		centerIsSpell_ = false;
 
 		for (Spell* child : children_)
 		{

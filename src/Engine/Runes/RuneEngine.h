@@ -40,8 +40,9 @@ namespace Runes
 		void checkSave();
 
 		// save / load spell
-		bool save(Spell& spell, QString name, QString userName);
-		bool load(Spell& spell, QString name, QString userName);
+		bool saveSpell(Spell& spell, QString name, QString userName);
+		bool loadSpell(Spell& spell, QString name, QString userName);
+		bool loadSpell(Spell& spell, QString filepath);
 
 		// save / load user runes
 		bool saveRuneDictionnary(QString userName);
@@ -65,10 +66,11 @@ namespace Runes
 		// Spells management
 		void clearSpells();
 		void createNewSpell();
-		void loadSpellFromFile();
+		
 
 		// Rune Manager related stuff
-		
+	signals:
+		void redrawNeeded();
 
 	public slots:
 	void changedSpell();
@@ -78,6 +80,10 @@ namespace Runes
 	void saveChanges();
 
 	void addNewRune();
+
+	void loadSpellFromFile();
+	void newSpell();
+	void saveCurrentSpell();
 
 	private:
 		Spell* currentSpell_;	//!< The spell currently being editing (the top level spell)

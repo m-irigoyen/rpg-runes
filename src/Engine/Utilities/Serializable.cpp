@@ -19,6 +19,20 @@ namespace Runes
 		return true;
 	}
 
+	bool Serializable::openFile(QString filepath, QFile& file)
+	{
+		cout << "opening : " << filepath.toStdString() << endl;
+		file.setFileName(filepath);
+
+		if (!file.open(QIODevice::ReadWrite | QIODevice::Text))
+		{
+			// TODO : error code
+			cout << "ERROR : couldn't open file" << endl;
+			return false;
+		}
+		return true;
+	}
+
 	void Serializable::initReader(QFile* file, QXmlStreamReader& reader)
 	{
 		reader.setDevice(file);

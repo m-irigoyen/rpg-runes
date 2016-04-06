@@ -32,6 +32,7 @@ namespace Runes
 	public slots:
 		void toggleText();
 		void reloadSprites();
+		void redrawSpell();
 
 	private:
 		// Members

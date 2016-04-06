@@ -37,9 +37,12 @@ namespace Runes
 
 		this->setCentralWidget(graphicsView_);
 
+		connect(&runeEngine_, SIGNAL(redrawNeeded()), &graphicsEngine_, SLOT(redrawSpell()));
+
 		this->createMenus();
 		this->createToolbars();
 		this->createDockWidgets();
+		this->createActions();
 
 		this->showMaximized();
 	}
@@ -58,6 +61,21 @@ namespace Runes
 	void Engine::createActions()
 	{
 		//newAct = new QAction(QIcon(":/images/new.png"), tr("&New"), this);
+		openSpellAction_ = new QAction("Open spell", this);
+		openSpellAction_->setShortcut(QKeySequence::Open);
+		connect(openSpellAction_, SIGNAL(triggered()), &runeEngine_, SLOT(loadSpellFromFile()));
+
+		saveSpellAction_ = new QAction("Save spell", this);
+		saveSpellAction_->setShortcut(QKeySequence::Save);
+		connect(saveSpellAction_, SIGNAL(triggered()), &runeEngine_, SLOT(saveCurrentSpell()));
+
+		newSpellAction_ = new QAction("New spell", this);
+		newSpellAction_->setShortcut(QKeySequence::New);
+		connect(newSpellAction_, SIGNAL(triggered()), &runeEngine_, SLOT(newSpell()));
+
+		menus_file_->addAction(newSpellAction_);
+		menus_file_->addAction(openSpellAction_);
+		menus_file_->addAction(saveSpellAction_);
 	}
 
 	void Engine::createMenus()

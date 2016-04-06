@@ -30,7 +30,6 @@ namespace Runes
 		public slots:
 
 		void clicked(QModelIndex index);
-		void currentChanged(QModelIndex current, QModelIndex previous);
 		void editedName(const QString& text);
 		void editedAncientName(const QString& text);
 		void editedDescription(const QString& text);
@@ -38,13 +37,12 @@ namespace Runes
 		void initList();
 
 		QPushButton* getReloadButton();
+		void reload();
+
 
 	signals:
 		void runesUpdated();
 		void runeImagesUpdated();
-
-	public slots :
-		void reload();
 
 	protected:
 		// References

@@ -74,12 +74,27 @@ namespace Runes
 		}
 	}
 
+	void GraphicsEngine::redrawSpell()
+	{
+		if (currentSpellItem_ != NULL)
+		{
+			currentSpellItem_->clearItem();
+			delete(currentSpellItem_);
+			currentSpellItem_ = NULL;
+			scene_.clear();
+		}
+
+		drawSpell(runeEngine_.getCurrentSpell());
+	}
+
 	void GraphicsEngine::drawSpell(Spell* s)
 	{
 		if (currentSpellItem_ != NULL)
+		{
 			currentSpellItem_->clearItem();
-		scene_.clear();
-		delete(currentSpellItem_);
+			scene_.clear();
+			delete(currentSpellItem_);
+		}
 
 		currentSpellItem_ = new SpellItem(s, NULL, runeSprites_, runeEngine_, scene_);
 		currentSpellItem_->drawSpell();

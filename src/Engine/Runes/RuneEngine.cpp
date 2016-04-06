@@ -1,6 +1,7 @@
 #include "RuneEngine.h"
 
 #include <QInputDialog>
+#include <QFileDialog>
 
 namespace Runes
 {
@@ -115,7 +116,7 @@ void RuneEngine::checkSave()
 	checkModifiedSpell();
 }
 
-bool RuneEngine::save(Spell& spell, QString name, QString userName)
+bool RuneEngine::saveSpell(Spell& spell, QString name, QString userName)
 {
 	if (userName.compare(MASTER_NAME) == 0)
 		userName = "Global";
@@ -139,8 +140,15 @@ bool RuneEngine::save(Spell& spell, QString name, QString userName)
 	return true;
 }
 
-bool RuneEngine::load(Spell& spell, QString name, QString userName)
+bool RuneEngine::loadSpell(Spell& spell, QString name, QString userName)
 {
+	// check for unsaved changes
+	checkModifiedSpell();
+
+	if (userName.compare(MASTER_NAME) == 0)
+		userName = "Global";
+
+	// load the new spell
 	QXmlStreamReader stream;
 	QFile file;
 	if (Serializable::openFile(name, Paths::USERS + userName + "/" + Paths::SPELLS, file))
@@ -151,9 +159,36 @@ bool RuneEngine::load(Spell& spell, QString name, QString userName)
 
 		spell.unserialize(stream);
 		currentSpellName_ = name;
+		emit(redrawNeeded());
 		return true;
 	}
 	
+	return false;
+}
+
+bool RuneEngine::loadSpell(Spell& spell, QString filepath)
+{
+	// check for unsaved changes
+	checkModifiedSpell();
+
+	// load the new spell
+	QXmlStreamReader stream;
+	QFile file;
+	if (Serializable::openFile(filepath, file))
+	{
+		Serializable::initReader(&file, stream);
+
+		stream.readNextStartElement();
+		Q_ASSERT(stream.isStartElement() && stream.name() == "spell");
+
+		spell.unserialize(stream);
+
+		// Extracting spell name
+		currentSpellName_ = filepath.split("/").last();
+		emit(redrawNeeded());
+		return true;
+	}
+
 	return false;
 }
 
@@ -376,24 +411,39 @@ QStringList RuneEngine::getUserRuneList()
 
 void RuneEngine::clearSpells()
 {
-	for (Spell* s : spells_)
+	for (vector<Spell*>::iterator it = spells_.begin() + 1; it != spells_.end(); ++it)
 	{
-		s->clear();
-		delete(s);
+		(*it)->clear();
+		delete((*it));
 	}
-	spells_.clear();
+	spells_.resize(1);
+	spells_.at(0)->clear();
+	emit(redrawNeeded());
 }
 
 void RuneEngine::createNewSpell()
 {
 	checkModifiedSpell();
 	clearSpells();
-	spells_.push_back(new Spell(0));
+	emit(redrawNeeded());
 }
 
 void RuneEngine::loadSpellFromFile()
 {
-	// TODO : get a file dialog to choose a file, then forward that file to open
+	QString pathToUserSpells = Paths::SPELLS;
+	pathToUserSpells += currentUserName_.compare(MASTER_NAME) == 0 ? "Global/" : currentUserName_ + "/";
+	/*if (currentUserName_.compare(MASTER_NAME) == 0)
+		pathToUserSpells += "Global/";
+	else
+		pathToUserSpells += currentUserName_ + "/";*/
+
+	QString fileName = QFileDialog::getOpenFileName(NULL, tr("Open spell"), pathToUserSpells, tr("Spell Files (*.xml)"));
+	if (!fileName.isEmpty())
+	{
+		// Clearing extension
+		loadSpell(*currentSpell_, fileName);
+	}
+	emit(redrawNeeded());
 }
 
 void RuneEngine::addNewRune()
@@ -401,6 +451,17 @@ void RuneEngine::addNewRune()
 	Rune* r = new Rune(runes_.size(), RuneDescriptor("newRune", "newRune", "newRune"));
 	runes_.push_back(r);
 	changedRunes();
+	emit(redrawNeeded());
+}
+
+void RuneEngine::newSpell()
+{
+	createNewSpell();
+}
+
+void RuneEngine::saveCurrentSpell()
+{
+	checkModifiedSpell();
 }
 
 void RuneEngine::changedSpell()
@@ -423,7 +484,7 @@ void RuneEngine::saveChanges()
 	if (modifiedRunes_)
 		saveMasterRuneDictionnary();
 	if (modifiedSpell_)
-		save(*currentSpell_, currentSpellName_, currentUserName_);
+		saveSpell(*currentSpell_, currentSpellName_, currentUserName_);
 	if (modifiedProfile_)
 		saveRuneDictionnary(currentUserName_);
 }
@@ -471,7 +532,7 @@ void RuneEngine::checkModifiedSpell()
 					currentSpellName_ = text;
 			}
 
-			save(*currentSpell_, currentSpellName_, currentUserName_);
+			saveSpell(*currentSpell_, currentSpellName_, currentUserName_);
 			break;
 		}
 	}

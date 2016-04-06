@@ -51,7 +51,6 @@ namespace Runes
 		// Connecting view slots
 		connect(&view_, SIGNAL(clicked(QModelIndex)), this, SLOT(clicked(QModelIndex)));
 		connect(&view_, SIGNAL(activated(QModelIndex)),	this, SLOT(clicked(QModelIndex)));
-		connect(&view_, SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
 		connect(&name_, SIGNAL(textEdited(const QString&)), this, SLOT(editedName(const QString&)));
 		connect(&ancientName_, SIGNAL(textEdited(const QString&)), this, SLOT(editedAncientName(const QString&)));
 		connect(&description_, SIGNAL(textEdited(const QString&)), this, SLOT(editedDescription(const QString&)));
@@ -73,11 +72,6 @@ namespace Runes
 		currentlyClicked = index;
 		QString data = model_.data(index, 0).toString();
 		fillData(data);
-	}
-
-	void RuneManager::currentChanged(QModelIndex current, QModelIndex previous)
-	{
-		this->clicked(current);
 	}
 
 	void RuneManager::editedName(const QString& text)

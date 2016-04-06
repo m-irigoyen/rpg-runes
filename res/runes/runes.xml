@@ -63,7 +63,7 @@
             <runeDescriptor name="newRune" naturalName="Copper" description="Affects copper."/>
         </rune>
         <rune index="20">
-            <runeDescriptor name="newRune" naturalName="Creation" description="Creates whatever is applied to it. The energy required is directly related to the complexity of the effects."/>
+            <runeDescriptor name="Wazal" naturalName="Creation" description="Creates whatever it applies on. The energy required is directly related to the complexity of the effects. If something is applied to the rune, the creation takes on these attributes. This can make for very practical uses (continuous creation, fast or slow creation), but also to pretty cool uses (fire creation : whatever is created is constructed by fire)"/>
         </rune>
         <rune index="21">
             <runeDescriptor name="newRune" naturalName="Death" description="Affects death."/>
@@ -183,7 +183,7 @@
             <runeDescriptor name="newRune" naturalName="Love" description="Affects the emotion love."/>
         </rune>
         <rune index="60">
-            <runeDescriptor name="newRune" naturalName="Loyalty" description="Affects the emotion loyalty."/>
+            <runeDescriptor name="newRune" naturalName="Loyalty" description="Affects the emotion loyalty. Whatever the Loyalty rune applies on becomes loyal to whatever applies on the Loyalty rune."/>
         </rune>
         <rune index="61">
             <runeDescriptor name="newRune" naturalName="Mammal" description="Affects all mammal creatures."/>
@@ -309,7 +309,7 @@
             <runeDescriptor name="newRune" naturalName="Two" description="Number two"/>
         </rune>
         <rune index="102">
-            <runeDescriptor name="newRune" naturalName="Ursid" description="Affects ursid creatures."/>
+            <runeDescriptor name="Urus" naturalName="Ursid" description="Affects ursid creatures."/>
         </rune>
         <rune index="103">
             <runeDescriptor name="newRune" naturalName="Vegetal" description="Affects plant life."/>
