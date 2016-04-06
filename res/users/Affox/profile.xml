@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<xml>
+	<user name="Affox">
+		<runes>
+			<rune index="6">
+				<runeDescriptor name="" naturalName="Attraction" description=""/>
+			</rune>
+			<rune index="18">
+				<runeDescriptor name="" naturalName="Continuité" description="ca fait continuer les trucs"/>
+			</rune>
+			<rune index="20">
+				<runeDescriptor name="" naturalName="Création" description=""/>
+			</rune>
+			<rune index="34">
+				<runeDescriptor name="" naturalName="Feu" description="Affecte le feu. Quand Feu est appliquée sur une autre rune, elle lui confère les propriétés du feu."/>
+			</rune>
+			<rune index="40">
+				<runeDescriptor name="" naturalName="Fragilité" description=""/>
+			</rune>
+			<rune index="43">
+				<runeDescriptor name="" naturalName="Chaleur" description=""/>
+			</rune>
+			<rune index="53">
+				<runeDescriptor name="" naturalName="Grand" description="Spécifieur de taille. 10 fois plus grand que Moyen."/>
+			</rune>
+			<rune index="57">
+				<runeDescriptor name="" naturalName="A" description=""/>
+			</rune>
+			<rune index="62">
+				<runeDescriptor name="" naturalName="Moyen" description="Spécifieur de taille. Moyen équivaut au diamètre du cercle du sort."/>
+			</rune>
+			<rune index="76">
+				<runeDescriptor name="" naturalName="Roche" description="Affecte la roche. Quand Roche est appliquée sur une autre rune, elle lui confère les propriétés de la roche."/>
+			</rune>
+			<rune index="79">
+				<runeDescriptor name="" naturalName="Graine" description="Affecte les graines."/>
+			</rune>
+			<rune index="81">
+				<runeDescriptor name="" naturalName="B" description=""/>
+			</rune>
+			<rune index="85">
+				<runeDescriptor name="" naturalName="Petit" description="Spécifieur de taille. 10 fois plus petit que Moyen."/>
+			</rune>
+			<rune index="87">
+				<runeDescriptor name="" naturalName="Solidité" description=""/>
+			</rune>
+			<rune index="93">
+				<runeDescriptor name="" naturalName="Souffre" description=""/>
+			</rune>
+			<rune index="99">
+				<runeDescriptor name="" naturalName="Minuscule" description="Spécifieur de taille. 10 fois plus petit que Petit"/>
+			</rune>
+			<rune index="104">
+				<runeDescriptor name="" naturalName="Eau" description="Affecte l'eau sous forme liquide. Quand Eau est appliquée sur une autre rune, elle lui confère les propriétés de l'eau."/>
+			</rune>
+			<rune index="105">
+				<runeDescriptor name="" naturalName="Bois" description="Affecte le bois."/>
+			</rune>
+		</runes>
+	</user>
+</xml>
