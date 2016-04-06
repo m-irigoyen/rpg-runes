@@ -44,6 +44,7 @@ namespace Runes
 		void focusInEvent(QFocusEvent * event);
 		void focusOutEvent(QFocusEvent * event);
 		void mousePressEvent(QGraphicsSceneMouseEvent * event);
+		void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
 		void keyPressEvent(QKeyEvent * event);
 	};
 }

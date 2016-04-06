@@ -73,9 +73,12 @@ namespace Runes
 		newSpellAction_->setShortcut(QKeySequence::New);
 		connect(newSpellAction_, SIGNAL(triggered()), &runeEngine_, SLOT(newSpell()));
 
+		discoverRuneAction_ = new QAction("Discover Rune", this);
+
 		menus_file_->addAction(newSpellAction_);
 		menus_file_->addAction(openSpellAction_);
 		menus_file_->addAction(saveSpellAction_);
+		menus_file_->addAction(discoverRuneAction_);
 	}
 
 	void Engine::createMenus()

@@ -110,7 +110,6 @@ namespace Runes
 	void RuneItem::focusInEvent(QFocusEvent * event)
 	{
 		this->setBrush(QBrush(colorSelected()));
-		//this->parentItem()->grabKeyboard();
 		this->scene()->update();
 	}
 
@@ -123,6 +122,12 @@ namespace Runes
 	void RuneItem::mousePressEvent(QGraphicsSceneMouseEvent * event)
 	{
 		this->setFocus(Qt::FocusReason::MouseFocusReason);
+	}
+
+	void RuneItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+	{
+		this->setFocus(Qt::FocusReason::MouseFocusReason);
+		this->chooseRune();
 	}
 
 	void RuneItem::keyPressEvent(QKeyEvent * event)

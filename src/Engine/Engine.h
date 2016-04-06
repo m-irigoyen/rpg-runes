@@ -14,8 +14,6 @@
 #include <QDockWidget>
 #include <QInputDialog>
 
-
-
 using namespace Qt;
 
 namespace Runes
@@ -52,6 +50,7 @@ namespace Runes
 		QAction* openSpellAction_;
 		QAction* saveSpellAction_;
 		QAction* newSpellAction_;
+		QAction* discoverRuneAction_;
 
 		//------------------
 		// Private functions

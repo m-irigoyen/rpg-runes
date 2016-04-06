@@ -6,325 +6,325 @@
             <runeDescriptor name="Ir" naturalName="Absorption" description="Absorbs whatever is applied on it."/>
         </rune>
         <rune index="1">
-            <runeDescriptor name="newRune" naturalName="Affinity" description="Affects the affinity to magic."/>
+            <runeDescriptor name="Fel" naturalName="Affinity" description="Affects the affinity to magic."/>
         </rune>
         <rune index="2">
-            <runeDescriptor name="newRune" naturalName="Air" description="Affects air."/>
+            <runeDescriptor name="Ithro" naturalName="Air" description="Affects air."/>
         </rune>
         <rune index="3">
-            <runeDescriptor name="newRune" naturalName="Animal" description="Affects all animals (basically, everything with a brain.)"/>
+            <runeDescriptor name="Az" naturalName="Animal" description="Affects all animals (basically, everything with a brain.)"/>
         </rune>
         <rune index="4">
-            <runeDescriptor name="newRune" naturalName="Antimony" description="Affects antimony."/>
+            <runeDescriptor name="Dagaz" naturalName="Antimony" description="Affects antimony."/>
         </rune>
         <rune index="5">
-            <runeDescriptor name="newRune" naturalName="Arsenic" description="Affects arsenic."/>
+            <runeDescriptor name="Wol" naturalName="Arsenic" description="Affects arsenic."/>
         </rune>
         <rune index="6">
-            <runeDescriptor name="newRune" naturalName="Attraction" description="Attracts whatever is applied on it."/>
+            <runeDescriptor name="Fowola" naturalName="Attraction" description="Attracts whatever is applied on it."/>
         </rune>
         <rune index="7">
-            <runeDescriptor name="newRune" naturalName="Authorization" description="Processor authorization."/>
+            <runeDescriptor name="Kol" naturalName="Authorization" description="Processor authorization."/>
         </rune>
         <rune index="8">
-            <runeDescriptor name="newRune" naturalName="Bird" description="Affects bird animals."/>
+            <runeDescriptor name="Kor" naturalName="Bird" description="Affects bird animals."/>
         </rune>
         <rune index="9">
-            <runeDescriptor name="newRune" naturalName="Blood" description="Affects blood."/>
+            <runeDescriptor name="Azal" naturalName="Blood" description="Affects blood."/>
         </rune>
         <rune index="10">
-            <runeDescriptor name="newRune" naturalName="Bovine" description="Affects bovine animals."/>
+            <runeDescriptor name="Yarik" naturalName="Bovine" description="Affects bovine animals."/>
         </rune>
         <rune index="11">
-            <runeDescriptor name="newRune" naturalName="Canine" description="Affects canine animals."/>
+            <runeDescriptor name="Ulfwe" naturalName="Canine" description="Affects canine animals."/>
         </rune>
         <rune index="12">
-            <runeDescriptor name="newRune" naturalName="Coal" description="Affects coal."/>
+            <runeDescriptor name="Geraz" naturalName="Coal" description="Affects coal."/>
         </rune>
         <rune index="13">
-            <runeDescriptor name="newRune" naturalName="Circle" description="Circle shape."/>
+            <runeDescriptor name="Ansuze" naturalName="Circle" description="Circle shape."/>
         </rune>
         <rune index="14">
-            <runeDescriptor name="newRune" naturalName="Caster" description="newRune"/>
+            <runeDescriptor name="Thursaz" naturalName="Caster" description="newRune"/>
         </rune>
         <rune index="15">
-            <runeDescriptor name="newRune" naturalName="Cold" description="Affects the temperature, specifically cold."/>
+            <runeDescriptor name="Fehu" naturalName="Cold" description="Affects the temperature, specifically cold."/>
         </rune>
         <rune index="16">
-            <runeDescriptor name="newRune" naturalName="Column" description="Column shape"/>
+            <runeDescriptor name="Uruz" naturalName="Column" description="Column shape"/>
         </rune>
         <rune index="17">
-            <runeDescriptor name="newRune" naturalName="Container" description="TODO"/>
+            <runeDescriptor name="Raidho" naturalName="Container" description="TODO"/>
         </rune>
         <rune index="18">
-            <runeDescriptor name="newRune" naturalName="Continuity" description="Affects the continuity of time. The spells it applies on have a continuous effect : it regulates the input of energy. The Continuity rune then acts as an energy storage, storing excess energy so that the spell continues to work after the energy source is cut."/>
+            <runeDescriptor name="Kenaz" naturalName="Continuity" description="Affects the continuity of time. The spells it applies on have a continuous effect : it regulates the input of energy. The Continuity rune then acts as an energy storage, storing excess energy so that the spell continues to work after the energy source is cut."/>
         </rune>
         <rune index="19">
-            <runeDescriptor name="newRune" naturalName="Copper" description="Affects copper."/>
+            <runeDescriptor name="Gebo" naturalName="Copper" description="Affects copper."/>
         </rune>
         <rune index="20">
             <runeDescriptor name="Wazal" naturalName="Creation" description="Creates whatever it applies on. The energy required is directly related to the complexity of the effects. If something is applied to the rune, the creation takes on these attributes. This can make for very practical uses (continuous creation, fast or slow creation), but also to pretty cool uses (fire creation : whatever is created is constructed by fire)"/>
         </rune>
         <rune index="21">
-            <runeDescriptor name="newRune" naturalName="Death" description="Affects death."/>
+            <runeDescriptor name="Wunjo" naturalName="Death" description="Affects death."/>
         </rune>
         <rune index="22">
-            <runeDescriptor name="newRune" naturalName="Demand" description="Processor demand."/>
+            <runeDescriptor name="Hagalaz" naturalName="Demand" description="Processor demand."/>
         </rune>
         <rune index="23">
-            <runeDescriptor name="newRune" naturalName="Destiny" description="Affects destiny"/>
+            <runeDescriptor name="Nautiz" naturalName="Destiny" description="Affects destiny"/>
         </rune>
         <rune index="24">
-            <runeDescriptor name="newRune" naturalName="Dome" description="Dome shape."/>
+            <runeDescriptor name="Isa" naturalName="Dome" description="Dome shape."/>
         </rune>
         <rune index="25">
-            <runeDescriptor name="newRune" naturalName="Doubt" description="Affects doubt."/>
+            <runeDescriptor name="Jera" naturalName="Doubt" description="Affects doubt."/>
         </rune>
         <rune index="26">
-            <runeDescriptor name="newRune" naturalName="Drell" description="Affects the Drell species."/>
+            <runeDescriptor name="Eiwhaz" naturalName="Drell" description="Affects the Drell species."/>
         </rune>
         <rune index="27">
-            <runeDescriptor name="newRune" naturalName="Dwarf" description="Affects the dwarf species."/>
+            <runeDescriptor name="Perthro" naturalName="Dwarf" description="Affects the dwarf species."/>
         </rune>
         <rune index="28">
-            <runeDescriptor name="newRune" naturalName="Elf" description="Affects the elf species"/>
+            <runeDescriptor name="Algiz" naturalName="Elf" description="Affects the elf species"/>
         </rune>
         <rune index="29">
-            <runeDescriptor name="newRune" naturalName="Emitter" description="Particular rune : allows to transmit the effects of the spell to another spell. Energy required for transfer is directly linked to the distance. Specific targeting is possible by modifying the rune with any other runes, to create an id."/>
+            <runeDescriptor name="Sowilo" naturalName="Emitter" description="Particular rune : allows to transmit the effects of the spell to another spell. Energy required for transfer is directly linked to the distance. Specific targeting is possible by modifying the rune with any other runes, to create an id."/>
         </rune>
         <rune index="30">
-            <runeDescriptor name="newRune" naturalName="Energy" description="Affects energy. Very useful for absorbing or forbidding energy."/>
+            <runeDescriptor name="Tiwaz" naturalName="Energy" description="Affects energy. Very useful for absorbing or forbidding energy."/>
         </rune>
         <rune index="31">
-            <runeDescriptor name="newRune" naturalName="Execute" description="Processor command."/>
+            <runeDescriptor name="Berkano" naturalName="Execute" description="Processor command."/>
         </rune>
         <rune index="32">
-            <runeDescriptor name="newRune" naturalName="Fear" description="Affects the emotion fear."/>
+            <runeDescriptor name="Mannaz" naturalName="Fear" description="Affects the emotion fear."/>
         </rune>
         <rune index="33">
-            <runeDescriptor name="newRune" naturalName="Feline" description="Affects feline animals."/>
+            <runeDescriptor name="Laguz" naturalName="Feline" description="Affects feline animals."/>
         </rune>
         <rune index="34">
-            <runeDescriptor name="newRune" naturalName="Fire" description="Affects fire."/>
+            <runeDescriptor name="Ingwaz" naturalName="Fire" description="Affects fire."/>
         </rune>
         <rune index="35">
-            <runeDescriptor name="newRune" naturalName="Fish" description="Affects fish animals."/>
+            <runeDescriptor name="Othala" naturalName="Fish" description="Affects fish animals."/>
         </rune>
         <rune index="36">
-            <runeDescriptor name="newRune" naturalName="Five" description="Number five."/>
+            <runeDescriptor name="Venetic" naturalName="Five" description="Number five."/>
         </rune>
         <rune index="37">
-            <runeDescriptor name="newRune" naturalName="Foreach" description="Foreach command"/>
+            <runeDescriptor name="Raetic" naturalName="Foreach" description="Foreach command"/>
         </rune>
         <rune index="38">
-            <runeDescriptor name="newRune" naturalName="ForgottenBeast" description="Affects forgotten beasts."/>
+            <runeDescriptor name="Bozen" naturalName="ForgottenBeast" description="Affects forgotten beasts."/>
         </rune>
         <rune index="39">
-            <runeDescriptor name="newRune" naturalName="Four" description="Number four."/>
+            <runeDescriptor name="Este" naturalName="Four" description="Number four."/>
         </rune>
         <rune index="40">
-            <runeDescriptor name="newRune" naturalName="Fragility" description="Affects the fragility of whatever is applied to it."/>
+            <runeDescriptor name="Magre" naturalName="Fragility" description="Affects the fragility of whatever is applied to it."/>
         </rune>
         <rune index="41">
-            <runeDescriptor name="newRune" naturalName="Gold" description="Affects gold."/>
+            <runeDescriptor name="Sondrio" naturalName="Gold" description="Affects gold."/>
         </rune>
         <rune index="42">
-            <runeDescriptor name="newRune" naturalName="Halfling" description="Affects the halfling species."/>
+            <runeDescriptor name="Lugano" naturalName="Halfling" description="Affects the halfling species."/>
         </rune>
         <rune index="43">
-            <runeDescriptor name="newRune" naturalName="Heat" description="Affects temperature, specifically hot."/>
+            <runeDescriptor name="Alu" naturalName="Heat" description="Affects temperature, specifically hot."/>
         </rune>
         <rune index="44">
-            <runeDescriptor name="newRune" naturalName="Hell" description="Specifies hell."/>
+            <runeDescriptor name="Birka" naturalName="Hell" description="Specifies hell."/>
         </rune>
         <rune index="45">
-            <runeDescriptor name="newRune" naturalName="Huge" description="Size specifier. Bigger than large."/>
+            <runeDescriptor name="Inum" naturalName="Huge" description="Size specifier. Bigger than large."/>
         </rune>
         <rune index="46">
-            <runeDescriptor name="newRune" naturalName="Human" description="Affects the human species"/>
+            <runeDescriptor name="Nio" naturalName="Human" description="Affects the human species"/>
         </rune>
         <rune index="47">
-            <runeDescriptor name="newRune" naturalName="Immobility" description="Affects movement. Very deadly : can actually stop more than just humans, it can stop everything. Like blood, or air. The more things are stopped, the more energy it requires."/>
+            <runeDescriptor name="Allar" naturalName="Immobility" description="Affects movement. Very deadly : can actually stop more than just humans, it can stop everything. Like blood, or air. The more things are stopped, the more energy it requires."/>
         </rune>
         <rune index="48">
-            <runeDescriptor name="newRune" naturalName="Interruption" description="Processor interruption"/>
+            <runeDescriptor name="Netr" naturalName="Interruption" description="Processor interruption"/>
         </rune>
         <rune index="49">
-            <runeDescriptor name="newRune" naturalName="Iron" description="Affects iron."/>
+            <runeDescriptor name="Geiri" naturalName="Iron" description="Affects iron."/>
         </rune>
         <rune index="50">
-            <runeDescriptor name="newRune" naturalName="Joy" description="Affects the emotion joy."/>
+            <runeDescriptor name="Sialfr" naturalName="Joy" description="Affects the emotion joy."/>
         </rune>
         <rune index="51">
-            <runeDescriptor name="newRune" naturalName="Khajiit" description="Affects the Khajiit species."/>
+            <runeDescriptor name="Mer" naturalName="Khajiit" description="Affects the Khajiit species."/>
         </rune>
         <rune index="52">
-            <runeDescriptor name="newRune" naturalName="Kobold" description="Affects the Kobold species."/>
+            <runeDescriptor name="Ooni" naturalName="Kobold" description="Affects the Kobold species."/>
         </rune>
         <rune index="53">
-            <runeDescriptor name="newRune" naturalName="Large" description="Size specifier. Bigger than medium, smaller than Huge."/>
+            <runeDescriptor name="Hvers" naturalName="Large" description="Size specifier. Bigger than medium, smaller than Huge."/>
         </rune>
         <rune index="54">
-            <runeDescriptor name="newRune" naturalName="Lead" description="Affects the lead mineral."/>
+            <runeDescriptor name="Hann" naturalName="Lead" description="Affects the lead mineral."/>
         </rune>
         <rune index="55">
-            <runeDescriptor name="newRune" naturalName="Levitation" description="Basically works by inversing gravity. The more energy you put, the more gravity is reversed. It can even go into the negatives."/>
+            <runeDescriptor name="Af" naturalName="Levitation" description="Basically works by inversing gravity. The more energy you put, the more gravity is reversed. It can even go into the negatives."/>
         </rune>
         <rune index="56">
-            <runeDescriptor name="newRune" naturalName="Life" description="Affects life."/>
+            <runeDescriptor name="Renn" naturalName="Life" description="Affects life."/>
         </rune>
         <rune index="57">
-            <runeDescriptor name="newRune" naturalName="Light" description="Affects light."/>
+            <runeDescriptor name="Faoi" naturalName="Light" description="Affects light."/>
         </rune>
         <rune index="58">
-            <runeDescriptor name="newRune" naturalName="Lizard" description="Affects lizard creatures."/>
+            <runeDescriptor name="Hefir" naturalName="Lizard" description="Affects lizard creatures."/>
         </rune>
         <rune index="59">
-            <runeDescriptor name="newRune" naturalName="Love" description="Affects the emotion love."/>
+            <runeDescriptor name="Bazt" naturalName="Love" description="Affects the emotion love."/>
         </rune>
         <rune index="60">
-            <runeDescriptor name="newRune" naturalName="Loyalty" description="Affects the emotion loyalty. Whatever the Loyalty rune applies on becomes loyal to whatever applies on the Loyalty rune."/>
+            <runeDescriptor name="Havamal" naturalName="Loyalty" description="Affects the emotion loyalty. Whatever the Loyalty rune applies on becomes loyal to whatever applies on the Loyalty rune."/>
         </rune>
         <rune index="61">
-            <runeDescriptor name="newRune" naturalName="Mammal" description="Affects all mammal creatures."/>
+            <runeDescriptor name="Vndabr" naturalName="Mammal" description="Affects all mammal creatures."/>
         </rune>
         <rune index="62">
-            <runeDescriptor name="newRune" naturalName="Medium" description="Size specifier. Bigger than small, smaller than large."/>
+            <runeDescriptor name="Vio" naturalName="Medium" description="Size specifier. Bigger than small, smaller than large."/>
         </rune>
         <rune index="63">
-            <runeDescriptor name="newRune" naturalName="Mercury" description="Affects mercury."/>
+            <runeDescriptor name="Heifi" naturalName="Mercury" description="Affects mercury."/>
         </rune>
         <rune index="64">
-            <runeDescriptor name="newRune" naturalName="Number" description="Number."/>
+            <runeDescriptor name="Heidi" naturalName="Number" description="Number."/>
         </rune>
         <rune index="65">
-            <runeDescriptor name="newRune" naturalName="One" description="Number one"/>
+            <runeDescriptor name="Mik" naturalName="One" description="Number one"/>
         </rune>
         <rune index="66">
-            <runeDescriptor name="newRune" naturalName="OneOf" description="OneOf processor instruction"/>
+            <runeDescriptor name="Seldo" naturalName="OneOf" description="OneOf processor instruction"/>
         </rune>
         <rune index="67">
-            <runeDescriptor name="newRune" naturalName="Orc" description="Affects the Orc species."/>
+            <runeDescriptor name="Hornigi" naturalName="Orc" description="Affects the Orc species."/>
         </rune>
         <rune index="68">
-            <runeDescriptor name="newRune" naturalName="Pact" description="Creates or affects pacts. A magical Pact is not some light thing : it is a binding promised. Basically, breaking your pact costs you energy. Like a lot."/>
+            <runeDescriptor name="Nysta" naturalName="Pact" description="Creates or affects pacts. A magical Pact is not some light thing : it is a binding promised. Basically, breaking your pact costs you energy. Like a lot."/>
         </rune>
         <rune index="69">
-            <runeDescriptor name="newRune" naturalName="Primate" description="Affects all primate creatures."/>
+            <runeDescriptor name="Namek" naturalName="Primate" description="Affects all primate creatures."/>
         </rune>
         <rune index="70">
-            <runeDescriptor name="newRune" naturalName="Processor" description="The processor."/>
+            <runeDescriptor name="Vrnar" naturalName="Processor" description="The processor."/>
         </rune>
         <rune index="71">
-            <runeDescriptor name="newRune" naturalName="Propagation" description="Affects propagation of whatever is applied to it."/>
+            <runeDescriptor name="Opandi" naturalName="Propagation" description="Affects propagation of whatever is applied to it."/>
         </rune>
         <rune index="72">
-            <runeDescriptor name="newRune" naturalName="Rage" description="Affects the emotion rage."/>
+            <runeDescriptor name="Aptr" naturalName="Rage" description="Affects the emotion rage."/>
         </rune>
         <rune index="73">
-            <runeDescriptor name="newRune" naturalName="Receiver" description="The other side of the receiver rune."/>
+            <runeDescriptor name="Paoam" naturalName="Receiver" description="The other side of the receiver rune."/>
         </rune>
         <rune index="74">
-            <runeDescriptor name="newRune" naturalName="Refusal" description="Affects the will to refuse of whatever is applied to it."/>
+            <runeDescriptor name="Naudiz" naturalName="Refusal" description="Affects the will to refuse of whatever is applied to it."/>
         </rune>
         <rune index="75">
-            <runeDescriptor name="newRune" naturalName="Repel" description="Repels whatever is applied to it."/>
+            <runeDescriptor name="Perp" naturalName="Repel" description="Repels whatever is applied to it."/>
         </rune>
         <rune index="76">
-            <runeDescriptor name="newRune" naturalName="Rock" description="Affects rock."/>
+            <runeDescriptor name="Teiwaz" naturalName="Rock" description="Affects rock."/>
         </rune>
         <rune index="77">
-            <runeDescriptor name="newRune" naturalName="Rodent" description="Affects rodent creatures."/>
+            <runeDescriptor name="Asch" naturalName="Rodent" description="Affects rodent creatures."/>
         </rune>
         <rune index="78">
-            <runeDescriptor name="newRune" naturalName="Sadness" description="Affects the emotion sadness."/>
+            <runeDescriptor name="Birith" naturalName="Sadness" description="Affects the emotion sadness."/>
         </rune>
         <rune index="79">
-            <runeDescriptor name="newRune" naturalName="Seed" description="Affects seeds of whatever is applied to it. Created seeds  require energy to grow : the energy is directly proportionnal to the complexity of what is applied to the seed."/>
+            <runeDescriptor name="Khen" naturalName="Seed" description="Affects seeds of whatever is applied to it. Created seeds  require energy to grow : the energy is directly proportionnal to the complexity of what is applied to the seed."/>
         </rune>
         <rune index="80">
-            <runeDescriptor name="newRune" naturalName="Sense" description="Affects the senses and/or ability to sense."/>
+            <runeDescriptor name="Thorn" naturalName="Sense" description="Affects the senses and/or ability to sense."/>
         </rune>
         <rune index="81">
-            <runeDescriptor name="newRune" naturalName="Shadow" description="Affects shadow"/>
+            <runeDescriptor name="Eho" naturalName="Shadow" description="Affects shadow"/>
         </rune>
         <rune index="82">
-            <runeDescriptor name="newRune" naturalName="Signal" description="Processor signal."/>
+            <runeDescriptor name="Fehc" naturalName="Signal" description="Processor signal."/>
         </rune>
         <rune index="83">
-            <runeDescriptor name="newRune" naturalName="Silver" description="Affects silver element."/>
+            <runeDescriptor name="Gibu" naturalName="Silver" description="Affects silver element."/>
         </rune>
         <rune index="84">
-            <runeDescriptor name="newRune" naturalName="Slowness" description="Affects the slowness of whatever is applied to it."/>
+            <runeDescriptor name="Hagale" naturalName="Slowness" description="Affects the slowness of whatever is applied to it."/>
         </rune>
         <rune index="85">
-            <runeDescriptor name="newRune" naturalName="Small" description="Size modifier. Bigger than tiny, smaller than medium."/>
+            <runeDescriptor name="His" naturalName="Small" description="Size modifier. Bigger than tiny, smaller than medium."/>
         </rune>
         <rune index="86">
-            <runeDescriptor name="newRune" naturalName="Smell" description="Affects the sense of smell."/>
+            <runeDescriptor name="Gilch" naturalName="Smell" description="Affects the sense of smell."/>
         </rune>
         <rune index="87">
-            <runeDescriptor name="newRune" naturalName="Solidity" description="Affects the solidity of whatever is applied to it."/>
+            <runeDescriptor name="Not" naturalName="Solidity" description="Affects the solidity of whatever is applied to it."/>
         </rune>
         <rune index="88">
-            <runeDescriptor name="newRune" naturalName="Sound" description="Affects the sound"/>
+            <runeDescriptor name="Othil" naturalName="Sound" description="Affects the sound"/>
         </rune>
         <rune index="89">
-            <runeDescriptor name="newRune" naturalName="Speed" description="Affects the speed of whatever is applied to it."/>
+            <runeDescriptor name="Rehit" naturalName="Speed" description="Affects the speed of whatever is applied to it."/>
         </rune>
         <rune index="90">
-            <runeDescriptor name="newRune" naturalName="Spell" description="Affects active spells in the area of effect."/>
+            <runeDescriptor name="Suhil" naturalName="Spell" description="Affects active spells in the area of effect."/>
         </rune>
         <rune index="91">
-            <runeDescriptor name="newRune" naturalName="Sphere" description="Sphere shape."/>
+            <runeDescriptor name="Tac" naturalName="Sphere" description="Sphere shape."/>
         </rune>
         <rune index="92">
-            <runeDescriptor name="newRune" naturalName="Spire" description="The Spire."/>
+            <runeDescriptor name="Spyrr" naturalName="Spire" description="The Spire."/>
         </rune>
         <rune index="93">
-            <runeDescriptor name="newRune" naturalName="Sulfur" description="Affects sulfur."/>
+            <runeDescriptor name="Hurr" naturalName="Sulfur" description="Affects sulfur."/>
         </rune>
         <rune index="94">
-            <runeDescriptor name="newRune" naturalName="Summon" description="Concept of summoning. Affects summons, or allows summoning."/>
+            <runeDescriptor name="Ben" naturalName="Summon" description="Concept of summoning. Affects summons, or allows summoning."/>
         </rune>
         <rune index="95">
-            <runeDescriptor name="newRune" naturalName="Taste" description="Affects the sense of taste."/>
+            <runeDescriptor name="Helahe" naturalName="Taste" description="Affects the sense of taste."/>
         </rune>
         <rune index="96">
-            <runeDescriptor name="newRune" naturalName="Three" description="The number three"/>
+            <runeDescriptor name="Huyri" naturalName="Three" description="The number three"/>
         </rune>
         <rune index="97">
-            <runeDescriptor name="newRune" naturalName="Time" description="Affects time."/>
+            <runeDescriptor name="Ziu" naturalName="Time" description="Affects time."/>
         </rune>
         <rune index="98">
-            <runeDescriptor name="newRune" naturalName="Tin" description="Affects the mineral/metal tin."/>
+            <runeDescriptor name="Rad" naturalName="Tin" description="Affects the mineral/metal tin."/>
         </rune>
         <rune index="99">
-            <runeDescriptor name="newRune" naturalName="Tiny" description="Size specifier. Smaller than small."/>
+            <runeDescriptor name="Awes" naturalName="Tiny" description="Size specifier. Smaller than small."/>
         </rune>
         <rune index="100">
-            <runeDescriptor name="newRune" naturalName="Transmutation" description="Concept of transmutation. It is a middle rune : transmutes whatever it applies on on whatever is applied to it."/>
+            <runeDescriptor name="Pynn" naturalName="Transmutation" description="Concept of transmutation. It is a middle rune : transmutes whatever it applies on on whatever is applied to it."/>
         </rune>
         <rune index="101">
-            <runeDescriptor name="newRune" naturalName="Two" description="Number two"/>
+            <runeDescriptor name="Beorc" naturalName="Two" description="Number two"/>
         </rune>
         <rune index="102">
             <runeDescriptor name="Urus" naturalName="Ursid" description="Affects ursid creatures."/>
         </rune>
         <rune index="103">
-            <runeDescriptor name="newRune" naturalName="Vegetal" description="Affects plant life."/>
+            <runeDescriptor name="Kalc" naturalName="Vegetal" description="Affects plant life."/>
         </rune>
         <rune index="104">
-            <runeDescriptor name="newRune" naturalName="Water" description="Affects water element."/>
+            <runeDescriptor name="Bruech" naturalName="Water" description="Affects water element."/>
         </rune>
         <rune index="105">
-            <runeDescriptor name="newRune" naturalName="Wood" description="Affects wood."/>
+            <runeDescriptor name="Eskat" naturalName="Wood" description="Affects wood."/>
         </rune>
         <rune index="106">
-            <runeDescriptor name="newRune" naturalName="World" description="Affects a world-bubble."/>
+            <runeDescriptor name="Thorin" naturalName="World" description="Affects a world-bubble."/>
         </rune>
         <rune index="107">
-            <runeDescriptor name="newRune" naturalName="Zero" description="Number zero."/>
+            <runeDescriptor name="Bilbo" naturalName="Zero" description="Number zero."/>
         </rune>
     </runes>
 </xml>

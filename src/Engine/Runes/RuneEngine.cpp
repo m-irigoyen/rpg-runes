@@ -428,6 +428,36 @@ void RuneEngine::createNewSpell()
 	emit(redrawNeeded());
 }
 
+void RuneEngine::discoverRune()
+{
+	// The player must enter the rune's ancient name
+	bool ok;
+	QString text = QInputDialog::getText(NULL, tr("Discover rune"),
+		tr("Rune ancient name"), QLineEdit::Normal,
+		QDir::home().dirName(), &ok);
+	if (ok && !text.isEmpty())
+	{
+		// Find the rune by ancient name
+		Rune *r = this->getRuneByName(text);
+		if (r != NULL)
+		{
+			RuneDescriptor rd(text, "newRune", "");
+			// inserting the new rune in the user dictionnary
+			userRunes_.insert(std::make_pair(r->getIndex(), rd));
+
+			QMessageBox msgBox;
+			msgBox.setText("Added new rune : " + text);
+			msgBox.exec();
+		}
+		else
+		{
+			QMessageBox msgBox;
+			msgBox.setText("Couldn't find rune : " + text);
+			msgBox.exec();
+		}
+	}
+}
+
 void RuneEngine::loadSpellFromFile()
 {
 	QString pathToUserSpells = Paths::SPELLS;

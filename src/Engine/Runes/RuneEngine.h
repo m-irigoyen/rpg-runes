@@ -66,9 +66,10 @@ namespace Runes
 		// Spells management
 		void clearSpells();
 		void createNewSpell();
-		
 
 		// Rune Manager related stuff
+		void discoverRune();
+
 	signals:
 		void redrawNeeded();
 
