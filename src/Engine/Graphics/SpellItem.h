@@ -16,7 +16,11 @@ namespace Runes
 		Q_OBJECT
 	public:
 		// First constructor : only used for first item
-		SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine, QGraphicsScene& scene);
+		SpellItem(Spell* s,
+			AbstractItem* parent,
+			vector<QPixmap>& runeImages,
+			RuneEngine& runeEngine,
+			QGraphicsScene& scene);
 		// All other items take the parent's scene
 		SpellItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine);
 		~SpellItem();
@@ -59,6 +63,7 @@ namespace Runes
 		// Members
 		vector<SpellItem*> children_;
 		vector<SpellItem*> components_;
+		vector<SpellItem*> modifiers_;
 		SpellItem* innerSpell_;	// If the center part of this spell is another spell, that's a pointer to it
 		RuneItem* innerRune_;	// If the center part of this spell is a rune, that's a pointer to it
 

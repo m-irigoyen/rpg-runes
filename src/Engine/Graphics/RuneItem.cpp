@@ -6,7 +6,8 @@
 
 namespace Runes
 {
-	RuneItem::RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine) : AbstractItem(s, parent, runeImages, runeEngine)
+	RuneItem::RuneItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine)
+		: AbstractItem(s, parent, runeImages, runeEngine)
 	{
 
 	}
@@ -69,7 +70,8 @@ namespace Runes
 			image_.setPos(-_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS, -_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS);
 		}
 
-		this->setRect(-_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS, -_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS, _GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS * 2, _GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS * 2);
+		this->setRect(-_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS, -_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS,
+			_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS * 2, _GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS * 2);
 	}
 
 	void RuneItem::colorCenterPart(bool isCenterSpell)
@@ -96,7 +98,8 @@ namespace Runes
 	void RuneItem::chooseRune()
 	{
 		bool ok;
-		QString item = QInputDialog::getItem(NULL, tr("Choose a rune"),	tr("Rune:"), runeEngine_.getUserRuneList(), 0, false, &ok);
+		QString item = QInputDialog::getItem(NULL, tr("Choose a rune"),	tr("Rune:"),
+			runeEngine_.getUserRuneList(), 0, false, &ok);
 		if (ok && !item.isEmpty())
 		{
 			int ind = runeEngine_.getUserRuneIndexByNaturalName(item);
@@ -154,11 +157,24 @@ namespace Runes
 				emit(requestRedraw());
 			}
 			break;
+		case Qt::Key::Key_Minus:
+			// remove : remove last
+			if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
+				spell_->removeLastChild();
+			else if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier))
+				spell_->removeLastModifier();
+			else
+				spell_->removeLastComponent();
+			emit(changedSpell());
+			emit(requestRedraw());
+			break;
 		case Qt::Key::Key_Plus:
 		case Qt::Key::Key_Insert:
 			// alternative add : add a child
 			if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
 				spell_->addEmptyChild();
+			else if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier))
+				spell_->addEmptyModifier();
 			else
 				spell_->addEmptyComponent();
 			emit(changedSpell());
@@ -171,7 +187,8 @@ namespace Runes
 			break;
 		case Qt::Key::Key_Enter:
 		case Qt::Key::Key_Return:
-			chooseRune();			
+			chooseRune();
+			this->setFocus(Qt::FocusReason::OtherFocusReason);
 			break;
 		case Qt::Key::Key_Escape:
 			clearFocus();
@@ -184,6 +201,5 @@ namespace Runes
 		text_.setVisible(isText);
 		image_.setVisible(!isText);
 	}
-
 }
 

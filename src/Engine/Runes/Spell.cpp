@@ -32,6 +32,14 @@ namespace Runes
 			stream.writeEndElement();
 		}
 
+		if (!modifiers_.empty())
+		{
+			stream.writeStartElement("modifiers");
+			for (Spell* mod : modifiers_)
+				mod->serialize(stream);
+			stream.writeEndElement();
+		}
+
 		stream.writeEndElement();
 		return true;
 	}
@@ -67,6 +75,17 @@ namespace Runes
 					Spell* s = new Spell();
 					s->unserialize(stream);
 					children_.push_back(s);
+				}
+				stream.readNextStartElement();
+			}
+
+			if (stream.name() == "modifiers")
+			{
+				while (stream.readNextStartElement())
+				{
+					Spell* s = new Spell();
+					s->unserialize(stream);
+					modifiers_.push_back(s);
 				}
 				stream.readNextStartElement();
 			}
@@ -184,6 +203,12 @@ namespace Runes
 			children_.erase(it);
 	}
 
+	void Spell::removeLastChild()
+	{
+		if (!children_.empty())
+			children_.back()->destroy();
+	}
+
 	vector<Spell*>& Spell::getChildren()
 	{
 		return children_;
@@ -234,9 +259,90 @@ namespace Runes
 			components_.erase(it);
 	}
 
+	void Spell::removeLastComponent()
+	{
+		if (!components_.empty())
+			components_.back()->destroy();
+	}
+
 	vector<Spell*>& Spell::getComponents()
 	{
 		return components_;
+	}
+
+	bool Spell::isModifier()
+	{
+		if (parent_ != NULL && parent_->isModifier(this))
+			return true;
+		return false;
+	}
+
+	bool Spell::isModifier(Spell* s)
+	{
+		if (find(modifiers_.begin(), modifiers_.end(), s) != modifiers_.end())
+			return true;
+		return false;
+	}
+
+	void Spell::addModifier(Spell* modifier)
+	{
+		if (modifier == NULL)
+			return;
+		else if (modifier->isCenterSpell() || modifiers_.size() > NB_MAX_MODIFIERS)
+		{
+			delete (modifier);
+			return;
+		}
+
+		// Clearing previous parent
+		if (modifier->getParent() != NULL)
+			modifier->getParent()->removeWithoutClear(modifier);
+
+		modifier->setParent(this);
+		if (find(modifiers_.begin(), modifiers_.end(), modifier) == modifiers_.end())
+			modifiers_.push_back(modifier);
+		else
+			abort();
+	}
+
+	void Spell::addEmptyModifier()
+	{
+		Spell* s = new Spell();
+		s->setParent(this);
+		this->modifiers_.push_back(s);
+	}
+
+	void Spell::removeModifier(Spell* modifier)
+	{
+		if (modifier == NULL)
+			return;
+		vector<Spell*>::iterator it = find(modifiers_.begin(), modifiers_.end(), modifier);
+		if (it != modifiers_.end())
+		{
+			modifiers_.erase(it);
+			modifier->clear();
+			delete(modifier);
+		}
+	}
+
+	void Spell::removeModifierWithoutClear(Spell* modifier)
+	{
+		if (modifier == NULL)
+			return;
+		vector<Spell*>::iterator it = find(modifiers_.begin(), modifiers_.end(), modifier);
+		if (it != modifiers_.end())
+			modifiers_.erase(it);
+	}
+
+	void Spell::removeLastModifier()
+	{
+		if (!modifiers_.empty())
+			modifiers_.back()->destroy();
+	}
+
+	vector<Spell*>& Spell::getModifiers()
+	{
+		return modifiers_;
 	}
 
 	void Spell::remove(Spell* s, bool destroy)
@@ -286,31 +392,17 @@ namespace Runes
 			delete(comp);
 		}
 		components_.clear();
+		for (Spell* mod : modifiers_)
+		{
+			mod->clear();
+			delete(mod);
+		}
+		modifiers_.clear();
 	}
 
 	void Spell::destroy()
 	{
-		centerRune_ = -1;
-
-		if (centerSpell_ != NULL)
-		{
-			centerSpell_->clear();
-			delete(centerSpell_);
-			centerSpell_ = NULL;
-		}
-
-		for (Spell* child : children_)
-		{
-			child->clear();
-			delete(child);
-		}
-		children_.clear();
-		for (Spell* comp : components_)
-		{
-			comp->clear();
-			delete(comp);
-		}
-		components_.clear();
+		clear();
 
 		if (parent_ != NULL)
 		{

@@ -58,10 +58,10 @@ void SpellItem::drawSpell()
 	// Creating and positioning components and their paths
 	if (!spell_->getComponents().empty())
 	{
+		// Creating
 		vector<Spell*> spellComponents = spell_->getComponents();
 		for (Spell* comp : spellComponents)
 		{
-			// Components
 			SpellItem* ri = new SpellItem(comp, this, runeImages_, runeEngine_);
 			ri->drawSpell();
 			this->components_.push_back(ri);
@@ -70,11 +70,10 @@ void SpellItem::drawSpell()
 		// Positioning components
 		float componentRadius = this->getBiggestComponentRadius();
 		componentRadius += innerRadius + _GRAPHICS_SPELLITEM_DISTANCE;
-		int nbComponents = this->components_.size();
 		int i = 0;
 		for (SpellItem* ri : components_)
 		{
-			QPointF pos = getPositionOnSpell(i, nbComponents, componentRadius, this->pos());
+			QPointF pos = getPositionOnSpell(i, this->components_.size(), componentRadius, this->pos());
 			ri->setPos(pos);
 			this->positionPath(ri, innerRadius);
 			++i;
@@ -89,6 +88,7 @@ void SpellItem::drawSpell()
 	// Creating and positioning children and their paths
 	if (!spell_->getChildren().empty())
 	{
+		// Creating
 		vector<Spell*> spellChildren = spell_->getChildren();
 		for (Spell* child : spellChildren)
 		{
@@ -98,15 +98,38 @@ void SpellItem::drawSpell()
 			this->children_.push_back(ri);
 		}
 
+		// Positioning
 		float biggestChildRadius = this->getBiggestChildrenRadius();
 		biggestChildRadius += outerRadius + _GRAPHICS_SPELLITEM_DISTANCE;
-		float nbComponents = this->components_.size();
 		int i = 0;
 		for (SpellItem* ri : children_)
 		{
-			QPointF pos = getPositionOnSpell(i, components_.size(), biggestChildRadius, this->pos());
+			QPointF pos = getPositionOnSpell(i, children_.size(), biggestChildRadius, this->pos());
 			ri->setPos(pos);
 			this->positionPath(ri, outerRadius);
+			++i;
+		}
+	}
+
+	// Creating and positioning modifiers
+	if (!spell_->getModifiers().empty())
+	{
+		// Creating
+		vector<Spell*> spellModifiers = spell_->getModifiers();
+		for (Spell* mod : spellModifiers)
+		{
+			// Components
+			SpellItem* ri = new SpellItem(mod, this, runeImages_, runeEngine_);
+			ri->drawSpell();
+			this->modifiers_.push_back(ri);
+		}
+
+		// Positioning
+		int i = 0;
+		for (SpellItem* ri : modifiers_)
+		{
+			QPointF pos = getPositionOnSpell(i, modifiers_.size(), innerRadius, this->pos());
+			ri->setPos(pos);
 			++i;
 		}
 	}

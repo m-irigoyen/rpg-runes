@@ -5,6 +5,8 @@
 
 #include <vector>
 
+#define NB_MAX_MODIFIERS 10
+
 using namespace std;
 
 /*
@@ -16,7 +18,6 @@ using namespace std;
 	- If A is a component of B, then A's parent_ points to B, and A can be found in B's components_ vector.
 	- If A is a children of B, then A's parent_ points to B, and A can be found in B's chlidren_ vector.
 	- If A is the center part of B, then A's parent_ points to B, and B's centerSpell_ is a pointer to A.
-
 	
 	- A spell whose center part is a rune, and has no children and no components, is the equivalent of a simple rune.
 
@@ -51,6 +52,7 @@ namespace Runes
 		void addChild(Spell* child);
 		void removeChild(Spell* child);
 		void removeChildWithoutClear(Spell* child);
+		void removeLastChild();
 		vector<Spell*>& getChildren();
 
 		// Component management
@@ -58,7 +60,18 @@ namespace Runes
 		void addEmptyComponent();
 		void removeComponent(Spell* component);
 		void removeComponentWithoutClear(Spell* component);
+		void removeLastComponent();
 		vector<Spell*>& getComponents();
+
+		// Modifier management
+		bool isModifier();	// Returns true if this is a modifier of its parent spell
+		bool isModifier(Spell* s); // Returns true if s is a modifier of this
+		void addModifier(Spell* modifier);
+		void addEmptyModifier();
+		void removeModifier(Spell* modifier);
+		void removeModifierWithoutClear(Spell* modifier);
+		void removeLastModifier();
+		vector<Spell*>& getModifiers();
 
 		// helper 
 		//! @brief Search for the spell in both components and children, and remove it if found
@@ -80,8 +93,8 @@ namespace Runes
 		Spell* parent_;	// If this spell is a component, parent_ contains a pointer to the parent spell. If this spell is the center of another spell, then parent_ contains a poitner to that other spell
 		vector<Spell*> children_; //!< Children are spells that apply on this spell as a whole. They are not part of this spell.
 		vector<Spell*> components_;	//!< Components are spells that apply on the center part of this spell. Components are part of this spell.
+		vector<Spell*> modifiers_;	//!< Modifiers are runes applied on a spell. Only size or shape specifiers apply : the rest are used to define an ID for sender/receiver spells
 	};
 }
-
 
 #endif //_RUNES_SPELL_H_
