@@ -19,8 +19,15 @@ namespace Runes
 		rightLayout_.addWidget(&image_);
 		rightLayout_.addLayout(&rightRightLayout_, 5);
 
-		rightRightLayout_.addWidget(&name_);
-		rightRightLayout_.addWidget(&description_,10);
+		name_.setSizePolicy(QSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Maximum));
+		description_.setSizePolicy(QSizePolicy(QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Expanding));
+		nameLayout_.addWidget(&nameLabel_);
+		nameLayout_.addWidget(&name_);
+		descriptionLayout_.addWidget(&descriptionLabel_);
+		descriptionLayout_.addWidget(&description_);
+
+		rightRightLayout_.addLayout(&nameLayout_, 0);
+		rightRightLayout_.addLayout(&descriptionLayout_, 10);
 
 		// Filling the list
 		model_.setStringList(runeEngine_.getUserRuneList());

@@ -18,14 +18,11 @@ using namespace std;
 	- If A is a component of B, then A's parent_ points to B, and A can be found in B's components_ vector.
 	- If A is a children of B, then A's parent_ points to B, and A can be found in B's chlidren_ vector.
 	- If A is the center part of B, then A's parent_ points to B, and B's centerSpell_ is a pointer to A.
-
 	
 	- A spell whose center part is a rune, and has no children and no components, is the equivalent of a simple rune.
 
 	The top level spell cannot have children. It just can't
 */
-
-
 
 namespace Runes
 {
@@ -99,6 +96,5 @@ namespace Runes
 		vector<Spell*> modifiers_;	//!< Modifiers are runes applied on a spell. Only size or shape specifiers apply : the rest are used to define an ID for sender/receiver spells
 	};
 }
-
 
 #endif //_RUNES_SPELL_H_

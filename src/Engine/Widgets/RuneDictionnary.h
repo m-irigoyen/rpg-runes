@@ -42,12 +42,17 @@ namespace Runes
 		UserRunesContainer& userRunes_;
 		std::vector<QPixmap>& runeSprites_;
 
-		// Layout
+		// Layouts
 		QHBoxLayout mainLayout_;		//!< Main : two parts. Left is the list of runes, right is the display / edit
 		QHBoxLayout rightLayout_;		//!< Right : two parts. Left is the image, right the name/desc
 		QVBoxLayout rightRightLayout_;	//!< Right right : two parts. Top is the name, bottom the description
 
+		QHBoxLayout nameLayout_;
+		QHBoxLayout descriptionLayout_;
+
 		// Widgets
+		QLabel nameLabel_;
+		QLabel descriptionLabel_;
 		QListView view_;
 		QLabel image_;
 		QLineEdit name_;
