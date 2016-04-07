@@ -107,6 +107,7 @@ void RuneEngine::clear()
 		delete(s);
 	}
 	spells_.clear();
+	emit(redrawNeeded());
 }
 
 void RuneEngine::checkSave()
@@ -145,6 +146,8 @@ bool RuneEngine::loadSpell(Spell& spell, QString name, QString userName)
 	// check for unsaved changes
 	checkModifiedSpell();
 
+	clearSpells();
+
 	if (userName.compare(MASTER_NAME) == 0)
 		userName = "Global";
 
@@ -162,7 +165,6 @@ bool RuneEngine::loadSpell(Spell& spell, QString name, QString userName)
 		emit(redrawNeeded());
 		return true;
 	}
-	
 	return false;
 }
 
@@ -170,6 +172,8 @@ bool RuneEngine::loadSpell(Spell& spell, QString filepath)
 {
 	// check for unsaved changes
 	checkModifiedSpell();
+
+	clearSpells();
 
 	// load the new spell
 	QXmlStreamReader stream;
@@ -418,6 +422,7 @@ void RuneEngine::clearSpells()
 	}
 	spells_.resize(1);
 	spells_.at(0)->clear();
+	currentUserName_ = "";
 	emit(redrawNeeded());
 }
 
@@ -473,7 +478,6 @@ void RuneEngine::loadSpellFromFile()
 		// Clearing extension
 		loadSpell(*currentSpell_, fileName);
 	}
-	emit(redrawNeeded());
 }
 
 void RuneEngine::addNewRune()

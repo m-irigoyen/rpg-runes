@@ -6,7 +6,9 @@ namespace Runes
 {
 	bool Serializable::openFile(QString fileName, QString filePath, QFile& file)
 	{
-		QString finalPath = filePath + fileName + Paths::EXTENSION;
+		if (!fileName.contains(Paths::EXTENSION))
+			fileName += Paths::EXTENSION;
+		QString finalPath = filePath + fileName;
 		cout << "opening : " << finalPath.toStdString() << endl;
 		file.setFileName(finalPath);
 		
