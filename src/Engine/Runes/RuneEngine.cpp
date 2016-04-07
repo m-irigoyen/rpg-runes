@@ -6,7 +6,7 @@
 namespace Runes
 {
 
-	RuneEngine::RuneEngine() : currentSpell_(NULL), modifiedSpell_(false), modifiedProfile_(false), modifiedRunes_(false)
+	RuneEngine::RuneEngine() : currentSpell_(NULL), modifiedSpell_(false), modifiedProfile_(false), modifiedRunes_(false), masterMode_(false)
 {
 	this->init();
 }

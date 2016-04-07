@@ -29,8 +29,8 @@ namespace Runes
 	public slots:
 
 		void clicked(QModelIndex index);
-		void editedName(QString& text);
-		void editedDescription(QString& text);
+		void editedName(const QString& text);
+		void editedDescription(const QString& text);
 
 	signals:
 		void userRunesUpdated();
@@ -51,7 +51,7 @@ namespace Runes
 		QListView view_;
 		QLabel image_;
 		QLineEdit name_;
-		QTextEdit description_;
+		QLineEdit description_;
 
 		// Rune list
 		QStringListModel model_;

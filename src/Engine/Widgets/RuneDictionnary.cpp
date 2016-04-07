@@ -33,9 +33,9 @@ namespace Runes
 		connect(&view_, SIGNAL(clicked(QModelIndex)), 
 			this, SLOT(clicked(QModelIndex)));
 		connect(&name_, SIGNAL(textEdited(const QString&)),
-			this, SLOT(editedName(QString&)));
+			this, SLOT(editedName(const QString&)));
 		connect(&description_, SIGNAL(textEdited(const QString&)),
-			this, SLOT(editedDescription(QString&)));
+			this, SLOT(editedDescription(const QString&)));
 
 		connect(this, SIGNAL(userRunesUpdated()),
 			&runeEngine_, SLOT(changedProfile()));
@@ -52,13 +52,13 @@ namespace Runes
 		fillData(data);
 	}
 
-	void RuneDictionnary::editedName(QString& text)
+	void RuneDictionnary::editedName(const QString& text)
 	{
 		currentDescriptor->naturalName_ = text;
 		emit userRunesUpdated();
 	}
 
-	void RuneDictionnary::editedDescription(QString& text)
+	void RuneDictionnary::editedDescription(const QString& text)
 	{
 		currentDescriptor->description_ = text;
 		emit userRunesUpdated();
@@ -74,5 +74,4 @@ namespace Runes
 		name_.setText(currentDescriptor->naturalName_);
 		description_.setText(currentDescriptor->description_);
 	}
-
 }
