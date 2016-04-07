@@ -75,6 +75,7 @@ namespace Runes
 
 	public slots:
 	void changedSpell();
+	void changedSpellButDontRedraw();
 	void changedProfile();
 	void changedRunes();
 

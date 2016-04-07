@@ -26,6 +26,8 @@ namespace Runes
 		descriptionLayout_.addWidget(&descriptionLabel_);
 		descriptionLayout_.addWidget(&description_);
 
+		nameLabel_.setText("Natural Name : ");
+		descriptionLabel_.setText("Description : ");
 		rightRightLayout_.addLayout(&nameLayout_, 0);
 		rightRightLayout_.addLayout(&descriptionLayout_, 10);
 
@@ -35,6 +37,8 @@ namespace Runes
 		view_.setModel(&model_);
 		view_.setDragEnabled(false);
 		view_.show();
+		view_.setAcceptDrops(false);
+		view_.setDragEnabled(false);
 
 		// Connecting slots
 		connect(&view_, SIGNAL(clicked(QModelIndex)), 
@@ -75,9 +79,13 @@ namespace Runes
 	{
 		int i = 0;
 		currentDescriptor = runeEngine_.getUserRuneByNaturalName(name);
+		i = runeEngine_.getUserRuneIndexByNaturalName(name);
 
 		// Fill the display with corresponding values
-		image_.setPixmap(runeSprites_.at(i));
+		if (i < runeSprites_.size())
+			image_.setPixmap(runeSprites_.at(i));
+		else
+			image_.setPixmap(QPixmap());
 		name_.setText(currentDescriptor->naturalName_);
 		description_.setText(currentDescriptor->description_);
 	}

@@ -66,7 +66,7 @@ namespace Runes
 
 			// Displaying the rune
 			image_.setParentItem(this);
-			image_.setPixmap(runeImages_[spell_->getRune()]);
+			resetImage();
 			image_.setPos(-_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS, -_GRAPHICS_SPELLITEM_RUNE_IMAGERADIUS);
 		}
 
@@ -104,10 +104,22 @@ namespace Runes
 		{
 			int ind = runeEngine_.getUserRuneIndexByNaturalName(item);
 			if (ind != -1)
+			{
 				spell_->setRune(ind);
-			emit(changedSpell());
-			emit(requestRedraw());
+				resetImage();
+			}
+			else
+				image_.setPixmap(QPixmap());
+				
+			emit(changedSpellButDontRedraw());
+			update();
 		}
+	}
+
+	void RuneItem::resetImage()
+	{
+		// Setting image too
+		image_.setPixmap(runeImages_[spell_->getRune()]);
 	}
 
 	void RuneItem::focusInEvent(QFocusEvent * event)
@@ -147,14 +159,12 @@ namespace Runes
 				cout << "Clearing top level spell" << endl;
 				spell_->clear();
 				emit(changedSpell());
-				emit(requestRedraw());
 			}
 			else
 			{
 				cout << "Removing spell" << endl;
 				spellParent->remove(spell_);
 				emit(changedSpell());
-				emit(requestRedraw());
 			}
 			break;
 		case Qt::Key::Key_Minus:
@@ -166,7 +176,6 @@ namespace Runes
 			else
 				spell_->removeLastComponent();
 			emit(changedSpell());
-			emit(requestRedraw());
 			break;
 		case Qt::Key::Key_Plus:
 		case Qt::Key::Key_Insert:
@@ -178,7 +187,6 @@ namespace Runes
 			else
 				spell_->addEmptyComponent();
 			emit(changedSpell());
-			emit(requestRedraw());
 			break;
 		case Qt::Key::Key_Back:
 			spell_->setRune(-1);
@@ -188,7 +196,7 @@ namespace Runes
 		case Qt::Key::Key_Enter:
 		case Qt::Key::Key_Return:
 			chooseRune();
-			this->setFocus(Qt::FocusReason::OtherFocusReason);
+			setFocus(Qt::FocusReason::OtherFocusReason);
 			break;
 		case Qt::Key::Key_Escape:
 			clearFocus();

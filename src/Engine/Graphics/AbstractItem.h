@@ -57,6 +57,7 @@ namespace Runes
 
 	signals:
 		void changedSpell();
+		void changedSpellButDontRedraw();
 
 	protected:
 		Spell* spell_;	//!< The spell this rune draws

@@ -500,6 +500,12 @@ void RuneEngine::saveCurrentSpell()
 
 void RuneEngine::changedSpell()
 {
+	changedSpellButDontRedraw();
+	emit(redrawNeeded());
+}
+
+void RuneEngine::changedSpellButDontRedraw()
+{
 	modifiedSpell_ = true;
 }
 

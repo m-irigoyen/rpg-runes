@@ -33,6 +33,8 @@ namespace Runes
 
 		virtual void chooseRune();
 
+		virtual void resetImage();
+
 	signals:
 		void requestRedraw();
 

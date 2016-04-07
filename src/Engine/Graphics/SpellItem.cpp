@@ -500,7 +500,6 @@ void SpellItem::keyPressEvent(QKeyEvent * event)
 			spellParent->remove(spell_);
 		}
 		emit(changedSpell());
-		redraw();
 		break;
 	case Qt::Key::Key_Plus:
 	case Qt::Key::Key_A:
@@ -508,7 +507,6 @@ void SpellItem::keyPressEvent(QKeyEvent * event)
 		if (event->modifiers() & Qt::ShiftModifier)
 		spell_->addEmptyChild();
 		emit(changedSpell());
-		redraw();
 		break;
 	case Qt::Key::Key_Escape:
 		clearFocus();

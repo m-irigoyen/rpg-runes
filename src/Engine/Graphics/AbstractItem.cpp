@@ -15,6 +15,8 @@ namespace Runes
 
 		connect(this, SIGNAL(changedSpell()),
 			&runeEngine_, SLOT(changedSpell()));
+		connect(this, SIGNAL(changedSpellButDontRedraw()),
+			&runeEngine_, SLOT(changedSpellButDontRedraw()));
 	}
 
 	AbstractItem::AbstractItem(Spell* s, AbstractItem* parent, vector<QPixmap>& runeImages, RuneEngine& runeEngine) : spell_(s), parent_(parent), runeImages_(runeImages), runeEngine_(runeEngine), isHovered_(false)
