@@ -41,7 +41,7 @@ namespace Runes
 		rightRightBottomLayout_.addWidget(&reloadButton_);
 
 		newRuneButton_.setText("Add a new rune");
-		reloadButton_.setText("Reload dictionnary");
+		reloadButton_.setText("Reload dictionary");
 
 		// Filling the list
 		initList();

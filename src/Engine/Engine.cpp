@@ -74,19 +74,36 @@ namespace Runes
 		connect(newSpellAction_, SIGNAL(triggered()), &runeEngine_, SLOT(newSpell()));
 
 		discoverRuneAction_ = new QAction("Discover Rune", this);
+		connect(discoverRuneAction_, SIGNAL(triggered()), &runeEngine_, SLOT(discoverRune()));
+
+		toggleTextImageAction_ = new QAction("Toggle Text/Image", this);
+		connect(toggleTextImageAction_, SIGNAL(triggered()), &graphicsEngine_, SLOT(toggleText()));
 
 		menus_file_->addAction(newSpellAction_);
 		menus_file_->addAction(openSpellAction_);
 		menus_file_->addAction(saveSpellAction_);
 		menus_file_->addAction(discoverRuneAction_);
+		
+		if (runeEngine_.isMasterMode())
+		{
+			showManagerAction_ = new QAction("Show Rune Manager", this);
+			connect(showManagerAction_, SIGNAL(triggered()), runeManager_, SLOT(show()));
+			menus_view_->addAction(showManagerAction_);
+		}
+		else
+		{
+			showDictionaryAction_ = new QAction("Show Rune Dictionary", this);
+			connect(showDictionaryAction_, SIGNAL(triggered()), runeDictionary_, SLOT(show()));
+			menus_view_->addAction(showDictionaryAction_);
+		}
+
+	
 	}
 
 	void Engine::createMenus()
 	{
 		menus_file_ = this->menuBar()->addMenu(tr("&File"));
-		/*menus_file_->addAction(newAct);
-		menus_file_->addAction(openAct);
-		menus_file_->addAction(saveAct);*/
+		menus_view_ = this->menuBar()->addMenu(tr("&View"));
 	}
 
 	void Engine::createToolbars()
@@ -97,28 +114,28 @@ namespace Runes
 
 	void Engine::createDockWidgets()
 	{
-		// Dictionnary / master widget
+		// Dictionary / master widget
 		if (runeEngine_.isMasterMode())
 		{
 			runeManager_ = new RuneManager(runeEngine_, graphicsEngine_.getSprites());
 
-			dictionnaryWidget_ = new QDockWidget("Rune manager", this);
-			dictionnaryWidget_->setAllowedAreas(Qt::DockWidgetAreas(Qt::DockWidgetArea::TopDockWidgetArea || Qt::DockWidgetArea::BottomDockWidgetArea));
-			dictionnaryWidget_->setWidget(runeManager_);
-			addDockWidget(Qt::TopDockWidgetArea, dictionnaryWidget_);
+			dictionaryWidget_ = new QDockWidget("Rune manager", this);
+			dictionaryWidget_->setAllowedAreas(Qt::DockWidgetAreas(Qt::DockWidgetArea::TopDockWidgetArea || Qt::DockWidgetArea::BottomDockWidgetArea));
+			dictionaryWidget_->setWidget(runeManager_);
+			addDockWidget(Qt::TopDockWidgetArea, dictionaryWidget_);
 
 			QObject::connect(runeManager_->getReloadButton(), SIGNAL(clicked()),
 				&graphicsEngine_, SLOT(reloadSprites()));
 		}
 		else
 		{
-			// No master mode, display the normal dictionnary for the player
-			runeDictionnary_ = new RuneDictionnary(runeEngine_, graphicsEngine_.getSprites());
+			// No master mode, display the normal dictionary for the player
+			runeDictionary_ = new RuneDictionary(runeEngine_, graphicsEngine_.getSprites());
 
-			dictionnaryWidget_ = new QDockWidget("Rune dictionnary", this);
-			dictionnaryWidget_->setAllowedAreas(Qt::DockWidgetAreas(Qt::DockWidgetArea::TopDockWidgetArea || Qt::DockWidgetArea::BottomDockWidgetArea));
-			dictionnaryWidget_->setWidget(runeDictionnary_);
-			addDockWidget(Qt::TopDockWidgetArea, dictionnaryWidget_);
+			dictionaryWidget_ = new QDockWidget("Rune dictionary", this);
+			dictionaryWidget_->setAllowedAreas(Qt::DockWidgetAreas(Qt::DockWidgetArea::TopDockWidgetArea || Qt::DockWidgetArea::BottomDockWidgetArea));
+			dictionaryWidget_->setWidget(runeDictionary_);
+			addDockWidget(Qt::TopDockWidgetArea, dictionaryWidget_);
 		}
 	}
 

@@ -9,7 +9,6 @@
 
 #include "AbstractItem.h"
 
-
 namespace Runes
 {
 	class RuneItem : public AbstractItem
@@ -31,9 +30,12 @@ namespace Runes
 
 		virtual void clearItem() override;
 
+		//! @brief Prompts user to choose a rune for the spell
 		virtual void chooseRune();
 
 		virtual void resetImage();
+
+		virtual bool resetFocus() override;
 
 	signals:
 		void requestRedraw();

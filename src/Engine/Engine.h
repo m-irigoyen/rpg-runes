@@ -5,7 +5,7 @@
 #include "Graphics/GraphicsEngine.h"
 #include "Network/NetworkEngine.h"
 #include "Runes/RuneEngine.h"
-#include "Widgets/RuneDictionnary.h"
+#include "Widgets/RuneDictionary.h"
 #include "Widgets/RuneManager.h"
 
 #include <QMainWindow>
@@ -42,15 +42,19 @@ namespace Runes
 		//------------------
 		// GUI members
 		QMenu* menus_file_;
-		RuneDictionnary* runeDictionnary_;
+		QMenu* menus_view_;
+		RuneDictionary* runeDictionary_;
 		RuneManager* runeManager_;
-		QDockWidget* dictionnaryWidget_;
+		QDockWidget* dictionaryWidget_;
 
 		// Actions
 		QAction* openSpellAction_;
 		QAction* saveSpellAction_;
 		QAction* newSpellAction_;
 		QAction* discoverRuneAction_;
+		QAction* toggleTextImageAction_;
+		QAction* showDictionaryAction_;
+		QAction* showManagerAction_;
 
 		//------------------
 		// Private functions

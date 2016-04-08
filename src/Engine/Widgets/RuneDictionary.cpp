@@ -1,14 +1,14 @@
-#include "RuneDictionnary.h"
+#include "RuneDictionary.h"
 
 namespace Runes
 {
 
-	RuneDictionnary::RuneDictionnary(RuneEngine& engine, std::vector<QPixmap>& runeSprites) : runeEngine_(engine), globalRunes_(runeEngine_.getRunes()), userRunes_(runeEngine_.getUserRunes()), runeSprites_(runeSprites), currentDescriptor(NULL)
+	RuneDictionary::RuneDictionary(RuneEngine& engine, std::vector<QPixmap>& runeSprites) : runeEngine_(engine), globalRunes_(runeEngine_.getRunes()), userRunes_(runeEngine_.getUserRunes()), runeSprites_(runeSprites), currentDescriptor(NULL)
 	{
 		init();
 	}
 
-	void RuneDictionnary::init()
+	void RuneDictionary::init()
 	{
 		// Size hints
 
@@ -57,25 +57,25 @@ namespace Runes
 		clicked(model_.index(0, 0));
 	}
 
-	void RuneDictionnary::clicked(QModelIndex index)
+	void RuneDictionary::clicked(QModelIndex index)
 	{
 		QString data = model_.data(index,0).toString();
 		fillData(data);
 	}
 
-	void RuneDictionnary::editedName(const QString& text)
+	void RuneDictionary::editedName(const QString& text)
 	{
 		currentDescriptor->naturalName_ = text;
 		emit userRunesUpdated();
 	}
 
-	void RuneDictionnary::editedDescription(const QString& text)
+	void RuneDictionary::editedDescription(const QString& text)
 	{
 		currentDescriptor->description_ = text;
 		emit userRunesUpdated();
 	}
 
-	void RuneDictionnary::fillData(QString name)
+	void RuneDictionary::fillData(QString name)
 	{
 		int i = 0;
 		currentDescriptor = runeEngine_.getUserRuneByNaturalName(name);

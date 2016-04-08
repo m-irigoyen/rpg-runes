@@ -16,11 +16,11 @@
 
 namespace Runes
 {
-	class RuneDictionnary : public QWidget
+	class RuneDictionary : public QWidget
 	{
 		Q_OBJECT
 	public:
-		RuneDictionnary(RuneEngine& engine, std::vector<QPixmap>& runeSprites);
+		RuneDictionary(RuneEngine& engine, std::vector<QPixmap>& runeSprites);
 
 		// Model management
 		//! @brief inits model from the list of userRunes

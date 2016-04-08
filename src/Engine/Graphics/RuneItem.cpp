@@ -111,19 +111,18 @@ namespace Runes
 			else
 				image_.setPixmap(QPixmap());
 				
-			emit(changedSpellButDontRedraw());
-			update();
+			emit(changedSpell());
 		}
 	}
 
 	void RuneItem::resetImage()
 	{
-		// Setting image too
 		image_.setPixmap(runeImages_[spell_->getRune()]);
 	}
 
 	void RuneItem::focusInEvent(QFocusEvent * event)
 	{
+		this->runeEngine_.setCurrentlyFocusedSpell(spell_);
 		this->setBrush(QBrush(colorSelected()));
 		this->scene()->update();
 	}
@@ -196,7 +195,6 @@ namespace Runes
 		case Qt::Key::Key_Enter:
 		case Qt::Key::Key_Return:
 			chooseRune();
-			setFocus(Qt::FocusReason::OtherFocusReason);
 			break;
 		case Qt::Key::Key_Escape:
 			clearFocus();
@@ -204,10 +202,24 @@ namespace Runes
 		}
 	}
 
+	bool RuneItem::resetFocus()
+	{
+		if (spell_ == runeEngine_.getCurrentlyFocusedSpell())
+		{
+			this->setFocus();
+			return true;
+		}
+		else
+			return false;
+	}
+
 	void RuneItem::setIsText(bool isText)
 	{
 		text_.setVisible(isText);
+		text_.update();
 		image_.setVisible(!isText);
+		image_.update();
+		this->scene()->update();
 	}
 }
 

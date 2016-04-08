@@ -447,12 +447,40 @@ void SpellItem::childHovering(bool requests)
 	}
 }
 
+bool SpellItem::resetFocus()
+{
+	if (spell_ == runeEngine_.getCurrentlyFocusedSpell())
+	{
+		this->setFocus();
+		return true;
+	}
+	else if (innerRune_ != NULL && innerRune_->resetFocus())
+		return true;
+	
+
+	for (SpellItem* si : modifiers_)
+	{
+		if (si->resetFocus())
+			return true;
+	}
+
+	for (SpellItem* si : components_)
+	{
+		if (si->resetFocus())
+			return true;
+	}
+
+	for (SpellItem* si : children_)
+	{
+		if (si->resetFocus())
+			return true;
+	}
+
+	return false;
+}
+
 void SpellItem::colorCenterPart(bool isCenterSpell)
 {
-	/*if (this->innerSpell_ != NULL)
-		this->innerSpell_->colorCenterPart(false);
-	else
-		innerRune_->colorCenterPart(isCenterSpell);*/
 	if (this->innerSpell_ == NULL)
 		innerRune_->colorCenterPart(true);
 	else
@@ -462,6 +490,7 @@ void SpellItem::colorCenterPart(bool isCenterSpell)
 void SpellItem::focusInEvent(QFocusEvent * event)
 {
 	this->setBrush(QBrush(colorSelected()));
+	this->runeEngine_.setCurrentlyFocusedSpell(spell_);
 	this->scene()->update();
 }
 
@@ -516,10 +545,15 @@ void SpellItem::keyPressEvent(QKeyEvent * event)
 
 void SpellItem::setIsText(bool isText)
 {
+	this->innerRune_->setIsText(isText);
+
 	for (SpellItem* ri : children_)
 		ri->setIsText(isText);
 
 	for (SpellItem* ri : components_)
+		ri->setIsText(isText);
+
+	for (SpellItem* ri : modifiers_)
 		ri->setIsText(isText);
 }
 

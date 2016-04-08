@@ -10,7 +10,6 @@ namespace Runes
 	{
 
 	};
-
 }
 
 #endif

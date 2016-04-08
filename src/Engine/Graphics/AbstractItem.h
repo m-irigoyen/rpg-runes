@@ -35,6 +35,9 @@ namespace Runes
 
 		virtual void clearItem() = 0;
 
+		// Focus reset
+		virtual bool resetFocus() = 0;
+
 		//-----------------
 		// STATIC FUNCTIONS
 		static QColor colorCenter();

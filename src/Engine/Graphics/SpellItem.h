@@ -55,6 +55,9 @@ namespace Runes
 
 		virtual void childHovering(bool requests) override;
 
+		// Focus reset
+		bool resetFocus();
+
 	public slots:
 		//! @brief forces a redraw of the entire spell
 		void redraw();

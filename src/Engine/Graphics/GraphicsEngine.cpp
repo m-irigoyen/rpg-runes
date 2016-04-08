@@ -98,6 +98,7 @@ namespace Runes
 
 		currentSpellItem_ = new SpellItem(s, NULL, runeSprites_, runeEngine_, scene_);
 		currentSpellItem_->drawSpell();
+		currentSpellItem_->resetFocus();
 	}
 
 }

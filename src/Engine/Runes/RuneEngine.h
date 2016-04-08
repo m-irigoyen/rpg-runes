@@ -45,9 +45,9 @@ namespace Runes
 		bool loadSpell(Spell& spell, QString filepath);
 
 		// save / load user runes
-		bool saveRuneDictionnary(QString userName);
-		bool loadRuneDictionnary(QString userName);
-		bool saveMasterRuneDictionnary();
+		bool saveRuneDictionary(QString userName);
+		bool loadRuneDictionary(QString userName);
+		bool saveMasterRuneDictionary();
 
 		Rune* getRune(int index);
 		Rune* getRuneByName(QString name);
@@ -67,8 +67,9 @@ namespace Runes
 		void clearSpells();
 		void createNewSpell();
 
-		// Rune Manager related stuff
-		void discoverRune();
+		// Focus management
+		Spell* getCurrentlyFocusedSpell();
+		void setCurrentlyFocusedSpell(Spell* s);
 
 	signals:
 		void redrawNeeded();
@@ -87,10 +88,14 @@ namespace Runes
 	void newSpell();
 	void saveCurrentSpell();
 
+	// Rune Manager related stuff
+	void discoverRune();
+
 	private:
 		Spell* currentSpell_;	//!< The spell currently being editing (the top level spell)
-		RunesContainer runes_;	//!< Dictionnary of the runes
-		UserRunesContainer userRunes_;	//!< Personnal dictionnary of the User : his runes, his descriptions, his names, etc
+		Spell* currentlyFocusedSpell_;	//!< Dirty hack: keeps track of the currently focused spell
+		RunesContainer runes_;	//!< Dictionary of the runes
+		UserRunesContainer userRunes_;	//!< Personnal dictionary of the User : his runes, his descriptions, his names, etc
 		vector<Spell*> spells_;	//!< All the spells currently loaded in memory
 		bool masterMode_;
 
