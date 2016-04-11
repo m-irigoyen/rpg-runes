@@ -451,12 +451,16 @@ bool SpellItem::resetFocus()
 {
 	if (spell_ == runeEngine_.getCurrentlyFocusedSpell())
 	{
-		this->setFocus();
-		return true;
+		if (innerRune_ != NULL && innerRune_->resetFocus())
+		{
+			return true;
+		}
+		else
+		{
+			this->setFocus();
+			return true;
+		}
 	}
-	else if (innerRune_ != NULL && innerRune_->resetFocus())
-		return true;
-	
 
 	for (SpellItem* si : modifiers_)
 	{
