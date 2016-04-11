@@ -50,6 +50,7 @@ namespace Runes
 		virtual void colorCenterPart(bool isCenterSpell = false) override;
 
 		static QPointF getPositionOnSpell(int nb, int nbTotal, float radius, QPointF parentPosition);
+		static QPointF getModifierPositionOnSpell(int nb, int nbTotal, float radius, QPointF parentPosition);
 
 		void checkColorCenter();
 

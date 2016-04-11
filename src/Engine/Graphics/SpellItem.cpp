@@ -120,6 +120,7 @@ void SpellItem::drawSpell()
 		{
 			// Components
 			SpellItem* ri = new SpellItem(mod, this, runeImages_, runeEngine_);
+			ri->setScale(0.25f);
 			ri->drawSpell();
 			this->modifiers_.push_back(ri);
 		}
@@ -388,15 +389,24 @@ QPointF SpellItem::getPositionOnSpell(int nb, int nbTotal, float radius, QPointF
 {
 	++nb;
 	float cosOffset = 0.0f, sinOffset = 0.0f;
+	QPointF result(cos((2 * nb * M_PI) / nbTotal + cosOffset), sin((2 * nb * M_PI ) / nbTotal + sinOffset));
+	result *= radius;
+	return result;
+}
+
+QPointF SpellItem::getModifierPositionOnSpell(int nb, int nbTotal, float radius, QPointF parentPosition)
+{
+	++nb;
+	float cosOffset = 0.5f, sinOffset = 0.0f;
 	/*if (parentPosition != QPointF(0, 0))
 	{
-		QVector2D vecToPathStart(parentPosition * -1);
-		vecToPathStart.normalize();
-		cosOffset = acos(vecToPathStart.x());
-		sinOffset = asin(vecToPathStart.y());
+	QVector2D vecToPathStart(parentPosition * -1);
+	vecToPathStart.normalize();
+	cosOffset = acos(vecToPathStart.x());
+	sinOffset = asin(vecToPathStart.y());
 	}*/
 	//QPointF result(cos((2 * nb * (M_PI * (_GRAPHICS_SPELLITEM_CHILDSPACINGCOEFF*2))) / nbTotal + cosOffset), sin((2 * nb * (M_PI * (_GRAPHICS_SPELLITEM_CHILDSPACINGCOEFF*2))) / nbTotal + sinOffset));
-	QPointF result(cos((2 * nb * M_PI) / nbTotal + cosOffset), sin((2 * nb * M_PI ) / nbTotal + sinOffset));
+	QPointF result(cos((2 * nb * M_PI) / nbTotal + cosOffset), sin((2 * nb * M_PI) / nbTotal + sinOffset));
 	result *= radius;
 	return result;
 }
