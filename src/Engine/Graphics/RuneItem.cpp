@@ -43,13 +43,13 @@ namespace Runes
 			cout << "ERROR : RuneItems must have a parent" << endl;
 			abort();
 		}
-		
+
 		this->setParentItem(parent_);
 		this->setPen(this->getDefaultPen());
 		this->setBrush(QBrush(colorBackground()));
 
 		// Empty spell : only display the inner circle
-		
+
 		// If the spell isn't empty
 		if (spell_->getRune() != -1)
 		{
@@ -110,7 +110,7 @@ namespace Runes
 			}
 			else
 				image_.setPixmap(QPixmap());
-				
+
 			emit(changedSpell());
 		}
 	}
@@ -178,13 +178,10 @@ namespace Runes
 			break;
 		case Qt::Key::Key_Plus:
 		case Qt::Key::Key_Insert:
-			// alternative add : add a child
-			if (QApplication::keyboardModifiers().testFlag(Qt::ControlModifier))
-				spell_->addEmptyChild();
-			else if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier))
-				spell_->addEmptyModifier();
+			if (QApplication::keyboardModifiers().testFlag(Qt::ShiftModifier))
+				spell_->addEmptyModifier();	// adding a modifier
 			else
-				spell_->addEmptyComponent();
+				spell_->addEmptyComponent();	// adding a component
 			emit(changedSpell());
 			break;
 		case Qt::Key::Key_Back:

@@ -104,7 +104,10 @@ void SpellItem::drawSpell()
 		int i = 0;
 		for (SpellItem* ri : children_)
 		{
-			QPointF pos = getPositionOnSpell(i, children_.size(), biggestChildRadius, this->pos());
+			QPointF pos = getModifierPositionOnSpell(i,
+				children_.size(),
+				biggestChildRadius,
+				this->pos());
 			ri->setPos(pos);
 			this->positionPath(ri, outerRadius);
 			++i;
@@ -545,9 +548,8 @@ void SpellItem::keyPressEvent(QKeyEvent * event)
 		emit(changedSpell());
 		break;
 	case Qt::Key::Key_Plus:
-	case Qt::Key::Key_A:
-		// alternative add : add a child
-		if (event->modifiers() & Qt::ShiftModifier)
+		// No need for the alternative add
+		//if (event->modifiers() & Qt::ShiftModifier)
 		spell_->addEmptyChild();
 		emit(changedSpell());
 		break;
