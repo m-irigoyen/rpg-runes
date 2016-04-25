@@ -33,7 +33,7 @@ void SpellItem::drawSpell()
 
 	float innerRadius = 0.0f;
 	float outerRadius = 0.0f;
-			
+
 	// Center part
 	if (spell_->isCenterSpell())
 	{
@@ -54,7 +54,7 @@ void SpellItem::drawSpell()
 
 		innerRadius = this->getInnerRadius();
 	}
-	
+
 	// Creating and positioning components and their paths
 	if (!spell_->getComponents().empty())
 	{
@@ -120,7 +120,7 @@ void SpellItem::drawSpell()
 		{
 			// Components
 			SpellItem* ri = new SpellItem(mod, this, runeImages_, runeEngine_);
-			ri->setScale(0.25f);
+			ri->setScale(0.5f);
 			ri->drawSpell();
 			this->modifiers_.push_back(ri);
 		}
@@ -142,7 +142,7 @@ void SpellItem::drawSpell()
 float SpellItem::getTotalRadius()
 {
 	float innerRadius = this->getInnerRadius();
-		
+
 	if (components_.empty())
 	{
 		return innerRadius;
@@ -284,14 +284,14 @@ void SpellItem::positionPath(SpellItem* ri, float thisRadius)
 	//FIXME : this doesn't work u_u
 	// First curve : from parent circle to halfway
 	{
-		// Control point1 
+		// Control point1
 		QVector2D centerToPos(pos);
 		centerToPos.normalize();
 		centerToPos *= _GRAPHICS_SPELLITEM_DISTANCE / 4.0f;
 		QPointF pC1;
 		pC1.setX(centerToPos.x() + thisStraight.x());
 		pC1.setY(centerToPos.y() + thisStraight.y());
-		
+
 		// Creating the path
 		QPainterPath p(thisRotated);
 		p.quadTo(pC1, centerPath);
@@ -302,10 +302,10 @@ void SpellItem::positionPath(SpellItem* ri, float thisRadius)
 
 		paths_.push_back(path);
 	}
-	
+
 	// Second curve : from child circle to halfway
 	{
-		// Control point1 
+		// Control point1
 		QVector2D posToCenter(-pos);
 		posToCenter.normalize();
 		posToCenter *= _GRAPHICS_SPELLITEM_DISTANCE / 4.0f;
@@ -512,7 +512,7 @@ void SpellItem::focusOutEvent(QFocusEvent * event)
 {
 	if (this->parentItem() == NULL)
 		colorCenterPart(true);
-		
+
 	this->setBrush(QBrush(colorBackground()));
 	checkColorCenter();
 	this->scene()->update();
